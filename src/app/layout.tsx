@@ -44,7 +44,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="el" className={`${playfair.variable} ${cormorant.variable} ${dmSans.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-[var(--cream)]">{children}</body>
+      <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
 }

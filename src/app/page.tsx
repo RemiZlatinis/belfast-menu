@@ -69,7 +69,7 @@ export default function Home() {
   // Best-practice scrollspy: rAF-throttled, direction-aware, handles fast scroll
   useEffect(() => {
     const ids = navItems.map((n) => n.id);
-    const headerOffset = 140;
+    const headerOffset = 176;
     let ticking = false;
 
     const getActive = () => {
@@ -115,11 +115,16 @@ export default function Home() {
     setActiveId(id);
     // also nudge nav immediately so click feels instant even before observer fires
     document.querySelector(`[data-nav-id="${id}"]`)?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    // manual offset (not scrollIntoView) so the section clears the floating bar
+    const el = document.getElementById(id);
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY - 176;
+      window.scrollTo({ top, behavior: "smooth" });
+    }
   };
 
   return (
-    <div className="min-h-screen bg-[var(--cream)]">
+    <div className="min-h-screen bg-[var(--cream)] text-[var(--ink)]">
       {/* HERO — deep green, layered glow + dots, glass pill logo */}
       <section className="relative overflow-hidden bg-[var(--green)]">
         {/* ambient glows */}
@@ -211,7 +216,7 @@ export default function Home() {
                   <button
                     onClick={() => setQuery("")}
                     aria-label="Clear search"
-                    className="absolute right-2 top-1/2 -translate-y-1/2 grid h-5 w-5 place-items-center rounded-full bg-black/10 text-[11px] leading-none text-black/60 hover:bg-black/20"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 grid h-5 w-5 cursor-pointer place-items-center rounded-full bg-black/10 text-[11px] leading-none text-black/60 hover:bg-black/20"
                   >
                     ×
                   </button>
@@ -225,7 +230,7 @@ export default function Home() {
                   key={item.id}
                   data-nav-id={item.id}
                   onClick={() => scrollTo(item.id)}
-                  className={`whitespace-nowrap rounded-full border px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.08em] transition-all ${
+                  className={`whitespace-nowrap cursor-pointer rounded-full border px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.08em] transition-all ${
                     activeId === item.id
                       ? "bg-[var(--green)] text-white border-[var(--green)] shadow-[0_6px_16px_-6px_rgba(22,63,26,0.7)]"
                       : "bg-white text-black/70 border-black/10 hover:border-[var(--green)]/40 hover:text-[var(--green)]"
@@ -245,14 +250,14 @@ export default function Home() {
           <div className="py-24 text-center">
             <p className="font-serif text-2xl text-black/70">No results for “{query}”</p>
             <p className="mt-2 text-sm text-black/50">Try searching “Gin”, “Tullamore” or “IPA”</p>
-            <button onClick={() => setQuery("")} className="mt-6 rounded-full bg-[var(--green)] px-6 py-2.5 text-sm font-medium text-white shadow-[0_10px_24px_-10px_rgba(22,63,26,0.8)] hover:bg-[var(--green-2)] transition-colors">
+            <button onClick={() => setQuery("")} className="mt-6 cursor-pointer rounded-full bg-[var(--green)] px-6 py-2.5 text-sm font-medium text-white shadow-[0_10px_24px_-10px_rgba(22,63,26,0.8)] hover:bg-[var(--green-2)] transition-colors">
               Clear search
             </button>
           </div>
         ) : (
           <div className="space-y-8 sm:space-y-10">
             {filtered.map((category, idx) => (
-              <section key={category.id} id={category.id} className="scroll-mt-36 rounded-[28px] bg-white/85 border border-black/[0.06] p-5 sm:p-8 shadow-[0_20px_50px_-30px_rgba(22,63,26,0.35)] backdrop-blur-sm">
+              <section key={category.id} id={category.id} className="scroll-mt-44 rounded-[28px] bg-white/85 border border-black/[0.06] p-5 sm:p-8 shadow-[0_20px_50px_-30px_rgba(22,63,26,0.35)] backdrop-blur-sm">
                 <div className="flex items-start justify-between gap-4 border-b border-black/10 pb-5 mb-6 sm:mb-8">
                   <div>
                     <div className="flex items-baseline gap-3">
@@ -341,7 +346,7 @@ export default function Home() {
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         aria-label="Back to top"
-        className={`fixed bottom-6 right-6 z-40 grid h-11 w-11 place-items-center rounded-full bg-[var(--green)] text-white shadow-[0_12px_28px_-8px_rgba(22,63,26,0.8)] transition-all hover:bg-[var(--green-2)] ${
+        className={`fixed bottom-6 right-6 z-40 grid h-11 w-11 cursor-pointer place-items-center rounded-full bg-[var(--green)] text-white shadow-[0_12px_28px_-8px_rgba(22,63,26,0.8)] transition-all hover:bg-[var(--green-2)] ${
           showTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3 pointer-events-none"
         }`}
       >

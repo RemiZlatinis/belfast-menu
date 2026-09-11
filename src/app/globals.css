@@ -35,12 +35,12 @@
 
 html {
   scroll-behavior: smooth;
-  background: var(--cream);
+  /* NOTE: no background/color here — Payload's admin themes html/body itself
+     (html { background: var(--theme-bg) }). The storefront sets its own
+     cream background on its root div in page.tsx. */
 }
 
 body {
-  background: var(--cream);
-  color: var(--ink);
   font-family: var(--font-dm-sans), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
