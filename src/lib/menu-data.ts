@@ -48,3 +48,43 @@ export function greekUpper(s: string): string {
     .replace(/[\u0300-\u036f]/g, '')
     .toUpperCase()
 }
+
+export type Lang = 'el' | 'en'
+
+// Interface chrome around the CMS content (both languages baked in at build).
+export type UIDict = {
+  catalog: string
+  pricesIn: string
+  itemsWord: string
+  categoriesWord: string
+  noResults: string
+  trySearch: string
+  clearSearch: string
+  searchLabel: string
+  catalogueWord: string
+}
+
+export const uiDict: Record<Lang, UIDict> = {
+  el: {
+    catalog: 'ΚΑΤΑΛΟΓΟΣ',
+    pricesIn: 'τιμές σε €',
+    itemsWord: 'είδη',
+    categoriesWord: 'κατηγορίες',
+    noResults: 'Κανένα αποτέλεσμα για',
+    trySearch: 'Δοκιμάστε “Gin”, “Tullamore” ή “IPA”',
+    clearSearch: 'Καθαρισμός',
+    searchLabel: 'Αναζήτηση στο μενού',
+    catalogueWord: 'Κατάλογος',
+  },
+  en: {
+    catalog: 'PRODUCT CATALOG',
+    pricesIn: 'prices in €',
+    itemsWord: 'items',
+    categoriesWord: 'categories',
+    noResults: 'No results for',
+    trySearch: 'Try searching “Gin”, “Tullamore” or “IPA”',
+    clearSearch: 'Clear search',
+    searchLabel: 'Search the menu',
+    catalogueWord: 'Catalogue',
+  },
+}

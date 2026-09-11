@@ -1,0 +1,679 @@
+[
+  {
+    "id": "beverages",
+    "title": "BEVERAGES",
+    "subtitle": "Soft Drinks & Sodas",
+    "count": 19,
+    "subcategories": [
+      {
+        "items": [
+          {
+            "name": "SCHWEPPES SODA 250ml",
+            "price": "3€"
+          },
+          {
+            "name": "FANTA ORANGE 250ml",
+            "price": "3€"
+          },
+          {
+            "name": "FANTA LEMON 250ml",
+            "price": "3€"
+          },
+          {
+            "name": "SPRITE 250ml",
+            "price": "3€"
+          },
+          {
+            "name": "COCA COLA 250ml",
+            "price": "3€"
+          },
+          {
+            "name": "COCA COLA ZERO 250ml",
+            "price": "3€"
+          },
+          {
+            "name": "FLORINA SPARKLING WATER 250ml",
+            "price": "4€"
+          },
+          {
+            "name": "RED BULL ENERGY DRINK 200ml",
+            "price": "4€"
+          },
+          {
+            "name": "THREE CENTS PINK SODA 200ml",
+            "price": "4€"
+          },
+          {
+            "name": "THREE CENTS AEGEAN TONIC 200ml",
+            "price": "4€"
+          },
+          {
+            "name": "FEVER TREE PREMIUM GINGER BEER 200ml",
+            "price": "4€"
+          },
+          {
+            "name": "BUNDABERG GINGER BEER 375ml",
+            "price": "6€"
+          },
+          {
+            "name": "HOMEMADE LEMONADE",
+            "price": "3,5€"
+          },
+          {
+            "name": "GIA_GIAMAS SOUR CHERRY",
+            "price": "3,5€"
+          },
+          {
+            "name": "GIA-GIAMAS PINK LEMONADE SUGARFREE",
+            "price": "4€"
+          },
+          {
+            "name": "GIA_GIAMAS LEMONADE SUGARFREE",
+            "price": "4€"
+          },
+          {
+            "name": "ARIZONA LEMON 330ml",
+            "price": "3€"
+          },
+          {
+            "name": "ARIZONA PEACH 330ml",
+            "price": "3€"
+          },
+          {
+            "name": "ARIZONA POMEGRANATE 330ml",
+            "price": "3€"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "beers",
+    "title": "BEERS",
+    "subtitle": "Beers",
+    "count": 14,
+    "subcategories": [
+      {
+        "items": [
+          {
+            "name": "Carlsberg Draught 500ml",
+            "price": "4,5€"
+          },
+          {
+            "name": "Carlsberg Draught 330ml",
+            "price": "3,5€"
+          },
+          {
+            "name": "Marmita RED Draught 330ml",
+            "price": "4€"
+          },
+          {
+            "name": "Alfa 330ml",
+            "price": "3,5€"
+          },
+          {
+            "name": "Mamos 330ml",
+            "price": "3,5€"
+          },
+          {
+            "name": "Vergina Lager 330ml",
+            "price": "3,5€"
+          },
+          {
+            "name": "Vergina Weiss 500ml",
+            "price": "4,5€"
+          },
+          {
+            "name": "Guinness 330ml",
+            "price": "6,5€"
+          },
+          {
+            "name": "Kaiser 330ml",
+            "price": "4€"
+          },
+          {
+            "name": "Fischer 330ml",
+            "price": "4€"
+          },
+          {
+            "name": "Nymfi 330ml",
+            "price": "3,5€"
+          },
+          {
+            "name": "Fix Alcohol-Free 500ml",
+            "price": "4€"
+          },
+          {
+            "name": "Amstel Radler 330ml",
+            "price": "4€"
+          },
+          {
+            "name": "Stella Artois 330ml",
+            "price": "4,5€"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "craft",
+    "title": "CRAFT BEERS",
+    "subtitle": "Handcrafted",
+    "count": 11,
+    "subcategories": [
+      {
+        "items": [
+          {
+            "name": "Marmita Red 330ml",
+            "price": "6€"
+          },
+          {
+            "name": "Marmita American Pale Ale 330ml",
+            "price": "6€"
+          },
+          {
+            "name": "Marmita Stout 330ml",
+            "price": "6€"
+          },
+          {
+            "name": "Marmita POW WOW IPA 330ml",
+            "price": "6,5€"
+          },
+          {
+            "name": "Utopia Babylon IPA 330ml",
+            "price": "6,5€"
+          },
+          {
+            "name": "Utopia Eden IPL 330ml",
+            "price": "6,5€"
+          },
+          {
+            "name": "KYRIA TOULA NIPA (Sourmena Brew) 330ml",
+            "price": "6,5€"
+          },
+          {
+            "name": "BELA Pilsner (Sourmena Brew X 608) 330ml",
+            "price": "5,5€"
+          },
+          {
+            "name": "TAOS Brewing Sauvignon IPA 330ml",
+            "price": "6,5€"
+          },
+          {
+            "name": "TAOS Lager 330ml",
+            "price": "6€"
+          },
+          {
+            "name": "JASMINE IPA (Strange Brew) 330ml",
+            "price": "6€"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "whiskeys",
+    "title": "WHISKEYS",
+    "subtitle": "Whiskey",
+    "count": 38,
+    "subcategories": [
+      {
+        "label": "IRISH",
+        "items": [
+          {
+            "name": "Tullamore Dew",
+            "price": "6€"
+          },
+          {
+            "name": "Tullamore XO",
+            "price": "8€"
+          },
+          {
+            "name": "Jameson",
+            "price": "6€"
+          },
+          {
+            "name": "Jameson Black Barrel",
+            "price": "8€"
+          },
+          {
+            "name": "Jameson Caskmates",
+            "price": "7€"
+          },
+          {
+            "name": "Bushmills",
+            "price": "7€"
+          },
+          {
+            "name": "Bushmills Black Bush",
+            "price": "8€"
+          },
+          {
+            "name": "Bushmills 10years",
+            "price": "9€"
+          },
+          {
+            "name": "Roe & Co",
+            "price": "8€"
+          },
+          {
+            "name": "Teeling",
+            "price": "8€"
+          },
+          {
+            "name": "Redbreast 12yr",
+            "price": "17€"
+          }
+        ]
+      },
+      {
+        "label": "SCOTCH",
+        "items": [
+          {
+            "name": "Ballantine's",
+            "price": "6€"
+          },
+          {
+            "name": "Cutty Sark",
+            "price": "6€"
+          },
+          {
+            "name": "Chivas",
+            "price": "8€"
+          },
+          {
+            "name": "Johnnie Black",
+            "price": "8€"
+          },
+          {
+            "name": "Canadian Club",
+            "price": "7€"
+          },
+          {
+            "name": "Haig",
+            "price": "6€"
+          },
+          {
+            "name": "Grants 12yr",
+            "price": "8€"
+          }
+        ]
+      },
+      {
+        "label": "BOURBON",
+        "items": [
+          {
+            "name": "Evan Williams",
+            "price": "8€"
+          },
+          {
+            "name": "Jack Daniel's",
+            "price": "8€"
+          },
+          {
+            "name": "Four Roses",
+            "price": "8€"
+          }
+        ]
+      },
+      {
+        "label": "PREMIUM",
+        "items": [
+          {
+            "name": "Cardhu",
+            "price": "9€"
+          },
+          {
+            "name": "Talisker 10yr",
+            "price": "10€"
+          },
+          {
+            "name": "Glenfiddich 12yr",
+            "price": "10€"
+          },
+          {
+            "name": "Dalwhinnie",
+            "price": "13€"
+          },
+          {
+            "name": "Nikka From The Barrel",
+            "price": "14€"
+          },
+          {
+            "name": "Arran 10yr",
+            "price": "13€"
+          },
+          {
+            "name": "Aberlour 12yr",
+            "price": "14€"
+          },
+          {
+            "name": "Lagavulin 8yr",
+            "price": "12€"
+          },
+          {
+            "name": "Lagavulin 16yr",
+            "price": "19€"
+          },
+          {
+            "name": "Kilchoman",
+            "price": "17€"
+          },
+          {
+            "name": "Highland Park 12yr",
+            "price": "13€"
+          },
+          {
+            "name": "The Glenallachie 12yr",
+            "price": "15€"
+          },
+          {
+            "name": "Bunnahabhain 12yr",
+            "price": "16€"
+          },
+          {
+            "name": "Dalmore 12yr",
+            "price": "17€"
+          },
+          {
+            "name": "Ardbeg 10yr",
+            "price": "16€"
+          },
+          {
+            "name": "Glenfiddich 12yr",
+            "price": "16€",
+            "note": "Reserve"
+          },
+          {
+            "name": "Macallan Double Cask 12yr",
+            "price": "20€"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "rum",
+    "title": "RUM",
+    "subtitle": "Rum",
+    "count": 14,
+    "subcategories": [
+      {
+        "items": [
+          {
+            "name": "Havana",
+            "price": "6€"
+          },
+          {
+            "name": "Appleton",
+            "price": "7€"
+          },
+          {
+            "name": "Plantation Dark",
+            "price": "7€"
+          },
+          {
+            "name": "Chairman's Spiced",
+            "price": "8€"
+          },
+          {
+            "name": "Chairman's",
+            "price": "8€"
+          },
+          {
+            "name": "Sailor Jerry",
+            "price": "7€"
+          },
+          {
+            "name": "Kingston",
+            "price": "7€"
+          },
+          {
+            "name": "Bayou Spiced",
+            "price": "8€"
+          },
+          {
+            "name": "Bumbu",
+            "price": "9€"
+          },
+          {
+            "name": "Diplomatico",
+            "price": "10€"
+          },
+          {
+            "name": "Flor De Cana 12yr",
+            "price": "10€"
+          },
+          {
+            "name": "Barcelo",
+            "price": "8€"
+          },
+          {
+            "name": "Zacapa",
+            "price": "13€"
+          },
+          {
+            "name": "Tamboo",
+            "price": "8€"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gin",
+    "title": "GIN",
+    "subtitle": "Gin",
+    "count": 16,
+    "subcategories": [
+      {
+        "items": [
+          {
+            "name": "Greenall's",
+            "price": "6€"
+          },
+          {
+            "name": "Beefeater",
+            "price": "6€"
+          },
+          {
+            "name": "Bombay",
+            "price": "7€"
+          },
+          {
+            "name": "Tanqueray",
+            "price": "7€"
+          },
+          {
+            "name": "Oyster",
+            "price": "9€"
+          },
+          {
+            "name": "Grace",
+            "price": "9€"
+          },
+          {
+            "name": "Hendrick's",
+            "price": "9€"
+          },
+          {
+            "name": "Roku",
+            "price": "10€"
+          },
+          {
+            "name": "Canaima",
+            "price": "9€"
+          },
+          {
+            "name": "Mombasa",
+            "price": "9€"
+          },
+          {
+            "name": "Old Sport",
+            "price": "8€"
+          },
+          {
+            "name": "Votanikon",
+            "price": "8€"
+          },
+          {
+            "name": "Amazoni Brazilian Gin",
+            "price": "10€"
+          },
+          {
+            "name": "Monkey 47",
+            "price": "13€"
+          },
+          {
+            "name": "The Botanist",
+            "price": "9€"
+          },
+          {
+            "name": "Engine",
+            "price": "9€"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "vodka",
+    "title": "VODKA",
+    "subtitle": "Vodka",
+    "count": 7,
+    "subcategories": [
+      {
+        "items": [
+          {
+            "name": "Absolut",
+            "price": "6€"
+          },
+          {
+            "name": "Stolichnaya",
+            "price": "6€"
+          },
+          {
+            "name": "Moskovskaya",
+            "price": "6€"
+          },
+          {
+            "name": "Grey Goose",
+            "price": "10€"
+          },
+          {
+            "name": "Belvedere",
+            "price": "10€"
+          },
+          {
+            "name": "Crystal Head",
+            "price": "11€"
+          },
+          {
+            "name": "Ketel One",
+            "price": "8€"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cognac",
+    "title": "COGNAC",
+    "subtitle": "Cognac",
+    "count": 4,
+    "subcategories": [
+      {
+        "items": [
+          {
+            "name": "Hennessy",
+            "price": "11€"
+          },
+          {
+            "name": "Metaxa 5*",
+            "price": "6€"
+          },
+          {
+            "name": "Metaxa 7*",
+            "price": "8€"
+          },
+          {
+            "name": "Metaxa 12*",
+            "price": "9€"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cocktails",
+    "title": "COCKTAILS",
+    "subtitle": "Cocktails",
+    "count": 15,
+    "subcategories": [
+      {
+        "items": [
+          {
+            "name": "Negroni",
+            "price": "8€"
+          },
+          {
+            "name": "Old Fashioned",
+            "price": "9€"
+          },
+          {
+            "name": "Rum Old Fashioned",
+            "price": "9€"
+          },
+          {
+            "name": "Margarita",
+            "price": "8€"
+          },
+          {
+            "name": "Paloma",
+            "price": "8€"
+          },
+          {
+            "name": "Cuba Libre",
+            "price": "6€"
+          },
+          {
+            "name": "Pornstar Martini",
+            "price": "8€"
+          },
+          {
+            "name": "Daiquiri (f)",
+            "price": "8€"
+          },
+          {
+            "name": "Mojito (f)",
+            "price": "8€"
+          },
+          {
+            "name": "Mai Tai",
+            "price": "9€"
+          },
+          {
+            "name": "Zombie",
+            "price": "10€"
+          },
+          {
+            "name": "Bramble",
+            "price": "8€"
+          },
+          {
+            "name": "Caipiroska (f)",
+            "price": "8€"
+          },
+          {
+            "name": "Caipirinha",
+            "price": "8€"
+          },
+          {
+            "name": "Aperol Spritz",
+            "price": "7€"
+          }
+        ]
+      }
+    ]
+  }
+]

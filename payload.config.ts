@@ -5,6 +5,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 import seedMenu from './src/lib/menu-seed.json'
+import seedMenuEn from './src/lib/menu-seed-en.json'
 // Collections live in src/collections (best practice — config only wires them).
 // NOTE: explicit `.ts` extensions are required: Payload loads this config via
 // CJS `require`, whose resolver does not probe `.ts` for extensionless paths.
@@ -28,6 +29,58 @@ type SeedCat = {
   subcategories: SeedSub[]
 }
 const seedCategories = seedMenu as unknown as SeedCat[]
+const seedCategoriesEn = seedMenuEn as unknown as SeedCat[]
+
+// Site texts for the seeded docs (also editable later in /admin → Menus → Site content).
+const seedSiteEl = {
+  badge: 'ΞΑΝΘΗ • URBAN PUB',
+  brandName: 'ΜΠΕΛΦΑΣΤ',
+  brandSuffix: 'URBAN PUB',
+  address: 'Βασιλέως Κωνσταντίνου 26, Ξάνθη',
+  tagline: 'Product catalogue — authentic pub menu',
+  searchPlaceholder: 'Αναζήτηση: whisky, gin, μπύρα...',
+  visitKicker: 'VISIT US',
+  visitText: 'Open daily — full menu available at the bar. Prices in €.',
+  footerNote: 'All prices incl.',
+  footerBrand: 'ΜΠΕΛΦΑΣΤ Urban Pub',
+}
+const seedSiteEn = {
+  badge: 'XANTHI • URBAN PUB',
+  brandName: 'ΜΠΕΛΦΑΣΤ',
+  brandSuffix: 'URBAN PUB',
+  address: '26 Vassileos Konstantinou, Xanthi',
+  tagline: 'Product catalogue — authentic pub menu',
+  searchPlaceholder: 'Search whisky, gin, beer...',
+  visitKicker: 'VISIT US',
+  visitText: 'Open daily — full menu available at the bar. Prices in €.',
+  footerNote: 'All prices incl.',
+  footerBrand: 'ΜΠΕΛΦΑΣΤ Urban Pub',
+}
+
+function toMenuDoc(
+  cats: SeedCat[],
+  doc: { title: string; slug: string; description: string; site: typeof seedSiteEl },
+) {
+  return {
+    title: doc.title,
+    slug: doc.slug,
+    description: doc.description,
+    site: doc.site,
+    categories: cats.map((cat) => ({
+      slug: cat.id,
+      title: cat.title,
+      subtitle: cat.subtitle ?? undefined,
+      subcategories: cat.subcategories.map((sub) => ({
+        label: sub.label ?? undefined,
+        items: sub.items.map((it) => ({
+          name: it.name,
+          price: it.price,
+          note: it.note ?? undefined,
+        })),
+      })),
+    })),
+  }
+}
 
 function resolveServerURL(): string {
   if (process.env.NEXT_PUBLIC_SERVER_URL) return process.env.NEXT_PUBLIC_SERVER_URL
@@ -117,30 +170,37 @@ export default buildConfig({
         payload.logger.info('Skipping seed: ephemeral Vercel without Neon/Turso/DATABASE_URI')
         return
       }
-      const existing = await payload.find({ collection: 'menus', limit: 1 })
-      if (existing.totalDocs === 0) {
-        await payload.create({
-          collection: 'menus',
-          data: {
+      // Seed each language doc independently (existing docs are never touched).
+      const seeds = [
+        {
+          cats: seedCategories,
+          doc: {
             title: 'ΜΠΕΛΦΑΣΤ Catalogue',
             slug: 'main',
             description: 'Βασιλέως Κωνσταντίνου 26, Ξάνθη',
-            categories: seedCategories.map((cat) => ({
-              slug: cat.id,
-              title: cat.title,
-              subtitle: cat.subtitle ?? undefined,
-              subcategories: cat.subcategories.map((sub) => ({
-                label: sub.label ?? undefined,
-                items: sub.items.map((it) => ({
-                  name: it.name,
-                  price: it.price,
-                  note: it.note ?? undefined,
-                })),
-              })),
-            })),
+            site: seedSiteEl,
           },
+        },
+        {
+          cats: seedCategoriesEn,
+          doc: {
+            title: 'ΜΠΕΛΦΑΣΤ Catalogue (EN)',
+            slug: 'en',
+            description: '26 Vassileos Konstantinou, Xanthi',
+            site: seedSiteEn,
+          },
+        },
+      ]
+      for (const { cats, doc } of seeds) {
+        const found = await payload.find({
+          collection: 'menus',
+          where: { slug: { equals: doc.slug } },
+          limit: 1,
         })
-        payload.logger.info('Seeded menus collection from menu-seed.json (138 drinks, 9 categories)')
+        if (found.totalDocs === 0) {
+          await payload.create({ collection: 'menus', data: toMenuDoc(cats, doc) })
+          payload.logger.info(`Seeded menus/${doc.slug} from seed data`)
+        }
       }
       if (!process.env.VERCEL) {
         const users = await payload.find({ collection: 'users', limit: 1 })

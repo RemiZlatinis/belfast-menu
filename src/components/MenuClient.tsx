@@ -1,19 +1,45 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import type { Category, SiteSettings } from "@/lib/menu-data";
-import { greekUpper } from "@/lib/menu-data";
+import type { Category, SiteSettings, Lang } from "@/lib/menu-data";
+import { greekUpper, uiDict } from "@/lib/menu-data";
 
-// Interactive catalogue UI. Menu + site texts are baked in at build time (SSG)
-// and passed as props — useMemo below only derives the instant search
-// filter/nav from them, no runtime data fetching.
-export function MenuClient({ initialMenu, initialSite }: { initialMenu: Category[]; initialSite: SiteSettings }) {
+const FOCUS_RING = "focus-visible:outline-2 focus-visible:outline-offset-2";
+
+// Interactive catalogue UI. Both languages are baked in at build time (SSG)
+// and passed as props — the toggle switches instantly, useMemo below only
+// derives the instant search filter/nav, no runtime data fetching.
+export function MenuClient({
+  initialMenuEl,
+  initialSiteEl,
+  initialMenuEn,
+  initialSiteEn,
+}: {
+  initialMenuEl: Category[];
+  initialSiteEl: SiteSettings;
+  initialMenuEn: Category[];
+  initialSiteEn: SiteSettings;
+}) {
+  const [lang, setLang] = useState<Lang>("el");
   const [query, setQuery] = useState("");
   const [activeId, setActiveId] = useState("beverages");
   const [showTop, setShowTop] = useState(false);
-  const [menu] = useState<Category[]>(initialMenu);
-  const [site] = useState<SiteSettings>(initialSite);
+
+  const menu = lang === "el" ? initialMenuEl : initialMenuEn;
+  const site = lang === "el" ? initialSiteEl : initialSiteEn;
+  const t = uiDict[lang];
   const monogram = site.brandName.charAt(0) || "Μ";
+
+  // Keep <html lang> in sync for screen readers + scrapers.
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
+
+  const switchLang = (next: Lang) => {
+    if (next === lang) return;
+    setLang(next);
+    setQuery("");
+  };
 
   const filtered = useMemo(() => {
     if (!query.trim()) return menu;
@@ -138,11 +164,11 @@ export function MenuClient({ initialMenu, initialSite }: { initialMenu: Category
 
           <div className="animate-rise animate-rise-2 mt-8 flex flex-col items-center gap-3 text-center">
             <p className="text-white/85 text-[11px] sm:text-xs tracking-[0.3em] uppercase font-medium">{site.address}</p>
-            <p className="text-white/55 text-xs sm:text-[13px] tracking-wide font-light">{site.tagline}</p>
-            <div className="mt-2 flex items-center gap-2 text-[11px] font-medium tracking-wide text-white/70">
-              <span className="rounded-full border border-white/20 bg-white/[0.07] px-3 py-1 tabular-nums">{totalItems} items</span>
-              <span className="rounded-full border border-white/20 bg-white/[0.07] px-3 py-1 tabular-nums">{menu.length} categories</span>
-              <span className="rounded-full border border-white/20 bg-white/[0.07] px-3 py-1">prices in €</span>
+            <p className="text-white/75 text-xs sm:text-[13px] tracking-wide font-light">{site.tagline}</p>
+            <div className="mt-2 flex items-center gap-2 text-[11px] font-medium tracking-wide text-white/75">
+              <span className="rounded-full border border-white/20 bg-white/[0.07] px-3 py-1 tabular-nums">{totalItems} {t.itemsWord}</span>
+              <span className="rounded-full border border-white/20 bg-white/[0.07] px-3 py-1 tabular-nums">{menu.length} {t.categoriesWord}</span>
+              <span className="rounded-full border border-white/20 bg-white/[0.07] px-3 py-1">{t.pricesIn}</span>
             </div>
           </div>
         </div>
@@ -151,7 +177,7 @@ export function MenuClient({ initialMenu, initialSite }: { initialMenu: Category
         <div className="relative border-t border-white/15 bg-black/15 py-2.5 overflow-hidden">
           <div className="animate-marquee flex w-max items-center gap-6 whitespace-nowrap pr-6">
             {[...liveNav, ...liveNav].map((item, i) => (
-              <span key={`${item.id}-${i}`} aria-hidden={i >= liveNav.length} className="flex items-center gap-6 text-[11px] font-medium tracking-[0.24em] text-white/60">
+              <span key={`${item.id}-${i}`} aria-hidden={i >= liveNav.length} className="flex items-center gap-6 text-[11px] font-medium tracking-[0.24em] text-white/75">
                 {item.label}
                 <span className="h-1 w-1 rotate-45 bg-[var(--gold)]/80" />
               </span>
@@ -164,33 +190,50 @@ export function MenuClient({ initialMenu, initialSite }: { initialMenu: Category
       <div className="sticky top-3 z-30 mx-auto max-w-[1160px] px-3 sm:px-6 lg:px-8">
         <div className="rounded-2xl border border-black/10 bg-[var(--cream)]/90 shadow-[0_12px_40px_-16px_rgba(22,63,26,0.35)] backdrop-blur-xl">
           <div className="px-4 sm:px-5">
-            <div className="flex items-center justify-between py-3 gap-4">
+            <div className="flex items-center justify-between py-3 gap-3 sm:gap-4">
               <div className="flex items-center gap-3 min-w-0">
                 <span className="hidden sm:grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[var(--green)] font-serif text-[13px] text-[var(--cream)]">{monogram}</span>
-                <p className="hidden sm:block text-[11px] tracking-[0.18em] font-semibold text-black">PRODUCT CATALOG</p>
-                <p className="sm:hidden text-[11px] tracking-[0.18em] font-semibold">CATALOG</p>
+                <p className="hidden sm:block text-[11px] tracking-[0.18em] font-semibold text-black">{t.catalog}</p>
+                <p className="sm:hidden text-[11px] tracking-[0.18em] font-semibold">{t.catalog}</p>
                 <span className="hidden sm:inline h-3 w-px bg-black/20" />
-                <p className="truncate text-[11px] tracking-wide text-black/60">{totalItems} items • {menu.length} categories</p>
+                <p className="truncate text-[11px] tracking-wide text-black/60">{totalItems} {t.itemsWord} • {menu.length} {t.categoriesWord}</p>
               </div>
-              <div className="relative shrink-0">
-                <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-black/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.7}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.2-4.2m1.8-5.3a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z" />
-                </svg>
-                <input
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder={site.searchPlaceholder}
-                  className="h-9 w-[170px] sm:w-[250px] rounded-full border border-black/15 bg-white pl-8 pr-8 text-[13px] placeholder:text-black/40 focus:outline-none focus:border-[var(--green)] focus:ring-2 focus:ring-[var(--green)]/25 transition-shadow"
-                />
-                {query && (
-                  <button
-                    onClick={() => setQuery("")}
-                    aria-label="Clear search"
-                    className="absolute right-2 top-1/2 -translate-y-1/2 grid h-5 w-5 cursor-pointer place-items-center rounded-full bg-black/10 text-[11px] leading-none text-black/60 hover:bg-black/20"
-                  >
-                    ×
-                  </button>
-                )}
+              <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center rounded-full border border-black/15 bg-white p-0.5" role="group" aria-label="Language / Γλώσσα">
+                  {(["el", "en"] as Lang[]).map((l) => (
+                    <button
+                      key={l}
+                      onClick={() => switchLang(l)}
+                      aria-pressed={lang === l}
+                      className={`cursor-pointer rounded-full px-2.5 py-1 text-[11px] font-bold tracking-wider transition-colors ${FOCUS_RING} ${
+                        lang === l ? "bg-[var(--green)] text-white" : "text-black/60 hover:text-black"
+                      }`}
+                    >
+                      {l === "el" ? "ΕΛ" : "EN"}
+                    </button>
+                  ))}
+                </div>
+                <div className="relative">
+                  <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-black/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.7}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.2-4.2m1.8-5.3a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z" />
+                  </svg>
+                  <input
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder={site.searchPlaceholder}
+                    aria-label={t.searchLabel}
+                    className={`h-9 w-[150px] sm:w-[220px] rounded-full border border-black/15 bg-white pl-8 pr-8 text-[13px] placeholder:text-black/50 focus:outline-none focus:border-[var(--green)] focus:ring-2 focus:ring-[var(--green)]/25 transition-shadow ${FOCUS_RING}`}
+                  />
+                  {query && (
+                    <button
+                      onClick={() => setQuery("")}
+                      aria-label={t.clearSearch}
+                      className={`absolute right-2 top-1/2 -translate-y-1/2 grid h-5 w-5 cursor-pointer place-items-center rounded-full bg-black/10 text-[11px] leading-none text-black/60 hover:bg-black/20 ${FOCUS_RING}`}
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -200,7 +243,7 @@ export function MenuClient({ initialMenu, initialSite }: { initialMenu: Category
                   key={item.id}
                   data-nav-id={item.id}
                   onClick={() => scrollTo(item.id)}
-                  className={`whitespace-nowrap cursor-pointer rounded-full border px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.08em] transition-all ${
+                  className={`whitespace-nowrap cursor-pointer rounded-full border px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.08em] transition-all ${FOCUS_RING} ${
                     activeId === item.id
                       ? "bg-[var(--green)] text-white border-[var(--green)] shadow-[0_6px_16px_-6px_rgba(22,63,26,0.7)]"
                       : "bg-white text-black/70 border-black/10 hover:border-[var(--green)]/40 hover:text-[var(--green)]"
@@ -218,10 +261,10 @@ export function MenuClient({ initialMenu, initialSite }: { initialMenu: Category
       <main className="mx-auto max-w-[1160px] px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {filtered.length === 0 ? (
           <div className="py-24 text-center">
-            <p className="font-serif text-2xl text-black/70">No results for “{query}”</p>
-            <p className="mt-2 text-sm text-black/50">Try searching “Gin”, “Tullamore” or “IPA”</p>
-            <button onClick={() => setQuery("")} className="mt-6 cursor-pointer rounded-full bg-[var(--green)] px-6 py-2.5 text-sm font-medium text-white shadow-[0_10px_24px_-10px_rgba(22,63,26,0.8)] hover:bg-[var(--green-2)] transition-colors">
-              Clear search
+            <p className="font-serif text-2xl text-black/70">{t.noResults} “{query}”</p>
+            <p className="mt-2 text-sm text-black/60">{t.trySearch}</p>
+            <button onClick={() => setQuery("")} className={`mt-6 cursor-pointer rounded-full bg-[var(--green)] px-6 py-2.5 text-sm font-medium text-white shadow-[0_10px_24px_-10px_rgba(22,63,26,0.8)] hover:bg-[var(--green-2)] transition-colors ${FOCUS_RING}`}>
+              {t.clearSearch}
             </button>
           </div>
         ) : (
@@ -235,11 +278,11 @@ export function MenuClient({ initialMenu, initialSite }: { initialMenu: Category
                       <h2 className="font-serif text-[30px] sm:text-[36px] lg:text-[42px] font-medium tracking-[-0.02em] leading-none text-black">{category.title}</h2>
                     </div>
                     {category.subtitle && (
-                      <p className="mt-2 text-[11px] tracking-[0.14em] uppercase text-black/40 font-medium ml-0 sm:ml-8">{category.subtitle}</p>
+                      <p className="mt-2 text-[11px] tracking-[0.14em] uppercase text-black/55 font-medium ml-0 sm:ml-8">{category.subtitle}</p>
                     )}
                   </div>
                   <span className="shrink-0 rounded-full bg-[var(--green)]/[0.08] border border-[var(--green)]/15 px-3 py-1 text-[10px] font-semibold tracking-wide text-[var(--green)] tabular-nums">
-                    {category.subcategories.reduce((a, s) => a + s.items.length, 0)} items
+                    {category.subcategories.reduce((a, s) => a + s.items.length, 0)} {t.itemsWord}
                   </span>
                 </div>
 
@@ -259,7 +302,7 @@ export function MenuClient({ initialMenu, initialSite }: { initialMenu: Category
                             <div className="flex-1 min-w-0 flex items-baseline gap-2">
                               <span className="text-[13.5px] sm:text-[14px] leading-snug font-medium text-black tracking-[-0.01em] group-hover:text-[var(--green)] transition-colors">
                                 {item.name}
-                                {item.note && <span className="ml-2 text-[11px] font-normal text-black/40">— {item.note}</span>}
+                                {item.note && <span className="ml-2 text-[11px] font-normal text-black/50">— {item.note}</span>}
                               </span>
                             </div>
                             <span className="shrink-0 rounded-full bg-black/[0.04] px-2.5 py-0.5 text-[13px] font-semibold tracking-tight text-black tabular-nums group-hover:bg-[var(--green)] group-hover:text-white transition-colors">{item.price}</span>
@@ -286,7 +329,7 @@ export function MenuClient({ initialMenu, initialSite }: { initialMenu: Category
               <div className="relative">
                 <p className="text-[11px] tracking-[0.22em] font-semibold text-[var(--gold)]">{site.visitKicker}</p>
                 <p className="mt-2 font-serif text-2xl sm:text-3xl text-[var(--cream)]">{site.address}</p>
-                <p className="mt-2 text-sm text-white/65">{site.visitText}</p>
+                <p className="mt-2 text-sm text-white/80">{site.visitText}</p>
               </div>
               <div className="relative flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.07] px-4 py-2 backdrop-blur-sm">
                 <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
@@ -303,10 +346,10 @@ export function MenuClient({ initialMenu, initialSite }: { initialMenu: Category
         <div className="mx-auto max-w-[1160px] px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 py-8">
             <p className="font-serif text-2xl tracking-tight">{site.brandName}</p>
-            <p className="text-[11px] tracking-[0.2em] font-medium text-white/70">{greekUpper(site.address)}</p>
+            <p className="text-[11px] tracking-[0.2em] font-medium text-white/80">{greekUpper(site.address)}</p>
           </div>
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 border-t border-white/15 py-5 text-[11px] text-white/50">
-            <p>Catalogue • {totalItems} items • {site.footerNote}</p>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 border-t border-white/15 py-5 text-[11px] text-white/70">
+            <p>{t.catalogueWord} • {totalItems} {t.itemsWord} • {site.footerNote}</p>
             <p>© {new Date().getFullYear()} {site.footerBrand}</p>
           </div>
         </div>
@@ -315,8 +358,8 @@ export function MenuClient({ initialMenu, initialSite }: { initialMenu: Category
       {/* Back to top */}
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        aria-label="Back to top"
-        className={`fixed bottom-6 right-6 z-40 grid h-11 w-11 cursor-pointer place-items-center rounded-full bg-[var(--green)] text-white shadow-[0_12px_28px_-8px_rgba(22,63,26,0.8)] transition-all hover:bg-[var(--green-2)] ${
+        aria-label={lang === "el" ? "Επιστροφή στην κορυφή" : "Back to top"}
+        className={`fixed bottom-6 right-6 z-40 grid h-11 w-11 cursor-pointer place-items-center rounded-full bg-[var(--green)] text-white shadow-[0_12px_28px_-8px_rgba(22,63,26,0.8)] transition-all hover:bg-[var(--green-2)] ${FOCUS_RING} ${
           showTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3 pointer-events-none"
         }`}
       >
