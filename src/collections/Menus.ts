@@ -20,6 +20,10 @@ export const Menus: CollectionConfig = {
   access: {
     // Public menu must be readable without login (SSG homepage reads it at build time).
     read: () => true,
+    // Single-owner project: only admins may create/edit/delete menus.
+    create: ({ req }) => req.user?.role === 'admin',
+    update: ({ req }) => req.user?.role === 'admin',
+    delete: ({ req }) => req.user?.role === 'admin',
   },
   fields: [
     {

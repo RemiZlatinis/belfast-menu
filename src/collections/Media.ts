@@ -8,7 +8,13 @@ const dirname = path.resolve(path.dirname(filename), '..', '..')
 
 export const Media: CollectionConfig = {
   slug: 'media',
-  access: { read: () => true },
+  access: {
+    read: () => true,
+    // Single-owner project: only admins may upload/replace/delete.
+    create: ({ req }) => req.user?.role === 'admin',
+    update: ({ req }) => req.user?.role === 'admin',
+    delete: ({ req }) => req.user?.role === 'admin',
+  },
   fields: [{ name: 'alt', type: 'text' }],
   upload: {
     // Local-only uploads (Vercel filesystem is ephemeral/read-only — no Blob adapter yet).
