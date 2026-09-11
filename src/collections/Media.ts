@@ -11,7 +11,9 @@ export const Media: CollectionConfig = {
   access: { read: () => true },
   fields: [{ name: 'alt', type: 'text' }],
   upload: {
+    // Local-only uploads (Vercel filesystem is ephemeral/read-only — no Blob adapter yet).
     staticDir: path.resolve(dirname, 'public/media'),
-    mimeTypes: ['image/*'],
+    // Raster only: image/* would allow SVG, served same-origin → stored XSS.
+    mimeTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/avif', 'image/gif'],
   },
 }
