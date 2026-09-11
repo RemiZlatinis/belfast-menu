@@ -162,8 +162,12 @@ export default buildConfig({
       description: 'Manage the ΜΠΕΛΦΑΣΤ Urban Pub catalogue',
     },
     components: {
-      // Top-right "Deploy site" button (fires VERCEL_DEPLOY_HOOK_URL).
-      actions: [{ path: '@/components/admin/DeployButton', exportName: 'DeployButton' }],
+      // Top-right actions: "View site" (opens production in a new tab) +
+      // "Deploy site" (fires VERCEL_DEPLOY_HOOK_URL).
+      actions: [
+        { path: '@/components/admin/ViewSiteButton', exportName: 'ViewSiteButton' },
+        { path: '@/components/admin/DeployButton', exportName: 'DeployButton' },
+      ],
     },
   },
   // Neon Postgres when a connection string is set (incl. Vercel),
