@@ -1,4 +1,6 @@
-// ΜΠΕΛΦΑΣΤ admin theme accents (kept subtle; public site is warm cream/green)
-:root {
-  --theme-elevation-800: #163f1a;
-}
+// ΜΠΕΛΦΑΣΤ admin styling.
+// NOTE: keep this file (the generated (payload)/layout.tsx imports it), but do
+// NOT override Payload's --theme-elevation-* tokens: a single override (e.g.
+// forest green on elevation-800) breaks text contrast across the whole admin
+// and makes fields unreadable. The default Payload theme stays as-is; public
+// site branding lives in src/app/globals.css and is not loaded here.
