@@ -5,9 +5,10 @@ export const dynamic = 'force-dynamic'
 
 /**
  * POST /api/redeploy — fires the Vercel Deploy Hook so CMS edits go live.
- * - Requires a logged-in admin (checked via Payload auth).
+ * - Requires a logged-in admin or editor (checked via Payload auth).
  * - Needs VERCEL_DEPLOY_HOOK_URL set in env (create it in Vercel yourself:
  *   Project → Settings → Git → Deploy Hooks). Never commit the URL.
+ * - Fallback now that menu saves also revalidate on demand (Menus afterChange).
  */
 export async function POST(req: Request) {
   const payload = await tryGetPayload()
@@ -25,9 +26,10 @@ export async function POST(req: Request) {
   if (!user) {
     return NextResponse.json({ error: 'Login required.' }, { status: 401 })
   }
-  // Single-admin project: only admins may fire deploys (editors do not exist yet).
-  if ((user as { role?: string })?.role !== 'admin') {
-    return NextResponse.json({ error: 'Admin required.' }, { status: 403 })
+  // Admins and editors may fire deploys (editors edit prices/availability).
+  const role = (user as { role?: string })?.role
+  if (role !== 'admin' && role !== 'editor') {
+    return NextResponse.json({ error: 'Admin or editor required.' }, { status: 403 })
   }
 
   const hook = process.env.VERCEL_DEPLOY_HOOK_URL
