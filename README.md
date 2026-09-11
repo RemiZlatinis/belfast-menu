@@ -61,7 +61,8 @@ bun run lint
 ## Payload CMS
 
 - **Local:** sqlite file `./belfast.db` (zero config). First boot runs migrations,
-  seeds the `menus` collection (one **"Main catalogue"** doc) from `src/lib/menu-seed.json`,
+  seeds the `menus` collection (two docs: Greek **"main"** from `src/lib/menu-seed.json`
+  + English **"en"** from `src/lib/menu-seed-en.json`) from seed data,
   and creates the default admin user. Edit everything at `/admin` → **Menus** →
   Main catalogue (categories → groups → drinks, drag to reorder).
   The **Site content** group on the same doc controls hero badge/brand/address/tagline,
@@ -69,8 +70,9 @@ bun run lint
 - **SSG homepage:** `src/app/page.tsx` (server component) bakes the menu into static
   HTML at build time — Neon on Vercel, sqlite locally, static fallback with no DB.
   CMS edits go live via redeploy (the **Deploy site** button in `/admin`).
-- **Single source of truth:** `src/lib/menu-seed.json` feeds both the Payload seed and
-  the static fallback (`src/lib/menu-data.ts`).
+- **Single source of truth:** `src/lib/menu-seed.json` (Greek) + `src/lib/menu-seed-en.json`
+  (English) feed both the Payload seed and the static fallback (`src/lib/menu-data.ts`,
+  Greek fallback when EN is missing).
 - **Useful scripts:** `bun run migrate` · `bun run migrate:create` · `bun run migrate:status` ·
   `bun run generate:types` · `bun run generate:importmap`
 - Never commit `*.db` (gitignored). **Do** commit `src/migrations/` + `payload-types.ts`.
@@ -94,8 +96,10 @@ git push origin main
 ```
 
 Optional (persistent CMS on Vercel via Neon Postgres): set `DATABASE_URL`,
-`PAYLOAD_SECRET`, `NEXT_PUBLIC_SERVER_URL` in Vercel env — the build bakes the live
-menu into the static page and `/admin` edits the live database. (Turso also supported.)
+`PAYLOAD_SECRET`, `NEXT_PUBLIC_SERVER_URL`, and `VERCEL_DEPLOY_HOOK_URL` in Vercel env —
+the build bakes the live menu into the static page and `/admin` edits the live database.
+`VERCEL_DEPLOY_HOOK_URL` must be a Vercel Deploy Hook URL (Project → Settings → Git →
+Deploy Hooks) or the **Deploy site** button returns 400. (Turso also supported.)
 
 ## Project structure
 
