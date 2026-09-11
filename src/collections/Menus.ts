@@ -1,5 +1,4 @@
 import type { CollectionConfig } from 'payload'
-import { revalidatePath } from 'next/cache'
 
 /**
  * Menus — the ONE collection a simple user needs to understand.
@@ -50,12 +49,15 @@ export const Menus: CollectionConfig = {
   hooks: {
     // Instant publishing: saving the menu revalidates the homepage so edits
     // go live without the manual "Deploy site" redeploy. Never fails the save.
+    // Lazy import keeps `next/cache` out of the module graph so the Payload
+    // CLI (migrate/generate) can load this config outside the Next runtime.
     afterChange: [
-      () => {
+      async () => {
         try {
+          const { revalidatePath } = await import('next/cache')
           revalidatePath('/')
         } catch {
-          // No cache to revalidate (e.g. static-only build) — ignore.
+          // No cache to revalidate (e.g. migrate CLI) — ignore.
         }
       },
     ],
