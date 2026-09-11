@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
+import Link from "next/link";
 import type { Category, SiteSettings, Lang } from "@/lib/menu-data";
 import { greekUpper, uiDict } from "@/lib/menu-data";
 
@@ -357,12 +358,23 @@ export function MenuClient({
         <div className="h-px w-full bg-[var(--gold)]/40" />
         <div className="mx-auto max-w-[1160px] px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 py-8">
-            <p className="font-serif text-2xl tracking-tight">{site.brandName}</p>
+            <div className="flex items-center gap-3">
+              <p className="font-serif text-2xl tracking-tight">{site.brandName}</p>
+              <Link
+                href="/admin"
+                title={lang === "el" ? "Σύνδεση διαχειριστή" : "Admin sign-in"}
+                className="font-semibold text-[11px] text-white/85 underline decoration-white/40 underline-offset-4 transition-colors hover:text-white hover:decoration-white"
+              >
+                Open Admin
+              </Link>
+            </div>
             <p className="text-[11px] tracking-[0.2em] font-medium text-white/80">{greekUpper(site.address)}</p>
           </div>
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2 border-t border-white/15 py-5 text-[11px] text-white/70">
             <p>{t.catalogueWord} • {totalItems} {t.itemsWord} • {site.footerNote}</p>
-            <p>© {new Date().getFullYear()} {site.footerBrand}</p>
+            <p>
+              © {new Date().getFullYear()} {site.footerBrand}
+            </p>
           </div>
         </div>
       </footer>

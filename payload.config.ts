@@ -88,6 +88,15 @@ function resolveSecret(persistent: boolean): string {
   // A persistent DB + weak/missing secret = sessions signed with a public value.
   // Static-only deploys (no DB) keep building with the dev fallback + warning.
   if (persistent) {
+    // Preview deployments share the Postgres URL (Neon integration) but not
+    // the production secret — don't fail the preview build for that.
+    // Production keeps the fail-fast below.
+    if (process.env.VERCEL_ENV === 'preview') {
+      console.warn(
+        '[payload] PAYLOAD_SECRET not set in preview — ephemeral fallback in use (production still requires a real secret).',
+      )
+      return fromEnv || 'dev-secret-belfast-32-chars-long-please-change'
+    }
     throw new Error(
       'PAYLOAD_SECRET is missing or too short (min 32 chars). Set it before using a persistent DB.',
     )
@@ -162,8 +171,12 @@ export default buildConfig({
       description: 'Manage the ΜΠΕΛΦΑΣΤ Urban Pub catalogue',
     },
     components: {
-      // Top-right "Deploy site" button (fires VERCEL_DEPLOY_HOOK_URL).
-      actions: [{ path: '@/components/admin/DeployButton', exportName: 'DeployButton' }],
+      // Top-right actions: "View site" (opens production in a new tab) +
+      // "Deploy site" (fires VERCEL_DEPLOY_HOOK_URL).
+      actions: [
+        { path: '@/components/admin/ViewSiteButton', exportName: 'ViewSiteButton' },
+        { path: '@/components/admin/DeployButton', exportName: 'DeployButton' },
+      ],
     },
   },
   // Neon Postgres when a connection string is set (incl. Vercel),

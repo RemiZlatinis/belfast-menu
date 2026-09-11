@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { adminActionStyle } from "./adminActionStyles";
 
 type State = "idle" | "busy" | "done" | "error";
 
@@ -39,16 +40,9 @@ export function DeployButton() {
       disabled={state === "busy"}
       title={message || "Trigger a Vercel redeploy of the live site"}
       style={{
+        ...adminActionStyle,
         cursor: state === "busy" ? "wait" : "pointer",
-        borderRadius: "6px",
-        border: "1px solid currentColor",
-        background: "transparent",
-        color: "inherit",
-        fontSize: "13px",
-        fontWeight: 600,
-        padding: "6px 12px",
         opacity: state === "busy" ? 0.6 : 1,
-        whiteSpace: "nowrap",
       }}
     >
       {label}
