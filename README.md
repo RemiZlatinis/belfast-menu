@@ -61,12 +61,18 @@ bun run lint
 ## Payload CMS
 
 - **Local:** sqlite file `./belfast.db` (zero config). First boot runs migrations,
-  seeds the `catalog` global from `src/lib/menu-seed.json`, and creates the default
-  admin user. Edit everything at `/admin` (categories → groups → items, drag to reorder).
-- **Public callback:** `GET /api/catalog` returns `{ source: 'payload', categories }`
-  when the DB is live — the homepage loads its menu from there, so CMS edits appear instantly.
-- **Single source of truth:** `src/lib/menu-seed.json` feeds both the Payload seed and
-  the static fallback (`src/lib/menu-data.ts`). Prices/names edited in the CMS override it at runtime.
+  seeds the `menus` collection (two docs: Greek **"main"** from `src/lib/menu-seed.json`
+  + English **"en"** from `src/lib/menu-seed-en.json`) from seed data,
+  and creates the default admin user. Edit everything at `/admin` → **Menus** →
+  Main catalogue (categories → groups → drinks, drag to reorder).
+  The **Site content** group on the same doc controls hero badge/brand/address/tagline,
+  search placeholder, visit card and footer — no code edits needed.
+- **SSG homepage:** `src/app/page.tsx` (server component) bakes the menu into static
+  HTML at build time — Neon on Vercel, sqlite locally, static fallback with no DB.
+  CMS edits go live via redeploy (the **Deploy site** button in `/admin`).
+- **Single source of truth:** `src/lib/menu-seed.json` (Greek) + `src/lib/menu-seed-en.json`
+  (English) feed both the Payload seed and the static fallback (`src/lib/menu-data.ts`,
+  Greek fallback when EN is missing).
 - **Useful scripts:** `bun run migrate` · `bun run migrate:create` · `bun run migrate:status` ·
   `bun run generate:types` · `bun run generate:importmap`
 - Never commit `*.db` (gitignored). **Do** commit `src/migrations/` + `payload-types.ts`.
@@ -74,7 +80,7 @@ bun run lint
 ## Deploy to Vercel (no database — static fallback kept)
 
 Import `RemiZlatinis/belfast-menu` at https://vercel.com/new — framework auto-detected as
-**Next.js**. No env vars needed: without a persistent DB, `/api/catalog` gracefully serves
+**Next.js**. No env vars needed: without a persistent DB, the build bakes in
 the static catalogue and the site works fully (CMS editing happens locally).
 
 `vercel.json` forces `npm install` + `npm run build` while keeping `bun` for local dev.
@@ -89,22 +95,24 @@ vercel --prod
 git push origin main
 ```
 
-Optional (persistent CMS on Vercel via Turso free tier): set `TURSO_DATABASE_URL`,
-`TURSO_AUTH_TOKEN`, `PAYLOAD_SECRET`, `NEXT_PUBLIC_SERVER_URL` in Vercel env — the app
-automatically switches `/api/catalog` and `/admin` to the live database.
+Optional (persistent CMS on Vercel via Neon Postgres): set `DATABASE_URL`,
+`PAYLOAD_SECRET`, `NEXT_PUBLIC_SERVER_URL`, and `VERCEL_DEPLOY_HOOK_URL` in Vercel env —
+the build bakes the live menu into the static page and `/admin` edits the live database.
+`VERCEL_DEPLOY_HOOK_URL` must be a Vercel Deploy Hook URL (Project → Settings → Git →
+Deploy Hooks) or the **Deploy site** button returns 400. (Turso also supported.)
 
 ## Project structure
 
 ```
-payload.config.ts        — Payload (users, media, catalog global, sqlite/Turso, seed)
+payload.config.ts        — Payload (users, media, menus collection, sqlite/Turso, seed)
 src/migrations/          — committed DB migrations
 src/lib/menu-seed.json   — seed + static fallback source of truth
 src/lib/menu-data.ts     — typed re-export for the frontend
 src/lib/payload.ts       — cached Payload accessor with Vercel no-DB guard
 src/app/
   layout.tsx             — fonts (Playfair, Cormorant, DM Sans) + metadata
-  page.tsx               — hero + sticky nav + search + sections (loads /api/catalog)
-  api/catalog/route.ts   — public callback: payload when live, static fallback on Vercel
+  page.tsx               — SSG server component (loads menu at build time)
+  api/redeploy/route.ts  — fires VERCEL_DEPLOY_HOOK_URL (login required)
   (payload)/             — official Payload routes (admin, api, layout, importMap)
 ```
 

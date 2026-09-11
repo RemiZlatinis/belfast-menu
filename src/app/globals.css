@@ -35,12 +35,12 @@
 
 html {
   scroll-behavior: smooth;
-  background: var(--cream);
+  /* NOTE: no background/color here — Payload's admin themes html/body itself
+     (html { background: var(--theme-bg) }). The storefront sets its own
+     cream background on its root div in page.tsx. */
 }
 
 body {
-  background: var(--cream);
-  color: var(--ink);
   font-family: var(--font-dm-sans), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -52,4 +52,49 @@ body {
 }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+::selection {
+  background: var(--green);
+  color: var(--cream);
+}
+
+/* 2026 motion details */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-rise {
+  animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.animate-rise-1 {
+  animation-delay: 0.08s;
+}
+.animate-rise-2 {
+  animation-delay: 0.16s;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee 36s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-rise,
+  .animate-marquee {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
 }

@@ -1,10 +1,17 @@
 import { buildConfig } from 'payload'
-import type { CollectionConfig, GlobalConfig } from 'payload'
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
+import { postgresAdapter } from '@payloadcms/db-postgres'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 import seedMenu from './src/lib/menu-seed.json'
+import seedMenuEn from './src/lib/menu-seed-en.json'
+// Collections live in src/collections (best practice — config only wires them).
+// NOTE: explicit `.ts` extensions are required: Payload loads this config via
+// CJS `require`, whose resolver does not probe `.ts` for extensionless paths.
+import { Users } from './src/collections/Users.ts'
+import { Media } from './src/collections/Media.ts'
+import { Menus } from './src/collections/Menus.ts'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -12,83 +19,6 @@ const dirname = path.dirname(filename)
 // NOTE: no richtext fields are used anywhere, so no editor is configured.
 // This intentionally avoids @payloadcms/richtext-lexical (top-level-await
 // breaks the payload CLI under tsx on Node 20/22).
-
-export const Users: CollectionConfig = {
-  slug: 'users',
-  auth: true,
-  admin: { useAsTitle: 'email' },
-  access: {
-    admin: ({ req }) => !!req.user,
-  },
-  fields: [
-    {
-      name: 'role',
-      type: 'select',
-      options: [
-        { label: 'Admin', value: 'admin' },
-        { label: 'Editor', value: 'editor' },
-      ],
-      defaultValue: 'admin',
-      required: true,
-    },
-  ],
-}
-
-export const Media: CollectionConfig = {
-  slug: 'media',
-  access: { read: () => true },
-  fields: [{ name: 'alt', type: 'text' }],
-  upload: {
-    staticDir: path.resolve(dirname, 'public/media'),
-    mimeTypes: ['image/*'],
-  },
-}
-
-export const Catalog: GlobalConfig = {
-  slug: 'catalog',
-  label: 'Catalogue',
-  access: { read: () => true },
-  fields: [
-    {
-      name: 'categories',
-      label: 'Categories',
-      type: 'array',
-      labels: { singular: 'Category', plural: 'Categories' },
-      admin: { description: 'Drag to reorder. Mirrors the PDF order.' },
-      fields: [
-        { name: 'id', label: 'Slug (e.g. beverages)', type: 'text', required: true },
-        { name: 'title', type: 'text', required: true },
-        { name: 'subtitle', type: 'text' },
-        {
-          name: 'subcategories',
-          label: 'Sub-categories / Groups',
-          type: 'array',
-          labels: { singular: 'Group', plural: 'Groups' },
-          admin: {
-            description: 'Use Group label for IRISH / SCOTCH etc. Leave empty for single list.',
-          },
-          fields: [
-            {
-              name: 'label',
-              type: 'text',
-              admin: { description: 'e.g. IRISH, SCOTCH, PREMIUM — leave empty for none' },
-            },
-            {
-              name: 'items',
-              type: 'array',
-              labels: { singular: 'Item', plural: 'Items' },
-              fields: [
-                { name: 'name', type: 'text', required: true },
-                { name: 'price', type: 'text', required: true, admin: { description: 'e.g. 3€ or 3,5€' } },
-                { name: 'note', type: 'text' },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-  ],
-}
 
 type SeedItem = { name: string; price: string; note?: string | null }
 type SeedSub = { label?: string | null; items: SeedItem[] }
@@ -99,6 +29,58 @@ type SeedCat = {
   subcategories: SeedSub[]
 }
 const seedCategories = seedMenu as unknown as SeedCat[]
+const seedCategoriesEn = seedMenuEn as unknown as SeedCat[]
+
+// Site texts for the seeded docs (also editable later in /admin → Menus → Site content).
+const seedSiteEl = {
+  badge: 'ΞΑΝΘΗ • URBAN PUB',
+  brandName: 'ΜΠΕΛΦΑΣΤ',
+  brandSuffix: 'URBAN PUB',
+  address: 'Βασιλέως Κωνσταντίνου 26, Ξάνθη',
+  tagline: 'Product catalogue — authentic pub menu',
+  searchPlaceholder: 'Αναζήτηση: whisky, gin, μπύρα...',
+  visitKicker: 'VISIT US',
+  visitText: 'Open daily — full menu available at the bar. Prices in €.',
+  footerNote: 'All prices incl.',
+  footerBrand: 'ΜΠΕΛΦΑΣΤ Urban Pub',
+}
+const seedSiteEn = {
+  badge: 'XANTHI • URBAN PUB',
+  brandName: 'ΜΠΕΛΦΑΣΤ',
+  brandSuffix: 'URBAN PUB',
+  address: '26 Vassileos Konstantinou, Xanthi',
+  tagline: 'Product catalogue — authentic pub menu',
+  searchPlaceholder: 'Search whisky, gin, beer...',
+  visitKicker: 'VISIT US',
+  visitText: 'Open daily — full menu available at the bar. Prices in €.',
+  footerNote: 'All prices incl.',
+  footerBrand: 'ΜΠΕΛΦΑΣΤ Urban Pub',
+}
+
+function toMenuDoc(
+  cats: SeedCat[],
+  doc: { title: string; slug: string; description: string; site: typeof seedSiteEl },
+) {
+  return {
+    title: doc.title,
+    slug: doc.slug,
+    description: doc.description,
+    site: doc.site,
+    categories: cats.map((cat) => ({
+      slug: cat.id,
+      title: cat.title,
+      subtitle: cat.subtitle ?? undefined,
+      subcategories: cat.subcategories.map((sub) => ({
+        label: sub.label ?? undefined,
+        items: sub.items.map((it) => ({
+          name: it.name,
+          price: it.price,
+          note: it.note ?? undefined,
+        })),
+      })),
+    })),
+  }
+}
 
 function resolveServerURL(): string {
   if (process.env.NEXT_PUBLIC_SERVER_URL) return process.env.NEXT_PUBLIC_SERVER_URL
@@ -109,9 +91,21 @@ function resolveServerURL(): string {
 }
 
 // DB resolution:
+// - Neon (Postgres): when a postgres connection string is set — this is the
+//   persistent production DB. Vercel's Neon integration provides DATABASE_URL
+//   (pooled). POSTGRES_URL is accepted as a fallback (older integration).
 // - Local dev: file:./belfast.db (sqlite file, zero config)
-// - Vercel without Turso: file:/tmp/belfast.db (ephemeral; CMS falls back to static — see /api/catalog)
+// - Vercel without Neon: file:/tmp/belfast.db (ephemeral; build falls back to static)
 // - Vercel with Turso: libsql remote (persistent CMS). Set TURSO_DATABASE_URL + TURSO_AUTH_TOKEN.
+function resolvePostgresURL(): string | null {
+  return (
+    process.env.DATABASE_URL ||
+    process.env.POSTGRES_URL ||
+    process.env.NEON_DATABASE_URL ||
+    null
+  )
+}
+
 function resolveDatabaseConfig() {
   const tursoUrl = process.env.TURSO_DATABASE_URL
   const tursoToken = process.env.TURSO_AUTH_TOKEN
@@ -123,8 +117,13 @@ function resolveDatabaseConfig() {
   return { url: 'file:./belfast.db' }
 }
 
-const isEphemeralVercelNoTurso =
-  !!process.env.VERCEL && !process.env.TURSO_DATABASE_URL && !process.env.DATABASE_URI
+const postgresURL = resolvePostgresURL()
+
+const isEphemeralVercelNoDb =
+  !!process.env.VERCEL &&
+  !postgresURL &&
+  !process.env.TURSO_DATABASE_URL &&
+  !process.env.DATABASE_URI
 
 export default buildConfig({
   serverURL: resolveServerURL(),
@@ -137,15 +136,29 @@ export default buildConfig({
       titleSuffix: '— ΜΠΕΛΦΑΣΤ CMS',
       description: 'Manage the ΜΠΕΛΦΑΣΤ Urban Pub catalogue',
     },
+    components: {
+      // Top-right "Deploy site" button (fires VERCEL_DEPLOY_HOOK_URL).
+      actions: [{ path: '@/components/admin/DeployButton', exportName: 'DeployButton' }],
+    },
   },
-  db: sqliteAdapter({
-    client: resolveDatabaseConfig(),
-    migrationDir: path.resolve(dirname, 'src/migrations'),
-    // push only for local prototyping; Vercel + prod must use migrations
-    push: !process.env.VERCEL && process.env.NODE_ENV !== 'production',
-  }),
-  collections: [Users, Media],
-  globals: [Catalog],
+  // Neon Postgres when a connection string is set (incl. Vercel),
+  // otherwise local sqlite. Each dialect has its own migration dir —
+  // the payload CLI commands (migrate/migrate:create/...) automatically
+  // target the right one based on env.
+  db: postgresURL
+    ? postgresAdapter({
+        pool: { connectionString: postgresURL },
+        push: false,
+        migrationDir: path.resolve(dirname, 'src/migrations-pg'),
+      })
+    : sqliteAdapter({
+        client: resolveDatabaseConfig(),
+        migrationDir: path.resolve(dirname, 'src/migrations'),
+        // push only for local prototyping; Vercel + prod must use migrations
+        push: !process.env.VERCEL && process.env.NODE_ENV !== 'production',
+      }),
+  collections: [Users, Media, Menus],
+  globals: [],
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
@@ -153,34 +166,41 @@ export default buildConfig({
   onInit: async (payload) => {
     try {
       // Skip seeding on ephemeral Vercel (no persistent DB) — frontend uses static fallback.
-      if (isEphemeralVercelNoTurso) {
-        payload.logger.info('Skipping seed: ephemeral Vercel without Turso/DATABASE_URI')
+      if (isEphemeralVercelNoDb) {
+        payload.logger.info('Skipping seed: ephemeral Vercel without Neon/Turso/DATABASE_URI')
         return
       }
-      const existing = await payload.findGlobal({ slug: 'catalog' })
-      const existingCategories = (existing as unknown as { categories?: unknown[] })
-        ?.categories
-      const hasCategories = (existingCategories?.length ?? 0) > 0
-      if (!hasCategories) {
-        await payload.updateGlobal({
-          slug: 'catalog',
-          data: {
-            categories: seedCategories.map((cat) => ({
-              id: cat.id,
-              title: cat.title,
-              subtitle: cat.subtitle ?? undefined,
-              subcategories: cat.subcategories.map((sub) => ({
-                label: sub.label ?? undefined,
-                items: sub.items.map((it) => ({
-                  name: it.name,
-                  price: it.price,
-                  note: it.note ?? undefined,
-                })),
-              })),
-            })),
+      // Seed each language doc independently (existing docs are never touched).
+      const seeds = [
+        {
+          cats: seedCategories,
+          doc: {
+            title: 'ΜΠΕΛΦΑΣΤ Catalogue',
+            slug: 'main',
+            description: 'Βασιλέως Κωνσταντίνου 26, Ξάνθη',
+            site: seedSiteEl,
           },
+        },
+        {
+          cats: seedCategoriesEn,
+          doc: {
+            title: 'ΜΠΕΛΦΑΣΤ Catalogue (EN)',
+            slug: 'en',
+            description: '26 Vassileos Konstantinou, Xanthi',
+            site: seedSiteEn,
+          },
+        },
+      ]
+      for (const { cats, doc } of seeds) {
+        const found = await payload.find({
+          collection: 'menus',
+          where: { slug: { equals: doc.slug } },
+          limit: 1,
         })
-        payload.logger.info('Seeded catalog global from staticMenu')
+        if (found.totalDocs === 0) {
+          await payload.create({ collection: 'menus', data: toMenuDoc(cats, doc) })
+          payload.logger.info(`Seeded menus/${doc.slug} from seed data`)
+        }
       }
       if (!process.env.VERCEL) {
         const users = await payload.find({ collection: 'users', limit: 1 })

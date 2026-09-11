@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Cormorant_Garamond, DM_Sans } from "next/font/google";
 import "./globals.css";
 
@@ -21,7 +21,15 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
+function resolveMetadataBase(): URL {
+  const raw = process.env.NEXT_PUBLIC_SERVER_URL || ''
+  if (/^https?:\/\//.test(raw)) return new URL(raw)
+  if (raw) return new URL(`https://${raw}`)
+  return new URL('http://localhost:3000')
+}
+
 export const metadata: Metadata = {
+  metadataBase: resolveMetadataBase(),
   title: "ΜΠΕΛΦΑΣΤ URBAN PUB — Catalogue",
   description:
     "ΜΠΕΛΦΑΣΤ Urban Pub — Βασιλέως Κωνσταντίνου 26, Ξάνθη. Discover our full catalogue: beverages, beers, whiskeys, rum, gin, vodka, cognac & cocktails.",
@@ -31,6 +39,17 @@ export const metadata: Metadata = {
       "Full catalogue for ΜΠΕΛΦΑΣΤ Urban Pub in Xanthi. Beverages, craft beers, whiskeys, rum, gin, vodka, cognac & cocktails.",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "ΜΠΕΛΦΑΣΤ URBAN PUB — Catalogue",
+    description:
+      "Full catalogue for ΜΠΕΛΦΑΣΤ Urban Pub in Xanthi. Beverages, craft beers, whiskeys, rum, gin, vodka, cognac & cocktails.",
+    images: ["/opengraph-image.png"],
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#163f1a",
 };
 
 export default function RootLayout({
@@ -40,7 +59,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="el" className={`${playfair.variable} ${cormorant.variable} ${dmSans.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-[var(--cream)]">{children}</body>
+      <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
 }
