@@ -101,6 +101,22 @@ the build bakes the live menu into the static page and `/admin` edits the live d
 `VERCEL_DEPLOY_HOOK_URL` must be a Vercel Deploy Hook URL (Project → Settings → Git →
 Deploy Hooks) or the **Deploy site** button returns 400. (Turso also supported.)
 
+## Product photos
+
+Each drink shows a 52px thumbnail (`ItemThumb`) looked up from
+`src/lib/menu-images.json` (`"<categoryId>::<item name>"` → `/menu/*.webp`,
+both languages). Photos live in `public/menu/` (512px WebP, ~2MB total) with
+per-file sources in `public/menu/ATTRIBUTION.md` — no CMS migration needed,
+works with the static fallback too. Missing photo → elegant monogram tile.
+
+```bash
+python3 scripts/fetch-menu-images.py   # fetch missing only (Open Food Facts + Commons)
+```
+
+To add a photo for a new product: drop `public/menu/<file>.webp` in and add
+two lines (EL + EN name) to `menu-images.json`. Curated overrides live at the
+top of the script (`OVERRIDES` / `PAGE_OVERRIDES` / `OFF_CODE_OVERRIDES`).
+
 ## Project structure
 
 ```
