@@ -15,6 +15,12 @@ const cormorant = Cormorant_Garamond({
   display: "swap",
 });
 
+// NOTE: neither Playfair nor Cormorant ships a Greek subset via next/font
+// (verified: build type-errors on "greek"), and DM Sans is latin-only too —
+// Greek glyphs (ΜΠΕΛΦΑΣΤ, …) render in the system serif/sans fallback.
+// Follow-up for full Greek typographic parity: swap headings/body to a
+// Greek-capable family (e.g. Noto Serif Display + Noto Sans, like the OG
+// image already uses). Visual change — needs design sign-off first.
 const dmSans = DM_Sans({
   subsets: ["latin"],
   variable: "--font-dm-sans",

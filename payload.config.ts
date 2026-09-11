@@ -82,6 +82,24 @@ function toMenuDoc(
   }
 }
 
+function resolveSecret(persistent: boolean): string {
+  const fromEnv = process.env.PAYLOAD_SECRET
+  if (fromEnv && fromEnv.length >= 32) return fromEnv
+  // A persistent DB + weak/missing secret = sessions signed with a public value.
+  // Static-only deploys (no DB) keep building with the dev fallback + warning.
+  if (persistent) {
+    throw new Error(
+      'PAYLOAD_SECRET is missing or too short (min 32 chars). Set it before using a persistent DB.',
+    )
+  }
+  if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+    console.warn(
+      '[payload] PAYLOAD_SECRET not set — dev fallback in use (fine for static-only deploy; set it before adding a DB).',
+    )
+  }
+  return fromEnv || 'dev-secret-belfast-32-chars-long-please-change'
+}
+
 function resolveServerURL(): string {
   if (process.env.NEXT_PUBLIC_SERVER_URL) return process.env.NEXT_PUBLIC_SERVER_URL
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
@@ -119,6 +137,13 @@ function resolveDatabaseConfig() {
 
 const postgresURL = resolvePostgresURL()
 
+// Persistent when any real DB is configured. Static-only Vercel (no DB env)
+// keeps working with zero env vars — the secret fail-fast below stays silent.
+const hasPersistentDb =
+  !!postgresURL ||
+  !!(process.env.TURSO_DATABASE_URL && process.env.TURSO_AUTH_TOKEN) ||
+  !!process.env.DATABASE_URI
+
 const isEphemeralVercelNoDb =
   !!process.env.VERCEL &&
   !postgresURL &&
@@ -127,7 +152,7 @@ const isEphemeralVercelNoDb =
 
 export default buildConfig({
   serverURL: resolveServerURL(),
-  secret: process.env.PAYLOAD_SECRET || 'dev-secret-belfast-32-chars-long-please-change',
+  secret: resolveSecret(hasPersistentDb),
   sharp,
   admin: {
     user: Users.slug,
