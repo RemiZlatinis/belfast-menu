@@ -4,10 +4,11 @@ export const Users: CollectionConfig = {
   slug: 'users',
   auth: true,
   admin: { useAsTitle: 'email' },
-  // Single-admin project (no editors): only admins may touch user documents.
-  // This blocks privilege escalation via the editable `role` field.
+  // Admins manage users; editors may log in to edit the catalogue (field-level
+  // access on Menus/Media limits what they can change). User management itself
+  // stays admin-only to block privilege escalation via the `role` field.
   access: {
-    admin: ({ req }) => req.user?.role === 'admin',
+    admin: ({ req }) => req.user?.role === 'admin' || req.user?.role === 'editor',
     create: ({ req }) => req.user?.role === 'admin',
     read: ({ req }) => req.user?.role === 'admin',
     update: ({ req }) => req.user?.role === 'admin',

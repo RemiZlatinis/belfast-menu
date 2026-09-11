@@ -10,9 +10,9 @@ export const Media: CollectionConfig = {
   slug: 'media',
   access: {
     read: () => true,
-    // Single-owner project: only admins may upload/replace/delete.
-    create: ({ req }) => req.user?.role === 'admin',
-    update: ({ req }) => req.user?.role === 'admin',
+    // Editors may upload/replace photos for the catalogue; deletes stay admin-only.
+    create: ({ req }) => req.user?.role === 'admin' || req.user?.role === 'editor',
+    update: ({ req }) => req.user?.role === 'admin' || req.user?.role === 'editor',
     delete: ({ req }) => req.user?.role === 'admin',
   },
   fields: [{ name: 'alt', type: 'text' }],

@@ -40,9 +40,11 @@ export const Menus: CollectionConfig = {
   access: {
     // Public menu must be readable without login (SSG homepage reads it at build time).
     read: () => true,
-    // Single-owner project: only admins may create/edit/delete menus.
+    // Bar staff (editor) may update prices/availability on existing docs; creating
+    // docs (new languages) and deletes stay admin-only. Site texts + settings
+    // are additionally locked to admins via field-level access below.
     create: ({ req }) => req.user?.role === 'admin',
-    update: ({ req }) => req.user?.role === 'admin',
+    update: ({ req }) => req.user?.role === 'admin' || req.user?.role === 'editor',
     delete: ({ req }) => req.user?.role === 'admin',
   },
   hooks: {
@@ -205,6 +207,9 @@ export const Menus: CollectionConfig = {
               name: 'site',
               label: 'Site content',
               type: 'group',
+              access: {
+                update: ({ req }) => req.user?.role === 'admin',
+              },
               fields: [
                 { name: 'badge', label: 'Hero badge (e.g. ΞΑΝΘΗ • URBAN PUB)', type: 'text' },
                 { name: 'brandName', label: 'Brand name (e.g. ΜΠΕΛΦΑΣΤ)', type: 'text' },
@@ -246,6 +251,9 @@ export const Menus: CollectionConfig = {
               type: 'text',
               required: true,
               defaultValue: 'ΜΠΕΛΦΑΣΤ Catalogue',
+              access: {
+                update: ({ req }) => req.user?.role === 'admin',
+              },
             },
             {
               name: 'slug',
@@ -254,6 +262,9 @@ export const Menus: CollectionConfig = {
               required: true,
               unique: true,
               defaultValue: 'main',
+              access: {
+                update: ({ req }) => req.user?.role === 'admin',
+              },
               admin: {
                 description: 'Keep "main" — the website loads this menu. Use another slug for drafts.',
               },
@@ -262,6 +273,9 @@ export const Menus: CollectionConfig = {
               name: 'description',
               label: 'Description',
               type: 'text',
+              access: {
+                update: ({ req }) => req.user?.role === 'admin',
+              },
               admin: { description: 'Optional short line shown under the title (e.g. address).' },
             },
           ],
