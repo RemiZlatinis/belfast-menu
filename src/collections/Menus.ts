@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { revalidatePath } from 'next/cache'
 
 /**
  * Menus — the ONE collection a simple user needs to understand.
@@ -43,6 +44,19 @@ export const Menus: CollectionConfig = {
     create: ({ req }) => req.user?.role === 'admin',
     update: ({ req }) => req.user?.role === 'admin',
     delete: ({ req }) => req.user?.role === 'admin',
+  },
+  hooks: {
+    // Instant publishing: saving the menu revalidates the homepage so edits
+    // go live without the manual "Deploy site" redeploy. Never fails the save.
+    afterChange: [
+      () => {
+        try {
+          revalidatePath('/')
+        } catch {
+          // No cache to revalidate (e.g. static-only build) — ignore.
+        }
+      },
+    ],
   },
   fields: [
     {

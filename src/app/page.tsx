@@ -3,9 +3,11 @@ import type { Category, SiteSettings } from "@/lib/menu-data";
 import { getMenu } from "@/lib/payload";
 import { MenuClient } from "@/components/MenuClient";
 
-// SSG: both language menus + site texts are baked in at build time (Neon on
+// SSG + ISR: both language menus + site texts are baked in at build time (Neon on
 // Vercel, sqlite locally, static fallback when no DB). The EL/EN toggle then
-// switches instantly client-side. CMS edits go live via redeploy.
+// switches instantly client-side. CMS saves revalidate "/" on demand
+// (see Menus hooks.afterChange); hourly revalidation is the safety net.
+export const revalidate = 3600
 async function loadDoc(slug: string): Promise<{ menu: Category[]; site: SiteSettings } | null> {
   try {
     const doc = await getMenu(slug);
