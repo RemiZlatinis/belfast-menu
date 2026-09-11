@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
+import Link from "next/link";
 import type { Category, SiteSettings, Lang } from "@/lib/menu-data";
 import { greekUpper, uiDict } from "@/lib/menu-data";
 
@@ -362,7 +363,17 @@ export function MenuClient({
           </div>
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2 border-t border-white/15 py-5 text-[11px] text-white/70">
             <p>{t.catalogueWord} • {totalItems} {t.itemsWord} • {site.footerNote}</p>
-            <p>© {new Date().getFullYear()} {site.footerBrand}</p>
+            <p>
+              © {new Date().getFullYear()} {site.footerBrand}
+              {' • '}
+              <Link
+                href="/admin"
+                title={lang === "el" ? "Σύνδεση διαχειριστή" : "Admin sign-in"}
+                className="text-white/50 underline-offset-4 transition-colors hover:text-white hover:underline"
+              >
+                Admin
+              </Link>
+            </p>
           </div>
         </div>
       </footer>
