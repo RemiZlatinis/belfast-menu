@@ -1,5 +1,7 @@
 "use client";
 
+import { adminActionStyle } from "./adminActionStyles";
+
 /**
  * Top-right admin action: opens the main production site in a new tab.
  *
@@ -27,19 +29,7 @@ export function ViewSiteButton() {
       target="_blank"
       rel="noopener noreferrer"
       title={`Open the live site (${href}) in a new tab`}
-      style={{
-        borderRadius: "6px",
-        border: "1px solid currentColor",
-        background: "transparent",
-        color: "inherit",
-        fontSize: "13px",
-        fontWeight: 600,
-        padding: "6px 12px",
-        whiteSpace: "nowrap",
-        textDecoration: "none",
-        display: "inline-block",
-        lineHeight: "normal",
-      }}
+      style={adminActionStyle}
     >
       View site
     </a>
