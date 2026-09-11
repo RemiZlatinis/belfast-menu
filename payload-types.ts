@@ -182,6 +182,21 @@ export interface Menu {
    */
   description?: string | null;
   /**
+   * Every text on the homepage outside the drinks list. Leave empty to keep defaults.
+   */
+  site?: {
+    badge?: string | null;
+    brandName?: string | null;
+    brandSuffix?: string | null;
+    address?: string | null;
+    tagline?: string | null;
+    searchPlaceholder?: string | null;
+    visitKicker?: string | null;
+    visitText?: string | null;
+    footerNote?: string | null;
+    footerBrand?: string | null;
+  };
+  /**
    * Drag to reorder. Mirrors the PDF order (Beverages → Cocktails).
    */
   categories: {
@@ -349,6 +364,20 @@ export interface MenusSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   description?: T;
+  site?:
+    | T
+    | {
+        badge?: T;
+        brandName?: T;
+        brandSuffix?: T;
+        address?: T;
+        tagline?: T;
+        searchPlaceholder?: T;
+        visitKicker?: T;
+        visitText?: T;
+        footerNote?: T;
+        footerBrand?: T;
+      };
   categories?:
     | T
     | {

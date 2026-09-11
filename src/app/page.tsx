@@ -1,15 +1,15 @@
-import { staticMenu } from "@/lib/menu-data";
-import type { Category } from "@/lib/menu-data";
+import { staticMenu, defaultSite } from "@/lib/menu-data";
+import type { Category, SiteSettings } from "@/lib/menu-data";
 import { getMenu } from "@/lib/payload";
 import { MenuClient } from "@/components/MenuClient";
 
-// SSG: the menu is baked in at build time (Neon on Vercel, sqlite locally,
-// static fallback when no DB). CMS edits go live via redeploy (Deploy button).
-async function loadMenu(): Promise<Category[]> {
+// SSG: menu + site texts are baked in at build time (Neon on Vercel, sqlite
+// locally, static fallback when no DB). CMS edits go live via redeploy.
+async function load(): Promise<{ menu: Category[]; site: SiteSettings }> {
   try {
-    const menu = await getMenu();
-    if (menu?.categories?.length) {
-      return menu.categories.map((c) => ({
+    const doc = await getMenu();
+    if (doc?.categories?.length) {
+      const menu: Category[] = doc.categories.map((c) => ({
         id: c.slug,
         title: c.title,
         subtitle: c.subtitle ?? undefined,
@@ -23,14 +23,28 @@ async function loadMenu(): Promise<Category[]> {
           })),
         })),
       }));
+      const s = doc.site;
+      const site: SiteSettings = {
+        badge: s?.badge || defaultSite.badge,
+        brandName: s?.brandName || defaultSite.brandName,
+        brandSuffix: s?.brandSuffix || defaultSite.brandSuffix,
+        address: s?.address || defaultSite.address,
+        tagline: s?.tagline || defaultSite.tagline,
+        searchPlaceholder: s?.searchPlaceholder || defaultSite.searchPlaceholder,
+        visitKicker: s?.visitKicker || defaultSite.visitKicker,
+        visitText: s?.visitText || defaultSite.visitText,
+        footerNote: s?.footerNote || defaultSite.footerNote,
+        footerBrand: s?.footerBrand || defaultSite.footerBrand,
+      };
+      return { menu, site };
     }
   } catch {
     // build must never fail because of the DB — fall through to static
   }
-  return staticMenu;
+  return { menu: staticMenu, site: defaultSite };
 }
 
 export default async function Home() {
-  const menu = await loadMenu();
-  return <MenuClient initialMenu={menu} />;
+  const { menu, site } = await load();
+  return <MenuClient initialMenu={menu} initialSite={site} />;
 }

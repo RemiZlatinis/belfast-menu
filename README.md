@@ -64,6 +64,8 @@ bun run lint
   seeds the `menus` collection (one **"Main catalogue"** doc) from `src/lib/menu-seed.json`,
   and creates the default admin user. Edit everything at `/admin` → **Menus** →
   Main catalogue (categories → groups → drinks, drag to reorder).
+  The **Site content** group on the same doc controls hero badge/brand/address/tagline,
+  search placeholder, visit card and footer — no code edits needed.
 - **SSG homepage:** `src/app/page.tsx` (server component) bakes the menu into static
   HTML at build time — Neon on Vercel, sqlite locally, static fallback with no DB.
   CMS edits go live via redeploy (the **Deploy site** button in `/admin`).

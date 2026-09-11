@@ -47,6 +47,43 @@ export const Menus: CollectionConfig = {
       admin: { description: 'Optional short line shown under the title (e.g. address).' },
     },
     {
+      name: 'site',
+      label: 'Site content (hero, address, footer)',
+      type: 'group',
+      admin: {
+        description:
+          'Every text on the homepage outside the drinks list. Leave empty to keep defaults.',
+      },
+      fields: [
+        { name: 'badge', label: 'Hero badge (e.g. ΞΑΝΘΗ • URBAN PUB)', type: 'text' },
+        { name: 'brandName', label: 'Brand name (e.g. ΜΠΕΛΦΑΣΤ)', type: 'text' },
+        { name: 'brandSuffix', label: 'Brand suffix (e.g. URBAN PUB)', type: 'text' },
+        {
+          name: 'address',
+          label: 'Address (e.g. Βασιλέως Κωνσταντίνου 26, Ξάνθη)',
+          type: 'text',
+        },
+        {
+          name: 'tagline',
+          label: 'Hero tagline (e.g. Product catalogue — authentic pub menu)',
+          type: 'text',
+        },
+        {
+          name: 'searchPlaceholder',
+          label: 'Search placeholder (e.g. Search whisky, gin, beer...)',
+          type: 'text',
+        },
+        { name: 'visitKicker', label: 'Visit card kicker (e.g. VISIT US)', type: 'text' },
+        {
+          name: 'visitText',
+          label: 'Visit card text (e.g. Open daily — full menu available at the bar. Prices in €.)',
+          type: 'text',
+        },
+        { name: 'footerNote', label: 'Footer note (e.g. All prices incl.)', type: 'text' },
+        { name: 'footerBrand', label: 'Footer copyright (e.g. ΜΠΕΛΦΑΣΤ Urban Pub)', type: 'text' },
+      ],
+    },
+    {
       name: 'categories',
       label: 'Categories',
       type: 'array',

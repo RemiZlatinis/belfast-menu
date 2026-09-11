@@ -1,16 +1,19 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import type { Category } from "@/lib/menu-data";
+import type { Category, SiteSettings } from "@/lib/menu-data";
+import { greekUpper } from "@/lib/menu-data";
 
-// Interactive catalogue UI. The menu itself is baked in at build time (SSG)
-// and passed as a prop — useMemo below only derives the instant search
-// filter/nav from it, no runtime data fetching.
-export function MenuClient({ initialMenu }: { initialMenu: Category[] }) {
+// Interactive catalogue UI. Menu + site texts are baked in at build time (SSG)
+// and passed as props — useMemo below only derives the instant search
+// filter/nav from them, no runtime data fetching.
+export function MenuClient({ initialMenu, initialSite }: { initialMenu: Category[]; initialSite: SiteSettings }) {
   const [query, setQuery] = useState("");
   const [activeId, setActiveId] = useState("beverages");
   const [showTop, setShowTop] = useState(false);
   const [menu] = useState<Category[]>(initialMenu);
+  const [site] = useState<SiteSettings>(initialSite);
+  const monogram = site.brandName.charAt(0) || "Μ";
 
   const filtered = useMemo(() => {
     if (!query.trim()) return menu;
@@ -115,7 +118,7 @@ export function MenuClient({ initialMenu }: { initialMenu: Category[] }) {
         <div className="relative mx-auto w-full max-w-[760px] flex flex-col items-center px-6 pt-14 pb-12 sm:pt-20 sm:pb-16 lg:pt-24 lg:pb-20">
           <p className="animate-rise inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/[0.07] px-4 py-1.5 text-[10px] sm:text-[11px] font-semibold tracking-[0.28em] text-white/90 backdrop-blur-sm">
             <span className="h-1.5 w-1.5 rounded-full bg-[var(--gold)]" />
-            ΞΑΝΘΗ • URBAN PUB
+            {site.badge}
           </p>
 
           {/* Pill logo — the mark, kept */}
@@ -124,18 +127,18 @@ export function MenuClient({ initialMenu }: { initialMenu: Category[] }) {
               className="text-white font-black leading-[0.9] tracking-[-0.02em] text-[2.4rem] sm:text-[3.6rem] lg:text-[4.4rem]"
               style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontWeight: 900, letterSpacing: "-0.03em" }}
             >
-              ΜΠΕΛΦΑΣΤ
+              {site.brandName}
             </h1>
             <div className="mt-4 flex items-center gap-3">
               <span className="h-px w-8 sm:w-12 bg-[var(--gold)]/70" />
-              <p className="text-white/95 text-[0.72rem] sm:text-[0.9rem] font-medium tracking-[0.6em] pl-[0.6em]">URBAN PUB</p>
+              <p className="text-white/95 text-[0.72rem] sm:text-[0.9rem] font-medium tracking-[0.6em] pl-[0.6em]">{site.brandSuffix}</p>
               <span className="h-px w-8 sm:w-12 bg-[var(--gold)]/70" />
             </div>
           </div>
 
           <div className="animate-rise animate-rise-2 mt-8 flex flex-col items-center gap-3 text-center">
-            <p className="text-white/85 text-[11px] sm:text-xs tracking-[0.3em] uppercase font-medium">Βασιλέως Κωνσταντίνου 26, Ξάνθη</p>
-            <p className="text-white/55 text-xs sm:text-[13px] tracking-wide font-light">Product catalogue — authentic pub menu</p>
+            <p className="text-white/85 text-[11px] sm:text-xs tracking-[0.3em] uppercase font-medium">{site.address}</p>
+            <p className="text-white/55 text-xs sm:text-[13px] tracking-wide font-light">{site.tagline}</p>
             <div className="mt-2 flex items-center gap-2 text-[11px] font-medium tracking-wide text-white/70">
               <span className="rounded-full border border-white/20 bg-white/[0.07] px-3 py-1 tabular-nums">{totalItems} items</span>
               <span className="rounded-full border border-white/20 bg-white/[0.07] px-3 py-1 tabular-nums">{menu.length} categories</span>
@@ -163,7 +166,7 @@ export function MenuClient({ initialMenu }: { initialMenu: Category[] }) {
           <div className="px-4 sm:px-5">
             <div className="flex items-center justify-between py-3 gap-4">
               <div className="flex items-center gap-3 min-w-0">
-                <span className="hidden sm:grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[var(--green)] font-serif text-[13px] text-[var(--cream)]">Μ</span>
+                <span className="hidden sm:grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[var(--green)] font-serif text-[13px] text-[var(--cream)]">{monogram}</span>
                 <p className="hidden sm:block text-[11px] tracking-[0.18em] font-semibold text-black">PRODUCT CATALOG</p>
                 <p className="sm:hidden text-[11px] tracking-[0.18em] font-semibold">CATALOG</p>
                 <span className="hidden sm:inline h-3 w-px bg-black/20" />
@@ -176,7 +179,7 @@ export function MenuClient({ initialMenu }: { initialMenu: Category[] }) {
                 <input
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search whisky, gin, beer..."
+                  placeholder={site.searchPlaceholder}
                   className="h-9 w-[170px] sm:w-[250px] rounded-full border border-black/15 bg-white pl-8 pr-8 text-[13px] placeholder:text-black/40 focus:outline-none focus:border-[var(--green)] focus:ring-2 focus:ring-[var(--green)]/25 transition-shadow"
                 />
                 {query && (
@@ -279,15 +282,15 @@ export function MenuClient({ initialMenu }: { initialMenu: Category[] }) {
                   backgroundSize: "20px 20px",
                 }}
               />
-              <span aria-hidden className="pointer-events-none absolute -right-4 -bottom-10 select-none font-serif text-[11rem] leading-none text-white/[0.06]">Μ</span>
+              <span aria-hidden className="pointer-events-none absolute -right-4 -bottom-10 select-none font-serif text-[11rem] leading-none text-white/[0.06]">{monogram}</span>
               <div className="relative">
-                <p className="text-[11px] tracking-[0.22em] font-semibold text-[var(--gold)]">VISIT US</p>
-                <p className="mt-2 font-serif text-2xl sm:text-3xl text-[var(--cream)]">Βασιλέως Κωνσταντίνου 26, Ξάνθη</p>
-                <p className="mt-2 text-sm text-white/65">Open daily — full menu available at the bar. Prices in €.</p>
+                <p className="text-[11px] tracking-[0.22em] font-semibold text-[var(--gold)]">{site.visitKicker}</p>
+                <p className="mt-2 font-serif text-2xl sm:text-3xl text-[var(--cream)]">{site.address}</p>
+                <p className="mt-2 text-sm text-white/65">{site.visitText}</p>
               </div>
               <div className="relative flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.07] px-4 py-2 backdrop-blur-sm">
                 <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
-                <span className="text-xs font-semibold tracking-[0.14em] text-white/90">ΜΠΕΛΦΑΣΤ URBAN PUB</span>
+                <span className="text-xs font-semibold tracking-[0.14em] text-white/90">{site.brandName} {site.brandSuffix}</span>
               </div>
             </div>
           </div>
@@ -299,12 +302,12 @@ export function MenuClient({ initialMenu }: { initialMenu: Category[] }) {
         <div className="h-px w-full bg-[var(--gold)]/40" />
         <div className="mx-auto max-w-[1160px] px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 py-8">
-            <p className="font-serif text-2xl tracking-tight">ΜΠΕΛΦΑΣΤ</p>
-            <p className="text-[11px] tracking-[0.2em] font-medium text-white/70">ΒΑΣΙΛΕΩΣ ΚΩΝΣΤΑΝΤΙΝΟΥ 26, ΞΑΝΘΗ</p>
+            <p className="font-serif text-2xl tracking-tight">{site.brandName}</p>
+            <p className="text-[11px] tracking-[0.2em] font-medium text-white/70">{greekUpper(site.address)}</p>
           </div>
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2 border-t border-white/15 py-5 text-[11px] text-white/50">
-            <p>Catalogue • {totalItems} items • All prices incl.</p>
-            <p>© {new Date().getFullYear()} ΜΠΕΛΦΑΣΤ Urban Pub</p>
+            <p>Catalogue • {totalItems} items • {site.footerNote}</p>
+            <p>© {new Date().getFullYear()} {site.footerBrand}</p>
           </div>
         </div>
       </footer>

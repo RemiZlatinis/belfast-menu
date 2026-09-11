@@ -22,6 +22,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000"),
   title: "ΜΠΕΛΦΑΣΤ URBAN PUB — Catalogue",
   description:
     "ΜΠΕΛΦΑΣΤ Urban Pub — Βασιλέως Κωνσταντίνου 26, Ξάνθη. Discover our full catalogue: beverages, beers, whiskeys, rum, gin, vodka, cognac & cocktails.",
@@ -30,6 +31,13 @@ export const metadata: Metadata = {
     description:
       "Full catalogue for ΜΠΕΛΦΑΣΤ Urban Pub in Xanthi. Beverages, craft beers, whiskeys, rum, gin, vodka, cognac & cocktails.",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ΜΠΕΛΦΑΣΤ URBAN PUB — Catalogue",
+    description:
+      "Full catalogue for ΜΠΕΛΦΑΣΤ Urban Pub in Xanthi. Beverages, craft beers, whiskeys, rum, gin, vodka, cognac & cocktails.",
+    images: ["/opengraph-image.png"],
   },
 };
 
