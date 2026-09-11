@@ -9,7 +9,9 @@ import { MenuClient } from "@/components/MenuClient";
 async function loadDoc(slug: string): Promise<{ menu: Category[]; site: SiteSettings } | null> {
   try {
     const doc = await getMenu(slug);
-    if (doc?.categories?.length) {
+    // getMenu falls back to the first doc — reject cross-language fallback
+    // so EN never renders Greek under the wrong tab (missing EN falls back to EL below).
+    if (doc?.slug === slug && doc?.categories?.length) {
       const menu: Category[] = doc.categories.map((c) => ({
         id: c.slug,
         title: c.title,

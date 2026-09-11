@@ -6,6 +6,15 @@ import { greekUpper, uiDict } from "@/lib/menu-data";
 
 const FOCUS_RING = "focus-visible:outline-2 focus-visible:outline-offset-2";
 
+// CSS `scroll-behavior:auto` is overridden by JS `behavior:"smooth"` —
+// read the media query at call time so reduced-motion users get instant jumps.
+function prefersReducedMotion(): boolean {
+  return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+function scrollBehavior(): ScrollBehavior {
+  return prefersReducedMotion() ? "auto" : "smooth";
+}
+
 // Interactive catalogue UI. Both languages are baked in at build time (SSG)
 // and passed as props — the toggle switches instantly, useMemo below only
 // derives the instant search filter/nav, no runtime data fetching.
@@ -103,19 +112,19 @@ export function MenuClient({
 
   // Auto-scroll the horizontal nav so the active pill stays visible
   useEffect(() => {
-    const navEl = document.querySelector(`[data-nav-id="${activeId}"]`);
-    navEl?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    const navEl = document.querySelector(`[data-nav-id="${CSS.escape(activeId)}"]`);
+    navEl?.scrollIntoView({ behavior: scrollBehavior(), block: "nearest", inline: "center" });
   }, [activeId]);
 
   const scrollTo = (id: string) => {
     setActiveId(id);
     // also nudge nav immediately so click feels instant even before observer fires
-    document.querySelector(`[data-nav-id="${id}"]`)?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    document.querySelector(`[data-nav-id="${CSS.escape(id)}"]`)?.scrollIntoView({ behavior: scrollBehavior(), block: "nearest", inline: "center" });
     // manual offset (not scrollIntoView) so the section clears the floating bar
     const el = document.getElementById(id);
     if (el) {
       const top = el.getBoundingClientRect().top + window.scrollY - 176;
-      window.scrollTo({ top, behavior: "smooth" });
+      window.scrollTo({ top, behavior: scrollBehavior() });
     }
   };
 
@@ -360,8 +369,10 @@ export function MenuClient({
 
       {/* Back to top */}
       <button
-        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        onClick={() => window.scrollTo({ top: 0, behavior: scrollBehavior() })}
         aria-label={lang === "el" ? "Επιστροφή στην κορυφή" : "Back to top"}
+        aria-hidden={!showTop}
+        tabIndex={showTop ? 0 : -1}
         className={`fixed bottom-6 right-6 z-40 grid h-11 w-11 cursor-pointer place-items-center rounded-full bg-[var(--green)] text-white shadow-[0_12px_28px_-8px_rgba(22,63,26,0.8)] transition-all hover:bg-[var(--green-2)] ${FOCUS_RING} ${
           showTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3 pointer-events-none"
         }`}

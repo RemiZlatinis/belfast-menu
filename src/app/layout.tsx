@@ -21,8 +21,15 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
+function resolveMetadataBase(): URL {
+  const raw = process.env.NEXT_PUBLIC_SERVER_URL || ''
+  if (/^https?:\/\//.test(raw)) return new URL(raw)
+  if (raw) return new URL(`https://${raw}`)
+  return new URL('http://localhost:3000')
+}
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000"),
+  metadataBase: resolveMetadataBase(),
   title: "ΜΠΕΛΦΑΣΤ URBAN PUB — Catalogue",
   description:
     "ΜΠΕΛΦΑΣΤ Urban Pub — Βασιλέως Κωνσταντίνου 26, Ξάνθη. Discover our full catalogue: beverages, beers, whiskeys, rum, gin, vodka, cognac & cocktails.",

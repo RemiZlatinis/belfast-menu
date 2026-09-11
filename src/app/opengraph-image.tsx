@@ -7,23 +7,39 @@ export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
 // Noto Sans covers Greek + Latin. `text=` subsets to exactly the chars used
-// so the font payload stays tiny.
-const CHARS =
-  'ΜΠΕΛΦΑΣΤURBANPUBΞάνθηΒασιλέωςΚωνσταντίνου,.—•26 cataloguePRODUCT '
+// so the font payload stays tiny — built from the exact rendered strings
+// (uppercase Greek codepoints differ from lowercase).
+const BRAND = 'ΜΠΕΛΦΑΣΤ'
+const SUFFIX = 'URBAN PUB'
+const ADDRESS = 'ΒΑΣΙΛΕΩΣ ΚΩΝΣΤΑΝΤΙΝΟΥ 26, ΞΑΝΘΗ'
+const CHARS = Array.from(new Set(`${BRAND}${SUFFIX}${ADDRESS}`)).join('')
 async function loadFont(weight: 400 | 800): Promise<ArrayBuffer> {
   const css = await (
     await fetch(
       `https://fonts.googleapis.com/css2?family=Noto+Sans:wght@${weight}&display=swap&text=${encodeURIComponent(CHARS)}`,
-      { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; preview-bot/1.0)' } },
+      {
+        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; preview-bot/1.0)' },
+        signal: AbortSignal.timeout(10_000),
+      },
     )
   ).text()
   const url = css.match(/url\((https:[^)]+)\)/)?.[1]
   if (!url) throw new Error(`Font CSS has no URL (weight ${weight})`)
-  return await (await fetch(url)).arrayBuffer()
+  return await (await fetch(url, { signal: AbortSignal.timeout(10_000) })).arrayBuffer()
 }
 
 export default async function OGImage() {
-  const [regular, extraBold] = await Promise.all([loadFont(400), loadFont(800)])
+  let fonts: { name: string; data: ArrayBuffer; weight: 400 | 800 }[] = []
+  try {
+    const [regular, extraBold] = await Promise.all([loadFont(400), loadFont(800)])
+    fonts = [
+      { name: 'Noto Sans', data: regular, weight: 400 },
+      { name: 'Noto Sans', data: extraBold, weight: 800 },
+    ]
+  } catch {
+    // Degraded OG (no custom fonts) is better than a failed build.
+    fonts = []
+  }
 
   return new ImageResponse(
     (
@@ -58,7 +74,7 @@ export default async function OGImage() {
               letterSpacing: -2,
             }}
           >
-            ΜΠΕΛΦΑΣΤ
+            {BRAND}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', marginTop: 26 }}>
             <div style={{ width: 72, height: 3, backgroundColor: '#C2A878' }} />
@@ -73,7 +89,7 @@ export default async function OGImage() {
                 marginRight: 0,
               }}
             >
-              URBAN PUB
+              {SUFFIX}
             </div>
             <div style={{ width: 72, height: 3, backgroundColor: '#C2A878' }} />
           </div>
@@ -88,16 +104,13 @@ export default async function OGImage() {
             marginTop: 44,
           }}
         >
-          ΒΑΣΙΛΕΩΣ ΚΩΝΣΤΑΝΤΙΝΟΥ 26, ΞΑΝΘΗ
+          {ADDRESS}
         </div>
       </div>
     ),
     {
       ...size,
-      fonts: [
-        { name: 'Noto Sans', data: regular, weight: 400 },
-        { name: 'Noto Sans', data: extraBold, weight: 800 },
-      ],
+      fonts,
     },
   )
 }
