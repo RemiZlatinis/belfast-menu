@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    menus: Menu;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +79,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    menus: MenusSelect<false> | MenusSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -87,12 +89,8 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {
-    catalog: Catalog;
-  };
-  globalsSelect: {
-    catalog: CatalogSelect<false> | CatalogSelect<true>;
-  };
+  globals: {};
+  globalsSelect: {};
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -167,6 +165,64 @@ export interface Media {
   focalY?: number | null;
 }
 /**
+ * The catalogue page. Open the "Main catalogue" to edit categories & drinks.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menus".
+ */
+export interface Menu {
+  id: number;
+  title: string;
+  /**
+   * Keep "main" — the website loads this menu. Use another slug for drafts.
+   */
+  slug: string;
+  /**
+   * Optional short line shown under the title (e.g. address).
+   */
+  description?: string | null;
+  /**
+   * Drag to reorder. Mirrors the PDF order (Beverages → Cocktails).
+   */
+  categories: {
+    /**
+     * Lowercase, no spaces — used for page anchors.
+     */
+    slug: string;
+    title: string;
+    subtitle?: string | null;
+    /**
+     * Use Group label for IRISH / SCOTCH / PREMIUM. One group with empty label = single list.
+     */
+    subcategories?:
+      | {
+          /**
+           * e.g. IRISH, SCOTCH, PREMIUM — leave empty for none
+           */
+          label?: string | null;
+          /**
+           * Drag to reorder drinks inside the group.
+           */
+          items?:
+            | {
+                name: string;
+                /**
+                 * e.g. 3€ or 3,5€
+                 */
+                price: string;
+                note?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+    id?: string | null;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -197,6 +253,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'menus';
+        value: number | Menu;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -283,6 +343,39 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menus_select".
+ */
+export interface MenusSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  description?: T;
+  categories?:
+    | T
+    | {
+        slug?: T;
+        title?: T;
+        subtitle?: T;
+        subcategories?:
+          | T
+          | {
+              label?: T;
+              items?:
+                | T
+                | {
+                    name?: T;
+                    price?: T;
+                    note?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -320,78 +413,6 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "catalog".
- */
-export interface Catalog {
-  id: number;
-  /**
-   * Drag to reorder. Mirrors the PDF order.
-   */
-  categories?:
-    | {
-        id: string;
-        title: string;
-        subtitle?: string | null;
-        /**
-         * Use Group label for IRISH / SCOTCH etc. Leave empty for single list.
-         */
-        subcategories?:
-          | {
-              /**
-               * e.g. IRISH, SCOTCH, PREMIUM — leave empty for none
-               */
-              label?: string | null;
-              items?:
-                | {
-                    name: string;
-                    /**
-                     * e.g. 3€ or 3,5€
-                     */
-                    price: string;
-                    note?: string | null;
-                    id?: string | null;
-                  }[]
-                | null;
-              id?: string | null;
-            }[]
-          | null;
-      }[]
-    | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "catalog_select".
- */
-export interface CatalogSelect<T extends boolean = true> {
-  categories?:
-    | T
-    | {
-        id?: T;
-        title?: T;
-        subtitle?: T;
-        subcategories?:
-          | T
-          | {
-              label?: T;
-              items?:
-                | T
-                | {
-                    name?: T;
-                    price?: T;
-                    note?: T;
-                    id?: T;
-                  };
-              id?: T;
-            };
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -51,6 +51,52 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.run(sql`CREATE INDEX \`media_updated_at_idx\` ON \`media\` (\`updated_at\`);`)
   await db.run(sql`CREATE INDEX \`media_created_at_idx\` ON \`media\` (\`created_at\`);`)
   await db.run(sql`CREATE UNIQUE INDEX \`media_filename_idx\` ON \`media\` (\`filename\`);`)
+  await db.run(sql`CREATE TABLE \`menus_categories_subcategories_items\` (
+  	\`_order\` integer NOT NULL,
+  	\`_parent_id\` text NOT NULL,
+  	\`id\` text PRIMARY KEY NOT NULL,
+  	\`name\` text NOT NULL,
+  	\`price\` text NOT NULL,
+  	\`note\` text,
+  	FOREIGN KEY (\`_parent_id\`) REFERENCES \`menus_categories_subcategories\`(\`id\`) ON UPDATE no action ON DELETE cascade
+  );
+  `)
+  await db.run(sql`CREATE INDEX \`menus_categories_subcategories_items_order_idx\` ON \`menus_categories_subcategories_items\` (\`_order\`);`)
+  await db.run(sql`CREATE INDEX \`menus_categories_subcategories_items_parent_id_idx\` ON \`menus_categories_subcategories_items\` (\`_parent_id\`);`)
+  await db.run(sql`CREATE TABLE \`menus_categories_subcategories\` (
+  	\`_order\` integer NOT NULL,
+  	\`_parent_id\` text NOT NULL,
+  	\`id\` text PRIMARY KEY NOT NULL,
+  	\`label\` text,
+  	FOREIGN KEY (\`_parent_id\`) REFERENCES \`menus_categories\`(\`id\`) ON UPDATE no action ON DELETE cascade
+  );
+  `)
+  await db.run(sql`CREATE INDEX \`menus_categories_subcategories_order_idx\` ON \`menus_categories_subcategories\` (\`_order\`);`)
+  await db.run(sql`CREATE INDEX \`menus_categories_subcategories_parent_id_idx\` ON \`menus_categories_subcategories\` (\`_parent_id\`);`)
+  await db.run(sql`CREATE TABLE \`menus_categories\` (
+  	\`_order\` integer NOT NULL,
+  	\`_parent_id\` integer NOT NULL,
+  	\`id\` text PRIMARY KEY NOT NULL,
+  	\`slug\` text NOT NULL,
+  	\`title\` text NOT NULL,
+  	\`subtitle\` text,
+  	FOREIGN KEY (\`_parent_id\`) REFERENCES \`menus\`(\`id\`) ON UPDATE no action ON DELETE cascade
+  );
+  `)
+  await db.run(sql`CREATE INDEX \`menus_categories_order_idx\` ON \`menus_categories\` (\`_order\`);`)
+  await db.run(sql`CREATE INDEX \`menus_categories_parent_id_idx\` ON \`menus_categories\` (\`_parent_id\`);`)
+  await db.run(sql`CREATE TABLE \`menus\` (
+  	\`id\` integer PRIMARY KEY NOT NULL,
+  	\`title\` text DEFAULT 'ΜΠΕΛΦΑΣΤ Catalogue' NOT NULL,
+  	\`slug\` text DEFAULT 'main' NOT NULL,
+  	\`description\` text,
+  	\`updated_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
+  	\`created_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL
+  );
+  `)
+  await db.run(sql`CREATE UNIQUE INDEX \`menus_slug_idx\` ON \`menus\` (\`slug\`);`)
+  await db.run(sql`CREATE INDEX \`menus_updated_at_idx\` ON \`menus\` (\`updated_at\`);`)
+  await db.run(sql`CREATE INDEX \`menus_created_at_idx\` ON \`menus\` (\`created_at\`);`)
   await db.run(sql`CREATE TABLE \`payload_kv\` (
   	\`id\` integer PRIMARY KEY NOT NULL,
   	\`key\` text NOT NULL,
@@ -75,9 +121,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	\`path\` text NOT NULL,
   	\`users_id\` integer,
   	\`media_id\` integer,
+  	\`menus_id\` integer,
   	FOREIGN KEY (\`parent_id\`) REFERENCES \`payload_locked_documents\`(\`id\`) ON UPDATE no action ON DELETE cascade,
   	FOREIGN KEY (\`users_id\`) REFERENCES \`users\`(\`id\`) ON UPDATE no action ON DELETE cascade,
-  	FOREIGN KEY (\`media_id\`) REFERENCES \`media\`(\`id\`) ON UPDATE no action ON DELETE cascade
+  	FOREIGN KEY (\`media_id\`) REFERENCES \`media\`(\`id\`) ON UPDATE no action ON DELETE cascade,
+  	FOREIGN KEY (\`menus_id\`) REFERENCES \`menus\`(\`id\`) ON UPDATE no action ON DELETE cascade
   );
   `)
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_order_idx\` ON \`payload_locked_documents_rels\` (\`order\`);`)
@@ -85,6 +133,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_path_idx\` ON \`payload_locked_documents_rels\` (\`path\`);`)
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_users_id_idx\` ON \`payload_locked_documents_rels\` (\`users_id\`);`)
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_media_id_idx\` ON \`payload_locked_documents_rels\` (\`media_id\`);`)
+  await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_menus_id_idx\` ON \`payload_locked_documents_rels\` (\`menus_id\`);`)
   await db.run(sql`CREATE TABLE \`payload_preferences\` (
   	\`id\` integer PRIMARY KEY NOT NULL,
   	\`key\` text,
@@ -120,59 +169,20 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   `)
   await db.run(sql`CREATE INDEX \`payload_migrations_updated_at_idx\` ON \`payload_migrations\` (\`updated_at\`);`)
   await db.run(sql`CREATE INDEX \`payload_migrations_created_at_idx\` ON \`payload_migrations\` (\`created_at\`);`)
-  await db.run(sql`CREATE TABLE \`catalog_categories_subcategories_items\` (
-  	\`_order\` integer NOT NULL,
-  	\`_parent_id\` text NOT NULL,
-  	\`id\` text PRIMARY KEY NOT NULL,
-  	\`name\` text NOT NULL,
-  	\`price\` text NOT NULL,
-  	\`note\` text,
-  	FOREIGN KEY (\`_parent_id\`) REFERENCES \`catalog_categories_subcategories\`(\`id\`) ON UPDATE no action ON DELETE cascade
-  );
-  `)
-  await db.run(sql`CREATE INDEX \`catalog_categories_subcategories_items_order_idx\` ON \`catalog_categories_subcategories_items\` (\`_order\`);`)
-  await db.run(sql`CREATE INDEX \`catalog_categories_subcategories_items_parent_id_idx\` ON \`catalog_categories_subcategories_items\` (\`_parent_id\`);`)
-  await db.run(sql`CREATE TABLE \`catalog_categories_subcategories\` (
-  	\`_order\` integer NOT NULL,
-  	\`_parent_id\` text NOT NULL,
-  	\`id\` text PRIMARY KEY NOT NULL,
-  	\`label\` text,
-  	FOREIGN KEY (\`_parent_id\`) REFERENCES \`catalog_categories\`(\`id\`) ON UPDATE no action ON DELETE cascade
-  );
-  `)
-  await db.run(sql`CREATE INDEX \`catalog_categories_subcategories_order_idx\` ON \`catalog_categories_subcategories\` (\`_order\`);`)
-  await db.run(sql`CREATE INDEX \`catalog_categories_subcategories_parent_id_idx\` ON \`catalog_categories_subcategories\` (\`_parent_id\`);`)
-  await db.run(sql`CREATE TABLE \`catalog_categories\` (
-  	\`_order\` integer NOT NULL,
-  	\`_parent_id\` integer NOT NULL,
-  	\`id\` text PRIMARY KEY NOT NULL,
-  	\`title\` text NOT NULL,
-  	\`subtitle\` text,
-  	FOREIGN KEY (\`_parent_id\`) REFERENCES \`catalog\`(\`id\`) ON UPDATE no action ON DELETE cascade
-  );
-  `)
-  await db.run(sql`CREATE INDEX \`catalog_categories_order_idx\` ON \`catalog_categories\` (\`_order\`);`)
-  await db.run(sql`CREATE INDEX \`catalog_categories_parent_id_idx\` ON \`catalog_categories\` (\`_parent_id\`);`)
-  await db.run(sql`CREATE TABLE \`catalog\` (
-  	\`id\` integer PRIMARY KEY NOT NULL,
-  	\`updated_at\` text,
-  	\`created_at\` text
-  );
-  `)
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
   await db.run(sql`DROP TABLE \`users_sessions\`;`)
   await db.run(sql`DROP TABLE \`users\`;`)
   await db.run(sql`DROP TABLE \`media\`;`)
+  await db.run(sql`DROP TABLE \`menus_categories_subcategories_items\`;`)
+  await db.run(sql`DROP TABLE \`menus_categories_subcategories\`;`)
+  await db.run(sql`DROP TABLE \`menus_categories\`;`)
+  await db.run(sql`DROP TABLE \`menus\`;`)
   await db.run(sql`DROP TABLE \`payload_kv\`;`)
   await db.run(sql`DROP TABLE \`payload_locked_documents\`;`)
   await db.run(sql`DROP TABLE \`payload_locked_documents_rels\`;`)
   await db.run(sql`DROP TABLE \`payload_preferences\`;`)
   await db.run(sql`DROP TABLE \`payload_preferences_rels\`;`)
   await db.run(sql`DROP TABLE \`payload_migrations\`;`)
-  await db.run(sql`DROP TABLE \`catalog_categories_subcategories_items\`;`)
-  await db.run(sql`DROP TABLE \`catalog_categories_subcategories\`;`)
-  await db.run(sql`DROP TABLE \`catalog_categories\`;`)
-  await db.run(sql`DROP TABLE \`catalog\`;`)
 }

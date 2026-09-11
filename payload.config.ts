@@ -1,6 +1,7 @@
 import { buildConfig } from 'payload'
-import type { CollectionConfig, GlobalConfig } from 'payload'
+import type { CollectionConfig } from 'payload'
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
+import { postgresAdapter } from '@payloadcms/db-postgres'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
@@ -44,43 +45,104 @@ export const Media: CollectionConfig = {
   },
 }
 
-export const Catalog: GlobalConfig = {
-  slug: 'catalog',
-  label: 'Catalogue',
-  access: { read: () => true },
+/**
+ * Menus — the ONE collection a simple user needs to understand.
+ *
+ * One document = one catalogue page (we seed a single "main" menu).
+ * Everything lives inside it, fully dynamic:
+ *   Menu -> Categories (array, drag to reorder)
+ *     -> Groups / Sub-categories (array, e.g. IRISH / SCOTCH — leave empty for a single list)
+ *       -> Drinks / Items (array: name + price + optional note)
+ *
+ * Defined inline (like Users/Media) because the payload CLI under tsx
+ * cannot resolve separate collection files on Node 20/22/24.
+ */
+export const Menus: CollectionConfig = {
+  slug: 'menus',
+  labels: { singular: 'Menu', plural: 'Menus' },
+  admin: {
+    useAsTitle: 'title',
+    defaultColumns: ['title', 'slug', 'updatedAt'],
+    description: 'The catalogue page. Open the "Main catalogue" to edit categories & drinks.',
+  },
+  access: {
+    // Public menu must be readable without login (homepage + /api/catalog).
+    read: () => true,
+  },
   fields: [
+    {
+      name: 'title',
+      label: 'Menu title',
+      type: 'text',
+      required: true,
+      defaultValue: 'ΜΠΕΛΦΑΣΤ Catalogue',
+    },
+    {
+      name: 'slug',
+      label: 'Slug',
+      type: 'text',
+      required: true,
+      unique: true,
+      defaultValue: 'main',
+      admin: {
+        description: 'Keep "main" — the website loads this menu. Use another slug for drafts.',
+      },
+    },
+    {
+      name: 'description',
+      label: 'Description',
+      type: 'text',
+      admin: { description: 'Optional short line shown under the title (e.g. address).' },
+    },
     {
       name: 'categories',
       label: 'Categories',
       type: 'array',
+      required: true,
       labels: { singular: 'Category', plural: 'Categories' },
-      admin: { description: 'Drag to reorder. Mirrors the PDF order.' },
+      admin: { description: 'Drag to reorder. Mirrors the PDF order (Beverages → Cocktails).' },
       fields: [
-        { name: 'id', label: 'Slug (e.g. beverages)', type: 'text', required: true },
-        { name: 'title', type: 'text', required: true },
-        { name: 'subtitle', type: 'text' },
+        {
+          name: 'slug',
+          label: 'Slug (e.g. beverages)',
+          type: 'text',
+          required: true,
+          admin: { description: 'Lowercase, no spaces — used for page anchors.' },
+        },
+        { name: 'title', label: 'Title (e.g. BEVERAGES)', type: 'text', required: true },
+        { name: 'subtitle', label: 'Subtitle (e.g. Αναψυκτικά)', type: 'text' },
         {
           name: 'subcategories',
-          label: 'Sub-categories / Groups',
+          label: 'Groups (sub-categories)',
           type: 'array',
           labels: { singular: 'Group', plural: 'Groups' },
           admin: {
-            description: 'Use Group label for IRISH / SCOTCH etc. Leave empty for single list.',
+            description:
+              'Use Group label for IRISH / SCOTCH / PREMIUM. One group with empty label = single list.',
           },
           fields: [
             {
               name: 'label',
+              label: 'Group label',
               type: 'text',
               admin: { description: 'e.g. IRISH, SCOTCH, PREMIUM — leave empty for none' },
             },
             {
               name: 'items',
+              label: 'Drinks / Items',
               type: 'array',
-              labels: { singular: 'Item', plural: 'Items' },
+              labels: { singular: 'Drink', plural: 'Drinks' },
+              admin: { description: 'Drag to reorder drinks inside the group.' },
               fields: [
-                { name: 'name', type: 'text', required: true },
-                { name: 'price', type: 'text', required: true, admin: { description: 'e.g. 3€ or 3,5€' } },
-                { name: 'note', type: 'text' },
+                { name: 'name', label: 'Name', type: 'text', required: true },
+                {
+                  name: 'price',
+                  label: 'Price',
+                  type: 'text',
+                  required: true,
+                  admin: { description: 'e.g. 3€ or 3,5€' },
+                },
+                { name: 'note', label: 'Note (optional)', type: 'text' },
               ],
             },
           ],
@@ -109,9 +171,21 @@ function resolveServerURL(): string {
 }
 
 // DB resolution:
+// - Neon (Postgres): when a postgres connection string is set — this is the
+//   persistent production DB. Vercel's Neon integration provides DATABASE_URL
+//   (pooled). POSTGRES_URL is accepted as a fallback (older integration).
 // - Local dev: file:./belfast.db (sqlite file, zero config)
-// - Vercel without Turso: file:/tmp/belfast.db (ephemeral; CMS falls back to static — see /api/catalog)
+// - Vercel without Neon: file:/tmp/belfast.db (ephemeral; CMS falls back to static — see /api/catalog)
 // - Vercel with Turso: libsql remote (persistent CMS). Set TURSO_DATABASE_URL + TURSO_AUTH_TOKEN.
+function resolvePostgresURL(): string | null {
+  return (
+    process.env.DATABASE_URL ||
+    process.env.POSTGRES_URL ||
+    process.env.NEON_DATABASE_URL ||
+    null
+  )
+}
+
 function resolveDatabaseConfig() {
   const tursoUrl = process.env.TURSO_DATABASE_URL
   const tursoToken = process.env.TURSO_AUTH_TOKEN
@@ -123,8 +197,13 @@ function resolveDatabaseConfig() {
   return { url: 'file:./belfast.db' }
 }
 
-const isEphemeralVercelNoTurso =
-  !!process.env.VERCEL && !process.env.TURSO_DATABASE_URL && !process.env.DATABASE_URI
+const postgresURL = resolvePostgresURL()
+
+const isEphemeralVercelNoDb =
+  !!process.env.VERCEL &&
+  !postgresURL &&
+  !process.env.TURSO_DATABASE_URL &&
+  !process.env.DATABASE_URI
 
 export default buildConfig({
   serverURL: resolveServerURL(),
@@ -138,14 +217,24 @@ export default buildConfig({
       description: 'Manage the ΜΠΕΛΦΑΣΤ Urban Pub catalogue',
     },
   },
-  db: sqliteAdapter({
-    client: resolveDatabaseConfig(),
-    migrationDir: path.resolve(dirname, 'src/migrations'),
-    // push only for local prototyping; Vercel + prod must use migrations
-    push: !process.env.VERCEL && process.env.NODE_ENV !== 'production',
-  }),
-  collections: [Users, Media],
-  globals: [Catalog],
+  // Neon Postgres when a connection string is set (incl. Vercel),
+  // otherwise local sqlite. Each dialect has its own migration dir —
+  // the payload CLI commands (migrate/migrate:create/...) automatically
+  // target the right one based on env.
+  db: postgresURL
+    ? postgresAdapter({
+        pool: { connectionString: postgresURL },
+        push: false,
+        migrationDir: path.resolve(dirname, 'src/migrations-pg'),
+      })
+    : sqliteAdapter({
+        client: resolveDatabaseConfig(),
+        migrationDir: path.resolve(dirname, 'src/migrations'),
+        // push only for local prototyping; Vercel + prod must use migrations
+        push: !process.env.VERCEL && process.env.NODE_ENV !== 'production',
+      }),
+  collections: [Users, Media, Menus],
+  globals: [],
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
@@ -153,20 +242,20 @@ export default buildConfig({
   onInit: async (payload) => {
     try {
       // Skip seeding on ephemeral Vercel (no persistent DB) — frontend uses static fallback.
-      if (isEphemeralVercelNoTurso) {
-        payload.logger.info('Skipping seed: ephemeral Vercel without Turso/DATABASE_URI')
+      if (isEphemeralVercelNoDb) {
+        payload.logger.info('Skipping seed: ephemeral Vercel without Neon/Turso/DATABASE_URI')
         return
       }
-      const existing = await payload.findGlobal({ slug: 'catalog' })
-      const existingCategories = (existing as unknown as { categories?: unknown[] })
-        ?.categories
-      const hasCategories = (existingCategories?.length ?? 0) > 0
-      if (!hasCategories) {
-        await payload.updateGlobal({
-          slug: 'catalog',
+      const existing = await payload.find({ collection: 'menus', limit: 1 })
+      if (existing.totalDocs === 0) {
+        await payload.create({
+          collection: 'menus',
           data: {
+            title: 'ΜΠΕΛΦΑΣΤ Catalogue',
+            slug: 'main',
+            description: 'Βασιλέως Κωνσταντίνου 26, Ξάνθη',
             categories: seedCategories.map((cat) => ({
-              id: cat.id,
+              slug: cat.id,
               title: cat.title,
               subtitle: cat.subtitle ?? undefined,
               subcategories: cat.subcategories.map((sub) => ({
@@ -180,7 +269,7 @@ export default buildConfig({
             })),
           },
         })
-        payload.logger.info('Seeded catalog global from staticMenu')
+        payload.logger.info('Seeded menus collection from menu-seed.json (138 drinks, 9 categories)')
       }
       if (!process.env.VERCEL) {
         const users = await payload.find({ collection: 'users', limit: 1 })

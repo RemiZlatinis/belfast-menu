@@ -61,8 +61,9 @@ bun run lint
 ## Payload CMS
 
 - **Local:** sqlite file `./belfast.db` (zero config). First boot runs migrations,
-  seeds the `catalog` global from `src/lib/menu-seed.json`, and creates the default
-  admin user. Edit everything at `/admin` (categories → groups → items, drag to reorder).
+  seeds the `menus` collection (one **"Main catalogue"** doc) from `src/lib/menu-seed.json`,
+  and creates the default admin user. Edit everything at `/admin` → **Menus** →
+  Main catalogue (categories → groups → drinks, drag to reorder).
 - **Public callback:** `GET /api/catalog` returns `{ source: 'payload', categories }`
   when the DB is live — the homepage loads its menu from there, so CMS edits appear instantly.
 - **Single source of truth:** `src/lib/menu-seed.json` feeds both the Payload seed and
@@ -96,7 +97,7 @@ automatically switches `/api/catalog` and `/admin` to the live database.
 ## Project structure
 
 ```
-payload.config.ts        — Payload (users, media, catalog global, sqlite/Turso, seed)
+payload.config.ts        — Payload (users, media, menus collection, sqlite/Turso, seed)
 src/migrations/          — committed DB migrations
 src/lib/menu-seed.json   — seed + static fallback source of truth
 src/lib/menu-data.ts     — typed re-export for the frontend
