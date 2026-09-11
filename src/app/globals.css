@@ -53,3 +53,48 @@ body {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+::selection {
+  background: var(--green);
+  color: var(--cream);
+}
+
+/* 2026 motion details */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-rise {
+  animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.animate-rise-1 {
+  animation-delay: 0.08s;
+}
+.animate-rise-2 {
+  animation-delay: 0.16s;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee 36s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-rise,
+  .animate-marquee {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}

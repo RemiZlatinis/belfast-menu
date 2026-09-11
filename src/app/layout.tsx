@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Cormorant_Garamond, DM_Sans } from "next/font/google";
 import "./globals.css";
 
@@ -31,6 +31,10 @@ export const metadata: Metadata = {
       "Full catalogue for ΜΠΕΛΦΑΣΤ Urban Pub in Xanthi. Beverages, craft beers, whiskeys, rum, gin, vodka, cognac & cocktails.",
     type: "website",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#163f1a",
 };
 
 export default function RootLayout({
