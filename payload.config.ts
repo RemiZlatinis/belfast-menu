@@ -42,7 +42,7 @@ function resolveServerURL(): string {
 //   persistent production DB. Vercel's Neon integration provides DATABASE_URL
 //   (pooled). POSTGRES_URL is accepted as a fallback (older integration).
 // - Local dev: file:./belfast.db (sqlite file, zero config)
-// - Vercel without Neon: file:/tmp/belfast.db (ephemeral; CMS falls back to static — see /api/catalog)
+// - Vercel without Neon: file:/tmp/belfast.db (ephemeral; build falls back to static)
 // - Vercel with Turso: libsql remote (persistent CMS). Set TURSO_DATABASE_URL + TURSO_AUTH_TOKEN.
 function resolvePostgresURL(): string | null {
   return (
@@ -82,6 +82,10 @@ export default buildConfig({
     meta: {
       titleSuffix: '— ΜΠΕΛΦΑΣΤ CMS',
       description: 'Manage the ΜΠΕΛΦΑΣΤ Urban Pub catalogue',
+    },
+    components: {
+      // Top-right "Deploy site" button (fires VERCEL_DEPLOY_HOOK_URL).
+      actions: [{ path: '@/components/admin/DeployButton', exportName: 'DeployButton' }],
     },
   },
   // Neon Postgres when a connection string is set (incl. Vercel),

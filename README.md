@@ -64,10 +64,11 @@ bun run lint
   seeds the `menus` collection (one **"Main catalogue"** doc) from `src/lib/menu-seed.json`,
   and creates the default admin user. Edit everything at `/admin` → **Menus** →
   Main catalogue (categories → groups → drinks, drag to reorder).
-- **Public callback:** `GET /api/catalog` returns `{ source: 'payload', categories }`
-  when the DB is live — the homepage loads its menu from there, so CMS edits appear instantly.
+- **SSG homepage:** `src/app/page.tsx` (server component) bakes the menu into static
+  HTML at build time — Neon on Vercel, sqlite locally, static fallback with no DB.
+  CMS edits go live via redeploy (the **Deploy site** button in `/admin`).
 - **Single source of truth:** `src/lib/menu-seed.json` feeds both the Payload seed and
-  the static fallback (`src/lib/menu-data.ts`). Prices/names edited in the CMS override it at runtime.
+  the static fallback (`src/lib/menu-data.ts`).
 - **Useful scripts:** `bun run migrate` · `bun run migrate:create` · `bun run migrate:status` ·
   `bun run generate:types` · `bun run generate:importmap`
 - Never commit `*.db` (gitignored). **Do** commit `src/migrations/` + `payload-types.ts`.
@@ -75,7 +76,7 @@ bun run lint
 ## Deploy to Vercel (no database — static fallback kept)
 
 Import `RemiZlatinis/belfast-menu` at https://vercel.com/new — framework auto-detected as
-**Next.js**. No env vars needed: without a persistent DB, `/api/catalog` gracefully serves
+**Next.js**. No env vars needed: without a persistent DB, the build bakes in
 the static catalogue and the site works fully (CMS editing happens locally).
 
 `vercel.json` forces `npm install` + `npm run build` while keeping `bun` for local dev.
@@ -90,9 +91,9 @@ vercel --prod
 git push origin main
 ```
 
-Optional (persistent CMS on Vercel via Turso free tier): set `TURSO_DATABASE_URL`,
-`TURSO_AUTH_TOKEN`, `PAYLOAD_SECRET`, `NEXT_PUBLIC_SERVER_URL` in Vercel env — the app
-automatically switches `/api/catalog` and `/admin` to the live database.
+Optional (persistent CMS on Vercel via Neon Postgres): set `DATABASE_URL`,
+`PAYLOAD_SECRET`, `NEXT_PUBLIC_SERVER_URL` in Vercel env — the build bakes the live
+menu into the static page and `/admin` edits the live database. (Turso also supported.)
 
 ## Project structure
 
@@ -104,8 +105,8 @@ src/lib/menu-data.ts     — typed re-export for the frontend
 src/lib/payload.ts       — cached Payload accessor with Vercel no-DB guard
 src/app/
   layout.tsx             — fonts (Playfair, Cormorant, DM Sans) + metadata
-  page.tsx               — hero + sticky nav + search + sections (loads /api/catalog)
-  api/catalog/route.ts   — public callback: payload when live, static fallback on Vercel
+  page.tsx               — SSG server component (loads menu at build time)
+  api/redeploy/route.ts  — fires VERCEL_DEPLOY_HOOK_URL (login required)
   (payload)/             — official Payload routes (admin, api, layout, importMap)
 ```
 

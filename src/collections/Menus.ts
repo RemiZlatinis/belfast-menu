@@ -18,7 +18,7 @@ export const Menus: CollectionConfig = {
     description: 'The catalogue page. Open the "Main catalogue" to edit categories & drinks.',
   },
   access: {
-    // Public menu must be readable without login (homepage + /api/catalog).
+    // Public menu must be readable without login (SSG homepage reads it at build time).
     read: () => true,
   },
   fields: [

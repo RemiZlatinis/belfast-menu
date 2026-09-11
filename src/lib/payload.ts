@@ -54,6 +54,3 @@ export async function getMenu(slug = 'main'): Promise<Menu | null> {
     return null
   }
 }
-
-/** Backwards-compatible alias (route + older imports). */
-export const getCatalog = getMenu
