@@ -58,6 +58,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	\`name\` text NOT NULL,
   	\`price\` text NOT NULL,
   	\`note\` text,
+  	\`available\` integer DEFAULT true,
   	FOREIGN KEY (\`_parent_id\`) REFERENCES \`menus_categories_subcategories\`(\`id\`) ON UPDATE no action ON DELETE cascade
   );
   `)
@@ -90,6 +91,16 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	\`title\` text DEFAULT 'ΜΠΕΛΦΑΣΤ Catalogue' NOT NULL,
   	\`slug\` text DEFAULT 'main' NOT NULL,
   	\`description\` text,
+  	\`site_badge\` text,
+  	\`site_brand_name\` text,
+  	\`site_brand_suffix\` text,
+  	\`site_address\` text,
+  	\`site_tagline\` text,
+  	\`site_search_placeholder\` text,
+  	\`site_visit_kicker\` text,
+  	\`site_visit_text\` text,
+  	\`site_footer_note\` text,
+  	\`site_footer_brand\` text,
   	\`updated_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
   	\`created_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL
   );

@@ -50,7 +50,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" varchar PRIMARY KEY NOT NULL,
   	"name" varchar NOT NULL,
   	"price" varchar NOT NULL,
-  	"note" varchar
+  	"note" varchar,
+  	"available" boolean DEFAULT true
   );
   
   CREATE TABLE "menus_categories_subcategories" (
@@ -74,6 +75,16 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"title" varchar DEFAULT 'ΜΠΕΛΦΑΣΤ Catalogue' NOT NULL,
   	"slug" varchar DEFAULT 'main' NOT NULL,
   	"description" varchar,
+  	"site_badge" varchar,
+  	"site_brand_name" varchar,
+  	"site_brand_suffix" varchar,
+  	"site_address" varchar,
+  	"site_tagline" varchar,
+  	"site_search_placeholder" varchar,
+  	"site_visit_kicker" varchar,
+  	"site_visit_text" varchar,
+  	"site_footer_note" varchar,
+  	"site_footer_brand" varchar,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
