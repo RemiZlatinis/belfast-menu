@@ -369,7 +369,7 @@ export function MenuClient({
               <Link
                 href="/admin"
                 title={lang === "el" ? "Σύνδεση διαχειριστή" : "Admin sign-in"}
-                className="text-white/50 underline-offset-4 transition-colors hover:text-white hover:underline"
+                className="font-semibold text-white/85 underline decoration-white/40 underline-offset-4 transition-colors hover:text-white hover:decoration-white"
               >
                 Admin
               </Link>
