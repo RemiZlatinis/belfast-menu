@@ -1,6 +1,6 @@
 import seed from './menu-seed.json'
 
-export type Item = { name: string; price: string; note?: string }
+export type Item = { name: string; price: string; note?: string; available?: boolean }
 export type SubCategory = { label?: string; items: Item[] }
 export type Category = {
   id: string
@@ -62,6 +62,7 @@ export type UIDict = {
   clearSearch: string
   searchLabel: string
   catalogueWord: string
+  soldOut: string
 }
 
 export const uiDict: Record<Lang, UIDict> = {
@@ -75,6 +76,7 @@ export const uiDict: Record<Lang, UIDict> = {
     clearSearch: 'Καθαρισμός',
     searchLabel: 'Αναζήτηση στο μενού',
     catalogueWord: 'Κατάλογος',
+    soldOut: 'Εξαντλήθηκε',
   },
   en: {
     catalog: 'PRODUCT CATALOG',
@@ -86,5 +88,6 @@ export const uiDict: Record<Lang, UIDict> = {
     clearSearch: 'Clear search',
     searchLabel: 'Search the menu',
     catalogueWord: 'Catalogue',
+    soldOut: 'Sold out',
   },
 }

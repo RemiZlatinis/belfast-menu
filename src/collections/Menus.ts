@@ -132,6 +132,15 @@ export const Menus: CollectionConfig = {
                   admin: { description: 'e.g. 3€ or 3,5€' },
                 },
                 { name: 'note', label: 'Note (optional)', type: 'text' },
+                {
+                  name: 'available',
+                  label: 'Available',
+                  type: 'checkbox',
+                  defaultValue: true,
+                  admin: {
+                    description: 'Uncheck to mark as sold out (stays listed, dimmed).',
+                  },
+                },
               ],
             },
           ],

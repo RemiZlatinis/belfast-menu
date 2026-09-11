@@ -226,6 +226,10 @@ export interface Menu {
                  */
                 price: string;
                 note?: string | null;
+                /**
+                 * Uncheck to mark as sold out (stays listed, dimmed).
+                 */
+                available?: boolean | null;
                 id?: string | null;
               }[]
             | null;
@@ -394,6 +398,7 @@ export interface MenusSelect<T extends boolean = true> {
                     name?: T;
                     price?: T;
                     note?: T;
+                    available?: T;
                     id?: T;
                   };
               id?: T;

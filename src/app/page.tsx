@@ -21,6 +21,8 @@ async function loadDoc(slug: string): Promise<{ menu: Category[]; site: SiteSett
             name: it.name,
             price: it.price,
             note: it.note || undefined,
+            // Checkbox absent on old docs → available (defaultValue only fills new rows).
+            available: it.available !== false,
           })),
         })),
       }));

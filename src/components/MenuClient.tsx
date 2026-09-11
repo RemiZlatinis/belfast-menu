@@ -298,11 +298,14 @@ export function MenuClient({
 
                       <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-0">
                         {sub.items.map((item, ii) => (
-                          <div key={`${item.name}-${ii}`} className="group flex items-baseline justify-between gap-3 border-b border-dotted border-black/15 px-3 -mx-3 py-3.5 transition-colors hover:bg-[var(--cream)]/70 rounded-lg hover:border-transparent">
+                          <div key={`${item.name}-${ii}`} className={`group flex items-baseline justify-between gap-3 border-b border-dotted border-black/15 px-3 -mx-3 py-3.5 transition-colors rounded-lg hover:border-transparent ${item.available === false ? "opacity-45" : "hover:bg-[var(--cream)]/70"}`}>
                             <div className="flex-1 min-w-0 flex items-baseline gap-2">
                               <span className="text-[13.5px] sm:text-[14px] leading-snug font-medium text-black tracking-[-0.01em] group-hover:text-[var(--green)] transition-colors">
                                 {item.name}
                                 {item.note && <span className="ml-2 text-[11px] font-normal text-black/50">— {item.note}</span>}
+                                {item.available === false && (
+                                  <span className="ml-2 rounded-full border border-black/15 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-black/60">{t.soldOut}</span>
+                                )}
                               </span>
                             </div>
                             <span className="shrink-0 rounded-full bg-black/[0.04] px-2.5 py-0.5 text-[13px] font-semibold tracking-tight text-black tabular-nums group-hover:bg-[var(--green)] group-hover:text-white transition-colors">{item.price}</span>
