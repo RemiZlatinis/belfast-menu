@@ -9,12 +9,16 @@ Product photos: Open Food Facts (CC BY-SA), Wikimedia Commons
 | `beers-020.webp` | https://world.openfoodfacts.org/product/3080216008622 |
 | `beers-021.webp` | https://world.openfoodfacts.org/product/3080216008622 |
 | `beers-022.webp` | https://marmitabeer.com/product/marmita-red-ale-330-ml-pack/ |
-| `beers-023.webp` | https://commons.wikimedia.org/wiki/File:AlfaGreekBeer.jpg |
-| `beers-024.webp` | https://commons.wikimedia.org/wiki/File:Mamos_Greek_beer.jpg (background removed) |
-| `beers-026.webp` | https://commons.wikimedia.org/wiki/File%3AVergina_Beer_Bottle_%26_Glass.jpg (background removed) |
-| `beers-027.webp` | https://world.openfoodfacts.org/product/5000213101223 |
+| `beers-023.webp` | https://athenianbrewery.gr/products/beers/alfa/ |
+| `beers-024.webp` | https://athenianbrewery.gr/products/beers/mamos/ |
+| `beers-026.webp` | https://www.verginabeer.com/beer/vergina-weiss/ (background removed) |
+| `beers-027.webp` | https://commons.wikimedia.org/wiki/File:Guinness_bottle.jpg |
+| `beers-028.webp` | https://www.ab.gr/el/eshop/Kava-anapsyktika-nera-xiroi-karpoi/Mpyres/Mpyres-Pils/Mpyra-Koyti-500ml/p/7091737 |
 | `beers-029.webp` | https://world.openfoodfacts.org/product/3340889481338 (background removed) |
-| `beers-031.webp` | https://commons.wikimedia.org/wiki/File:FIX_beer_original_(cropped).jpg |
+| `beers-030.webp` | https://athenianbrewery.gr/products/beers/nymfi/ |
+| `beers-031.webp` | https://www.ab.gr/el/eshop/Kava-anapsyktika-nera-xiroi-karpoi/Mpyres/Mpyres-Lager/Mpyra-Aney-Alkool-Koyti-330ml/p/7308212 |
+| `beers-032.webp` | https://athenianbrewery.gr/products/beers/amstel/ |
+| `beers-033.webp` | https://www.ab.gr/el/eshop/Kava-anapsyktika-nera-xiroi-karpoi/Mpyres/Mpyres-Lager/Mpyra-Fiali-330ml/p/7087333 |
 | `beverages-001.webp` | https://world.openfoodfacts.org/product/5449000233417 (background removed) |
 | `beverages-002.webp` | https://world.openfoodfacts.org/product/5449000011527 (background removed) |
 | `beverages-003.webp` | https://world.openfoodfacts.org/product/5449000286932 (background removed) |

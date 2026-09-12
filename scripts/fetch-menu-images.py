@@ -171,22 +171,38 @@ _OVERRIDES_RAW: dict[str, tuple[str, str]] = {
         "https://world.openfoodfacts.org/product/5449000000996",
     ),
     "beers::Άλφα 330ml": (
-        "https://upload.wikimedia.org/wikipedia/commons/0/07/AlfaGreekBeer.jpg",
-        "https://commons.wikimedia.org/wiki/File:AlfaGreekBeer.jpg",
+        "https://athenianbrewery.gr/wp-content/uploads/2021/11/ALFA.png",
+        "https://athenianbrewery.gr/products/beers/alfa/",
     ),
     "beers::Amstel Radler 330ml": (
-        "https://images.openfoodfacts.org/images/products/520/126/101/1148/front_el.16.400.jpg",
-        "https://world.openfoodfacts.org/product/5201261011148",
+        "https://athenianbrewery.gr/wp-content/uploads/2025/06/%CE%91%CE%9C%CE%A3%CE%A4%CE%95%CE%9B-Radler-Lemon_NEW.png",
+        "https://athenianbrewery.gr/products/beers/amstel/",
     ),
     "beers::Μάμος 330ml": (
-        _fp("Mamos Greek beer.jpg"),
-        "https://commons.wikimedia.org/wiki/File:Mamos_Greek_beer.jpg",
+        "https://athenianbrewery.gr/wp-content/uploads/2021/11/MAMOS.png",
+        "https://athenianbrewery.gr/products/beers/mamos/",
+    ),
+    "beers::Βεργίνα Weiss 500ml": (
+        "https://www.verginabeer.com/wp-content/uploads/2026/05/11.png",
+        "https://www.verginabeer.com/beer/vergina-weiss/",
+    ),
+    "beers::Kaiser 330ml": (
+        "https://static.ab.gr/medias/sys_master/products/hb1/h78/10600077557790.jpg",
+        "https://www.ab.gr/el/eshop/Kava-anapsyktika-nera-xiroi-karpoi/Mpyres/Mpyres-Pils/Mpyra-Koyti-500ml/p/7091737",
+    ),
+    "beers::Νύμφη 330ml": (
+        "https://athenianbrewery.gr/wp-content/uploads/2026/01/NYMFH_FINAL.png",
+        "https://athenianbrewery.gr/products/beers/nymfi/",
     ),
     # OFF 5200334250033 front_en is a landscape wide shot; the fr pick is
     # the single upright bottle (portrait). Pinned direct.
     "beers::Fix Άνευ 500ml": (
-        "https://images.openfoodfacts.org/images/products/520/033/425/0033/front_fr.7.400.jpg",
-        "https://world.openfoodfacts.org/product/5200334250033",
+        "https://static.ab.gr/medias/sys_master/h9f/hd3/10126339473438.jpg",
+        "https://www.ab.gr/el/eshop/Kava-anapsyktika-nera-xiroi-karpoi/Mpyres/Mpyres-Lager/Mpyra-Aney-Alkool-Koyti-330ml/p/7308212",
+    ),
+    "beers::Stella Artois 330ml": (
+        "https://static.ab.gr/medias/sys_master/h04/hd2/9998501314590.jpg",
+        "https://www.ab.gr/el/eshop/Kava-anapsyktika-nera-xiroi-karpoi/Mpyres/Mpyres-Lager/Mpyra-Fiali-330ml/p/7087333",
     ),
     # GROUP D (02-BEERS): isolated single bottle/can on white, 512px catalog.
     # Carlsberg front_fr is a giant label close-up crop; raw 5/6 uploads
