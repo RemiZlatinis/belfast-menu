@@ -222,6 +222,21 @@ _OVERRIDES_RAW: dict[str, tuple[str, str]] = {
         "https://marmitabeer.com/wp-content/uploads/2021/01/Redale.jpg",
         "https://marmitabeer.com/product/marmita-red-ale-330-ml-pack/",
     ),
+    # 03-CRAFT: official Marmita single + beer24 white singles. The old
+    # 038/039 files showed the wrong product entirely (Samuel Adams
+    # Utopias decanter); Babylon was cut out from its red eshop backdrop.
+    "craft::Marmita Red 330ml": (
+        "https://marmitabeer.com/wp-content/uploads/2021/01/Redale.jpg",
+        "https://marmitabeer.com/product/marmita-red-ale-330-ml-pack/",
+    ),
+    "craft::Utopia Babylon IPA 330ml": (
+        "https://beer24.gr/b/9627-large_default/utopia-babylon-033lt.jpg",
+        "https://beer24.gr/b/brand/355-utopia",
+    ),
+    "craft::Utopia Eden IPL 330ml": (
+        "https://beer24.gr/b/4999-large_default/utopia-eden-ipl-033lt.jpg",
+        "https://beer24.gr/b/brand/355-utopia",
+    ),
     "whiskeys::Teeling": (
         "https://aem.lcbo.com/content/dam/lcbo/products/6/4/4/2/644237.jpg.thumb.1280.1280.jpg",
         "https://www.lcbo.com/en/teeling-small-batch-irish-whiskey-644237",
