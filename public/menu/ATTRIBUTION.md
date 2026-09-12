@@ -14,23 +14,25 @@ Product photos: Open Food Facts (CC BY-SA), Wikimedia Commons
 | `beers-027.webp` | https://world.openfoodfacts.org/product/5000213101223 |
 | `beers-029.webp` | https://world.openfoodfacts.org/product/3340889481338 (background removed) |
 | `beers-031.webp` | https://commons.wikimedia.org/wiki/File:FIX_beer_original_(cropped).jpg |
-| `beverages-001.webp` | https://commons.wikimedia.org/wiki/File%3ASchweppes_bottles.jpg |
-| `beverages-003.webp` | https://world.openfoodfacts.org/product/5449000000088 |
-| `beverages-004.webp` | https://world.openfoodfacts.org/product/5449000015105 |
-| `beverages-005.webp` | https://world.openfoodfacts.org/product/5449000214911 |
-| `beverages-006.webp` | https://world.openfoodfacts.org/product/5449000214799 |
-| `beverages-007.webp` | https://www.biologikoxorio.gr/xyno-nero-florinas (background removed) |
+| `beverages-001.webp` | https://world.openfoodfacts.org/product/5449000233417 (background removed) |
+| `beverages-002.webp` | https://world.openfoodfacts.org/product/5449000011527 (background removed) |
+| `beverages-003.webp` | https://world.openfoodfacts.org/product/5449000286932 (background removed) |
+| `beverages-004.webp` | https://commons.wikimedia.org/wiki/File:Bouteille_de_sprite_en_2025.jpg (background removed) |
+| `beverages-005.webp` | https://world.openfoodfacts.org/product/5449000000996 |
+| `beverages-006.webp` | https://commons.wikimedia.org/wiki/File:Coca_Cola_Zero_bottle.png |
+| `beverages-007.webp` | STUDIO-PLACEHOLDER (owner bar-side photo pending, no licensed single-object source in OFF/Commons/official) |
 | `beverages-008.webp` | https://world.openfoodfacts.org/product/90162602 (background removed) |
-| `beverages-009.webp` | https://world.openfoodfacts.org/product/5201256050671 |
-| `beverages-011.webp` | https://world.openfoodfacts.org/product/5060108454063 |
-| `beverages-012.webp` | https://world.openfoodfacts.org/product/9311493002220 |
-| `beverages-013.webp` | https://commons.wikimedia.org/wiki/File:Glass_of_lemonade.jpg (background removed) |
+| `beverages-009.webp` | https://threecents.com/drinks/pink-grapefruit-soda/ |
+| `beverages-010.webp` | https://threecents.com/drinks/aegean-tonic/ |
+| `beverages-011.webp` | STUDIO-PLACEHOLDER (owner bar-side photo pending, no licensed single-object source in OFF/Commons/official) |
+| `beverages-012.webp` | https://world.openfoodfacts.org/product/9311493002220 (background removed) |
+| `beverages-013.webp` | STUDIO-PLACEHOLDER (owner bar-side photo pending, no licensed single-object source in OFF/Commons/official) |
 | `beverages-014.webp` | https://www.coffees.gr/giagiamas-cherry-1300g/ |
 | `beverages-015.webp` | https://www.coffees.gr/giagiamas-strawberry-lemonade-1300g/ |
 | `beverages-016.webp` | https://www.coffees.gr/giagiamas-lemonade-1300g/ |
-| `beverages-017.webp` | https://world.openfoodfacts.org/product/0613008730697 |
-| `beverages-018.webp` | https://world.openfoodfacts.org/product/0613008730710 |
-| `beverages-019.webp` | https://world.openfoodfacts.org/product/0613008753351 |
+| `beverages-017.webp` | STUDIO-PLACEHOLDER (owner bar-side photo pending, no licensed single-object source in OFF/Commons/official) |
+| `beverages-018.webp` | STUDIO-PLACEHOLDER (owner bar-side photo pending, no licensed single-object source in OFF/Commons/official) |
+| `beverages-019.webp` | STUDIO-PLACEHOLDER (owner bar-side photo pending, no licensed single-object source in OFF/Commons/official) |
 | `cocktails-124.webp` | https://commons.wikimedia.org/wiki/File%3AWingko_Babat_Negroni_Cocktail.jpg |
 | `cocktails-125.webp` | https://commons.wikimedia.org/wiki/File%3ATray_with_orange_slice_old_fashioned_cocktail_potted_plant_bitters_bourbon_bottle_%2818686362141%29.jpg |
 | `cocktails-126.webp` | https://commons.wikimedia.org/wiki/File%3AOld_Fashioned_Cocktail_Hilton_London_Syon_Park_%2855775610%29.jpeg |

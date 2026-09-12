@@ -40,12 +40,11 @@ UA = {"User-Agent": "BelfastMenu/1.0 (catalogue photos; contact: admin@belfast.p
 OFF_CODE_OVERRIDES: dict[str, str] = {
     "beverages::ARIZONA ΛΕΜΟΝΙ 330ml": "0613008730697",
     "beverages::ARIZONA ΡΟΔΙ 330ml": "0613008753351",
-    "beverages::COCA COLA 250ml": "5449000214911",
-    "beverages::COCA COLA ZERO 250ml": "5449000214799",
-    "beverages::FANTA ΛΕΜΟΝΑΔΑ 250ml": "5449000000088",
+    "beverages::ΣΟΔΑ SCHWEPPES 250ml": "5449000233417",
+    "beverages::FANTA ΠΟΡΤΟΚΑΛΙ 250ml": "5449000011527",
+    "beverages::FANTA ΛΕΜΟΝΑΔΑ 250ml": "5449000286932",
     "beers::Carlsberg Draught 500ml": "3080216008622",
     "beers::Carlsberg Draught 330ml": "3080216008622",
-    "beverages::THREE CENTS AEGEAN TONIC 200ml": "5201256050688",
     "whiskeys::Tullamore XO": "5011026108019",
     "beers::Fix Άνευ 500ml": "5200334250033",
     "whiskeys::Nikka From The Barrel": "4904230100683",
@@ -140,6 +139,33 @@ _OVERRIDES_RAW: dict[str, tuple[str, str]] = {
     "beverages::ΣΠΙΤΙΚΗ ΛΕΜΟΝΑΔΑ": (
         _fp("Glass of lemonade.jpg"),
         "https://commons.wikimedia.org/wiki/File:Glass_of_lemonade.jpg",
+    ),
+    "beverages::COCA COLA ZERO 250ml": (
+        "https://upload.wikimedia.org/wikipedia/commons/c/ce/Coca_Cola_Zero_bottle.png",
+        "https://commons.wikimedia.org/wiki/File:Coca_Cola_Zero_bottle.png",
+    ),
+    "beverages::THREE CENTS PINK SODA 200ml": (
+        "https://threecents.com/wp-content/uploads/2020/06/pink_grapefruit-soda-1.png",
+        "https://threecents.com/drinks/pink-grapefruit-soda/",
+    ),
+    "beverages::THREE CENTS AEGEAN TONIC 200ml": (
+        "https://threecents.com/wp-content/uploads/2020/06/aegean_tonic-1.png",
+        "https://threecents.com/drinks/aegean-tonic/",
+    ),
+    # OFF 9311493002220 default front (en) is a dark-room snap; the fr pick
+    # is a single isolated stubby (white via the cutout script). Pinned
+    # direct: official bundaberg.com og:image shows two bottles + garnish.
+    "beverages::BUNDABERG GINGER BEER 375ml": (
+        "https://images.openfoodfacts.org/images/products/931/149/300/2220/front_fr.38.400.jpg",
+        "https://world.openfoodfacts.org/product/9311493002220",
+    ),
+    "beverages::SPRITE 250ml": (
+        "https://upload.wikimedia.org/wikipedia/commons/c/c4/Bouteille_de_sprite_en_2025.jpg",
+        "https://commons.wikimedia.org/wiki/File:Bouteille_de_sprite_en_2025.jpg",
+    ),
+    "beverages::COCA COLA 250ml": (
+        "https://images.openfoodfacts.org/images/products/544/900/000/0996/front_en.1129.400.jpg",
+        "https://world.openfoodfacts.org/product/5449000000996",
     ),
     "beers::Μάμος 330ml": (
         _fp("Mamos Greek beer.jpg"),
@@ -388,7 +414,14 @@ def download_normalized(url: str, dest: str) -> bool:
         from PIL import Image  # local import: only needed for the fetch script
 
         with Image.open(tmp) as im:
-            im = im.convert("RGB")
+            if im.mode in ("RGBA", "LA") or (
+                im.mode == "P" and "transparency" in im.info
+            ):
+                rgba = im.convert("RGBA")
+                bg = Image.new("RGBA", rgba.size, (255, 255, 255, 255))
+                im = Image.alpha_composite(bg, rgba).convert("RGB")
+            else:
+                im = im.convert("RGB")
             im.thumbnail((512, 512), Image.LANCZOS)
             im.save(dest, "WEBP", quality=72, method=6)
         os.remove(tmp)
@@ -454,8 +487,6 @@ BLOCKLIST: set[str] = {
     "gin::Old Sport",
     # Untappd widget banner, not a product photo.
     "craft::JASMINE IPA (Strange Brew) 330ml",
-    # Only hands-on-bar photos exist online.
-    "beverages::THREE CENTS AEGEAN TONIC 200ml",
 }
 
 

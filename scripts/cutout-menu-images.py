@@ -23,8 +23,12 @@ SIDECAR_PATH = os.path.join(OUT_DIR, ".sources.json")
 # Curated: product is isolated enough for a clean mask (no overlapping hands).
 CUTOUT = [
     # beverages
-    "beverages-002.webp",  # Fanta orange (table bg)
+    "beverages-001.webp",  # Schweppes soda can (table bg)
+    "beverages-002.webp",  # Fanta orange (hand/floor bg)
+    "beverages-003.webp",  # Fanta lemon can
+    "beverages-004.webp",  # Sprite bottle
     "beverages-008.webp",  # Red Bull (garden)
+    "beverages-012.webp",  # Bundaberg (dark room bg, OFF fr pick)
     "beverages-013.webp",  # homemade lemonade (taverna bg)
     # beers
     "beers-023.webp",  # Alfa (outdoors, 2 bottles)
