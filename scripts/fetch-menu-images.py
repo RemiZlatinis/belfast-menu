@@ -31,6 +31,7 @@ SEED_EL = os.path.join(ROOT, "src/lib/menu-seed.json")
 SEED_EN = os.path.join(ROOT, "src/lib/menu-seed-en.json")
 OUT_DIR = os.path.join(ROOT, "public/menu")
 MAP_PATH = os.path.join(ROOT, "src/lib/menu-images.json")
+SIDECAR_PATH = os.path.join(OUT_DIR, ".sources.json")
 ATTR_PATH = os.path.join(OUT_DIR, "ATTRIBUTION.md")
 UA = {"User-Agent": "BelfastMenu/1.0 (catalogue photos; contact: admin@belfast.pub)"}
 
@@ -50,7 +51,12 @@ OFF_CODE_OVERRIDES: dict[str, str] = {
     "whiskeys::Nikka From The Barrel": "4904230100683",
     "whiskeys::Dalwhinnie": "5000281005423",
     "gin::Bombay": "5010677716000",
+    "whiskeys::Ballantine's": "5010106111956",
+    "whiskeys::Jack Daniel's": "5099873089798",
+    "whiskeys::Canadian Club": "9300624031406",
+    "beers::Guinness 330ml": "5000213101223",
     "whiskeys::Tullamore Dew": "5011026108019",
+    "whiskeys::Teeling": "5391523270021",
     "gin::The Botanist": "5055807402040",
 }
 
@@ -69,6 +75,35 @@ def off_product(code: str):
     if not img:
         return None
     return img, f"https://world.openfoodfacts.org/product/{code}"
+def _twe(code: str) -> str:
+    return f"https://img.thewhiskyexchange.com/540/{code}.jpg"
+
+
+def _twe_src(terms: str) -> str:
+    return "https://www.thewhiskyexchange.com/search?q=" + urllib.parse.quote(terms)
+
+
+# The Whisky Exchange packshots (clean white-background product shots).
+# value: (image_url, source_page_url)
+TWE_OVERRIDES: dict[str, tuple[str, str]] = {
+    "whiskeys::Jameson": (_twe("irish_jam1"), _twe_src("jameson")),
+    "whiskeys::Jameson Black Barrel": (_twe("irish_jam19"), _twe_src("jameson black barrel")),
+    "whiskeys::Jameson Caskmates": (_twe("irish_jam49"), _twe_src("jameson caskmates")),
+    "whiskeys::Bushmills Black Bush": (_twe("irish_bus44"), _twe_src("bushmills black bush")),
+    "whiskeys::Johnnie Black": (_twe("blend_joh1"), _twe_src("johnnie walker black label")),
+    "whiskeys::Nikka From The Barrel": (_twe("japan_nik10"), _twe_src("nikka from the barrel")),
+    "gin::Bombay": (_twe("gin_bom3"), _twe_src("bombay sapphire")),
+    "vodka::Absolut": (_twe("vodka_abs1"), _twe_src("absolut vodka")),
+    "vodka::Grey Goose": (_twe("vodka_gre1"), _twe_src("grey goose vodka")),
+    "rum::Kingston": (_twe("rum_kin5"), _twe_src("kingston 62 rum")),
+    "rum::Flor De Cana 12yr": (_twe("rum_flo12"), _twe_src("flor de cana")),
+    "rum::Bayou Spiced": (_twe("rum_bay6"), _twe_src("bayou rum")),
+    "whiskeys::Bushmills Black Bush": (_twe("irish_bus44"), _twe_src("bushmills black bush")),
+    "whiskeys::The Glenallachie 12yr": (_twe("mini_sm_gle12yo"), _twe_src("glenallachie 12")),
+    "cognac::Metaxa 5*": (_twe("brandy_met5"), _twe_src("metaxa 5")),
+}
+
+
 def _fp(name: str) -> str:
     return (
         "https://commons.wikimedia.org/wiki/Special:FilePath/"
@@ -81,10 +116,6 @@ _OVERRIDES_RAW: dict[str, tuple[str, str]] = {
     "whiskeys::Evan Williams": (
         _fp("Evan Williams white label and black label whiskey bottles.jpg"),
         "https://commons.wikimedia.org/wiki/File:Evan_Williams_white_label_and_black_label_whiskey_bottles.jpg",
-    ),
-    "cognac::Metaxa 5*": (
-        _fp("Metaxa (290173991).jpg"),
-        "https://commons.wikimedia.org/wiki/File:Metaxa_(290173991).jpg",
     ),
     "cognac::Metaxa 7*": (
         _fp("Metaxa 7 star amphora.jpg"),
@@ -102,13 +133,13 @@ _OVERRIDES_RAW: dict[str, tuple[str, str]] = {
         _fp("Appleton Estate V-X Jamaica Rum-with glass.jpg"),
         "https://commons.wikimedia.org/wiki/File:Appleton_Estate_V-X_Jamaica_Rum-with_glass.jpg",
     ),
-    "beverages::ΣΠΙΤΙΚΗ ΛΕΜΟΝΑΔΑ": (
-        _fp("Glass of lemonade.jpg"),
-        "https://commons.wikimedia.org/wiki/File:Glass_of_lemonade.jpg",
-    ),
     "rum::Barcelo": (
         _fp("Ron Barcelo rum.jpg"),
         "https://commons.wikimedia.org/wiki/File:Ron_Barcelo_rum.jpg",
+    ),
+    "beverages::ΣΠΙΤΙΚΗ ΛΕΜΟΝΑΔΑ": (
+        _fp("Glass of lemonade.jpg"),
+        "https://commons.wikimedia.org/wiki/File:Glass_of_lemonade.jpg",
     ),
     "beers::Μάμος 330ml": (
         _fp("Mamos Greek beer.jpg"),
@@ -118,6 +149,26 @@ _OVERRIDES_RAW: dict[str, tuple[str, str]] = {
         _fp("FIX beer original (cropped).jpg"),
         "https://commons.wikimedia.org/wiki/File:FIX_beer_original_(cropped).jpg",
     ),
+    "whiskeys::Teeling": (
+        "https://aem.lcbo.com/content/dam/lcbo/products/6/4/4/2/644237.jpg.thumb.1280.1280.jpg",
+        "https://www.lcbo.com/en/teeling-small-batch-irish-whiskey-644237",
+    ),
+    "whiskeys::Canadian Club": (
+        "https://aem.lcbo.com/content/dam/lcbo/products/0/0/0/0/000042.jpg.thumb.1280.1280.jpg",
+        "https://www.lcbo.com/en/canadian-club-whisky-42",
+    ),
+    "whiskeys::Redbreast 12yr": (
+        "https://aem.lcbo.com/content/dam/lcbo/products/6/3/6/8/636845.jpg.thumb.1280.1280.jpg",
+        "https://www.lcbo.com/en/redbreast-12-year-old-irish-whiskey-636845",
+    ),
+    "whiskeys::Grants 12yr": (
+        "https://upload.wikimedia.org/wikipedia/commons/f/f5/Grant%27s_Whisky_01.jpg",
+        "https://commons.wikimedia.org/wiki/File:Grant%27s_Whisky_01.jpg",
+    ),
+    "whiskeys::Nikka From The Barrel": (
+        "https://upload.wikimedia.org/wikipedia/commons/2/25/Nikka_Whisky_From_the_Barrel%2C_Japan.jpg",
+        "https://commons.wikimedia.org/wiki/File:Nikka_Whisky_From_the_Barrel%2C_Japan.jpg",
+    ),
     "cocktails::Mai Tai": (
         _fp("Mai Tai (16304400706).jpg"),
         "https://commons.wikimedia.org/wiki/File:Mai_Tai_(16304400706).jpg",
@@ -125,6 +176,14 @@ _OVERRIDES_RAW: dict[str, tuple[str, str]] = {
     "cocktails::Cuba Libre": (
         _fp("Bebida Cuba Libre.jpg"),
         "https://commons.wikimedia.org/wiki/File:Bebida_Cuba_Libre.jpg",
+    ),
+    "cocktails::Mojito (f)": (
+        _fp("Marina Beach Club - Mojito.jpg"),
+        "https://commons.wikimedia.org/wiki/File:Marina_Beach_Club_-_Mojito.jpg",
+    ),
+    "cocktails::Aperol Spritz": (
+        _fp("Aperol Spritz (Aperol Spritz Original Bar) (42171686322).jpg"),
+        "https://commons.wikimedia.org/wiki/File:Aperol_Spritz_(Aperol_Spritz_Original_Bar)_(42171686322).jpg",
     ),
     "gin::Votanikon": (
         "https://aem.lcbo.com/content/dam/lcbo/products/0/4/3/4/043432.jpg.thumb.1280.1280.jpg",
@@ -154,6 +213,10 @@ PAGE_OVERRIDES: dict[str, str] = {
     "rum::Bayou Spiced": "https://www.bayourum.com/",
     "rum::Plantation Dark": "https://rumx.com/en/rums/75/plantation-original-dark/",
     "rum::Tamboo": "https://www.quick-spirits.com/angostura-tamboo-spiced-rum-70cl",
+    "whiskeys::Four Roses": "https://fourrosesbourbon.com/",
+    "whiskeys::Teeling": "https://www.masterofmalt.com/whiskies/teeling/teeling-small-batch-whiskey/",
+    "whiskeys::Redbreast 12yr": "https://www.masterofmalt.com/whiskies/redbreast/redbreast-12-year-old-whiskey/",
+    "whiskeys::Grants 12yr": "https://www.masterofmalt.com/distilleries/grants/",
     "gin::Oyster": "https://oystergin.com/",
     "gin::Canaima": "https://latitudewine.co.uk/products/canaima-small-batch-gin",
     "craft::ΜΠΕΛΑ Pilsner (Sourmena Brew X 608) 330ml": "https://greekbeershop.gr/product/608-brewing-co-x-sourmena-brew-bela-pilsner/",
@@ -190,7 +253,7 @@ def off_search(query: str):
         # OFF throttles aggressively: back off and retry a few times.
         data = None
         if "503" in str(e) or "429" in str(e):
-            for wait in (10, 30, 60):
+            for wait in (5, 15, 30):
                 time.sleep(wait)
                 try:
                     data = http_json(url)
@@ -313,6 +376,10 @@ def resolve_page_image(page_url: str):
 
 def download(url: str, dest: str) -> bool:
     """Download + normalize to 512px-max WebP (keeps the repo small)."""
+    return download_normalized(url, dest)
+
+
+def download_normalized(url: str, dest: str) -> bool:
     tmp = dest + ".orig"
     try:
         req = urllib.request.Request(_safe_url(url), headers=UA)
@@ -331,6 +398,31 @@ def download(url: str, dest: str) -> bool:
         for p in (tmp,):
             if os.path.exists(p):
                 os.remove(p)
+        return False
+
+
+def dhash(path: str) -> int:
+    """64-bit difference hash (perceptual) for near-duplicate detection."""
+    from PIL import Image
+
+    with Image.open(path).convert("L") as im:
+        im = im.resize((9, 8), Image.LANCZOS)
+        px = [im.getpixel((x, y)) for y in range(8) for x in range(9)]
+    bits = 0
+    for y in range(8):
+        for x in range(8):
+            bits = (bits << 1) | (1 if px[y * 9 + x] > px[y * 9 + x + 1] else 0)
+    return bits
+
+
+def dhamming(a: int, b: int) -> int:
+    return bin(a ^ b).count("1")
+
+
+def looks_same(file_a: str, file_b: str, tolerance: int = 10) -> bool:
+    try:
+        return dhamming(dhash(file_a), dhash(file_b)) <= tolerance
+    except Exception:
         return False
 
 
@@ -360,11 +452,56 @@ BLOCKLIST: set[str] = {
     # (Commons) — owner snaps the bar bottle instead.
     "rum::Plantation Dark",
     "gin::Old Sport",
+    # Untappd widget banner, not a product photo.
+    "craft::JASMINE IPA (Strange Brew) 330ml",
+    # Only hands-on-bar photos exist online.
+    "beverages::THREE CENTS AEGEAN TONIC 200ml",
 }
+
+
+def resolve_item(cid: str, name_en: str, key_el: str):
+    """Resolve (image_url, source_url) for an item via tables then searches."""
+    base = base_name(name_en)
+    found = None
+    suffix = ""
+    if key_el in OVERRIDES:
+        return OVERRIDES[key_el]
+    if key_el in TWE_OVERRIDES:
+        return TWE_OVERRIDES[key_el]
+    if key_el in OFF_CODE_OVERRIDES:
+        found = off_product(OFF_CODE_OVERRIDES[key_el])
+    if not found and key_el in PAGE_OVERRIDES:
+        found = resolve_page_image(PAGE_OVERRIDES[key_el])
+    if not found and cid == "cocktails":
+        found = commons_search(f"{base} cocktail", min_token_len=3)
+    if not found and cid != "cocktails":
+        suffix = QUERY_SUFFIX[cid]
+        found = off_search(base + suffix)
+    if not found:
+        # Retry with age statements stripped ("Lagavulin 16yr" -> "Lagavulin").
+        short = AGE_RE.sub("", base).strip()
+        short = re.sub(
+            r"\b(XO|Black Barrel|Caskmates|Double Cask|From The Barrel)\b",
+            "",
+            short,
+            flags=re.IGNORECASE,
+        ).strip()
+        short = re.sub(r"\s+", " ", short)
+        if short and short.lower() != base.lower():
+            found = off_search(short + suffix)
+    if not found:
+        brand = base.split()[0]
+        found = commons_search(f"{brand} {suffix.strip()} bottle", must_contain=brand)
+    return found
 
 
 def main() -> None:
     rebuild = "--rebuild" in sys.argv
+    relink = "--relink" in sys.argv
+    # --relink-fast: relink only table-pinned sources (no search APIs).
+    relink_fast = "--relink-fast" in sys.argv
+    if relink_fast:
+        relink = True
     os.makedirs(OUT_DIR, exist_ok=True)
     with open(SEED_EL, encoding="utf-8") as f:
         el = json.load(f)
@@ -378,7 +515,15 @@ def main() -> None:
                 mapping = json.load(f)
         except (json.JSONDecodeError, OSError):
             mapping = {}
-    attrib: dict[str, str] = {}
+    # Sidecar: fname -> source URL. Single source of truth for attribution
+    # (survives map rewrites; never parsed from markdown).
+    sources: dict[str, str] = {}
+    if os.path.exists(SIDECAR_PATH):
+        try:
+            with open(SIDECAR_PATH, encoding="utf-8") as f:
+                sources = json.load(f)
+        except (json.JSONDecodeError, OSError):
+            sources = {}
     misses: list[str] = []
     done = 0
     n = 0
@@ -397,42 +542,51 @@ def main() -> None:
                     continue
                 # Disk is the source of truth: an existing file (re)maps its
                 # item even if menu-images.json was lost or pruned wrongly.
+                # In relink mode, files that already have a sidecar source
+                # need no work at all.
                 if os.path.exists(dest) and not rebuild:
+                    if relink and fname in sources:
+                        mapping[key_el] = f"/menu/{fname}"
+                        mapping[key_en] = f"/menu/{fname}"
+                        done += 1
+                        continue
+                    if not relink:
+                        mapping[key_el] = f"/menu/{fname}"
+                        mapping[key_en] = f"/menu/{fname}"
+                        done += 1
+                        continue
+                base = base_name(name_en)
+                print(f"[{n}] {cid} :: {base}")
+                if relink_fast and key_el not in (
+                    {**OVERRIDES, **TWE_OVERRIDES, **OFF_CODE_OVERRIDES, **PAGE_OVERRIDES}
+                ):
+                    continue
+                found = resolve_item(cid, name_en, key_el)
+                if relink and found:
+                    # Verify-only: download candidate to temp and compare
+                    # perceptually with the existing file. Never modifies it.
+                    img_url, src_url = found
+                    tmp = dest + ".relink"
+                    try:
+                        if download_normalized(img_url, tmp) and looks_same(tmp, dest):
+                            sources[fname] = src_url
+                            print(f"    relinked: {src_url[:80]}")
+                        else:
+                            print("    relink: candidate differs, trying next strategy...")
+                            found = None
+                    finally:
+                        if os.path.exists(tmp):
+                            os.remove(tmp)
+                        with open(SIDECAR_PATH, "w", encoding="utf-8") as f:
+                            json.dump(sources, f, ensure_ascii=False, indent=2, sort_keys=True)
+                            f.write("\n")
+                    if not found:
+                        misses.append(f"{cid} :: {name_el} / {name_en} (relink unverified)")
+                        continue
                     mapping[key_el] = f"/menu/{fname}"
                     mapping[key_en] = f"/menu/{fname}"
                     done += 1
                     continue
-                base = base_name(name_en)
-                print(f"[{n}] {cid} :: {base}")
-                found = None
-                if key_el in OVERRIDES:
-                    found = OVERRIDES[key_el]
-                elif key_el in OFF_CODE_OVERRIDES:
-                    found = off_product(OFF_CODE_OVERRIDES[key_el])
-                elif key_el in PAGE_OVERRIDES:
-                    found = resolve_page_image(PAGE_OVERRIDES[key_el])
-                elif cid == "cocktails":
-                    found = commons_search(f"{base} cocktail", min_token_len=3)
-                else:
-                    suffix = QUERY_SUFFIX[cid]
-                    found = off_search(base + suffix)
-                    if not found:
-                        # Retry with age statements stripped ("Lagavulin 16yr" -> "Lagavulin").
-                        short = AGE_RE.sub("", base).strip()
-                        short = re.sub(
-                            r"\b(XO|Black Barrel|Caskmates|Double Cask|From The Barrel)\b",
-                            "",
-                            short,
-                            flags=re.IGNORECASE,
-                        ).strip()
-                        short = re.sub(r"\s+", " ", short)
-                        if short and short.lower() != base.lower():
-                            found = off_search(short + suffix)
-                    if not found:
-                        brand = base.split()[0]
-                        found = commons_search(
-                            f"{brand} {suffix.strip()} bottle", must_contain=brand
-                        )
                 if not found:
                     misses.append(f"{cid} :: {name_el} / {name_en}")
                     print("    MISS")
@@ -444,8 +598,11 @@ def main() -> None:
                     continue
                 mapping[key_el] = f"/menu/{fname}"
                 mapping[key_en] = f"/menu/{fname}"
-                attrib[fname] = src_url
+                sources[fname] = src_url
                 done += 1
+                with open(SIDECAR_PATH, "w", encoding="utf-8") as f:
+                    json.dump(sources, f, ensure_ascii=False, indent=2, sort_keys=True)
+                    f.write("\n")
 
     with open(MAP_PATH, "w", encoding="utf-8") as f:
         json.dump(mapping, f, ensure_ascii=False, indent=2, sort_keys=True)
@@ -466,22 +623,20 @@ def main() -> None:
             json.dump(mapping, f, ensure_ascii=False, indent=2, sort_keys=True)
             f.write("\n")
 
-    # Merge attribution (keep old rows for skipped files).
-    old_attr: dict[str, str] = {}
-    if os.path.exists(ATTR_PATH):
-        for line in open(ATTR_PATH, encoding="utf-8"):
-            m = re.match(r"\| `([^`]+)` \| (\S+) \|", line)
-            if m:
-                old_attr[m.group(1)] = m.group(2)
-    old_attr.update(attrib)
-    old_attr = {k: v for k, v in old_attr.items() if os.path.exists(os.path.join(OUT_DIR, k))}
+    with open(SIDECAR_PATH, "w", encoding="utf-8") as f:
+        json.dump(sources, f, ensure_ascii=False, indent=2, sort_keys=True)
+        f.write("\n")
+
+    # Attribution derives from the sidecar (never parsed from markdown).
     with open(ATTR_PATH, "w", encoding="utf-8") as f:
         f.write("# Menu photo attribution\n\n")
-        f.write("Product photos: Open Food Facts (CC BY-SA) and Wikimedia Commons\n")
-        f.write("(CC BY / CC BY-SA / public domain). One row per file in this folder.\n\n")
+        f.write("Product photos: Open Food Facts (CC BY-SA), Wikimedia Commons\n")
+        f.write("(CC BY / CC BY-SA / public domain), brand/shop press shots\n")
+        f.write("(see per-file source). One row per file in this folder.\n\n")
         f.write("| file | source |\n| --- | --- |\n")
-        for fname in sorted(old_attr):
-            f.write(f"| `{fname}` | {old_attr[fname]} |\n")
+        for fname in sorted(sources):
+            if os.path.exists(os.path.join(OUT_DIR, fname)):
+                f.write(f"| `{fname}` | {sources[fname]} |\n")
 
     print(f"\nDone: {done} items mapped, {len(misses)} misses")
     for m in misses:
