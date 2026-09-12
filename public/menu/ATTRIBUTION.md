@@ -9,6 +9,7 @@ Product photos: Open Food Facts (CC BY-SA), Wikimedia Commons
 | `beers-020.webp` | https://world.openfoodfacts.org/product/3080216008622 |
 | `beers-021.webp` | https://world.openfoodfacts.org/product/3080216008622 |
 | `beers-022.webp` | https://marmitabeer.com/product/marmita-red-ale-330-ml-pack/ |
+| `beers-023.webp` | https://commons.wikimedia.org/wiki/File:AlfaGreekBeer.jpg |
 | `beers-024.webp` | https://commons.wikimedia.org/wiki/File:Mamos_Greek_beer.jpg (background removed) |
 | `beers-026.webp` | https://commons.wikimedia.org/wiki/File%3AVergina_Beer_Bottle_%26_Glass.jpg (background removed) |
 | `beers-027.webp` | https://world.openfoodfacts.org/product/5000213101223 |

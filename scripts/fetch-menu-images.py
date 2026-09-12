@@ -53,7 +53,6 @@ OFF_CODE_OVERRIDES: dict[str, str] = {
     "whiskeys::Ballantine's": "5010106111956",
     "whiskeys::Jack Daniel's": "5099873089798",
     "whiskeys::Canadian Club": "9300624031406",
-    "beers::Guinness 330ml": "5000213101223",
     "whiskeys::Tullamore Dew": "5011026108019",
     "whiskeys::Teeling": "5391523270021",
     "gin::The Botanist": "5055807402040",
@@ -152,6 +151,10 @@ _OVERRIDES_RAW: dict[str, tuple[str, str]] = {
         "https://threecents.com/wp-content/uploads/2020/06/aegean_tonic-1.png",
         "https://threecents.com/drinks/aegean-tonic/",
     ),
+    "beers::Guinness 330ml": (
+        "https://upload.wikimedia.org/wikipedia/commons/0/02/Guinness_bottle.jpg",
+        "https://commons.wikimedia.org/wiki/File:Guinness_bottle.jpg",
+    ),
     # OFF 9311493002220 default front (en) is a dark-room snap; the fr pick
     # is a single isolated stubby (white via the cutout script). Pinned
     # direct: official bundaberg.com og:image shows two bottles + garnish.
@@ -167,13 +170,41 @@ _OVERRIDES_RAW: dict[str, tuple[str, str]] = {
         "https://images.openfoodfacts.org/images/products/544/900/000/0996/front_en.1129.400.jpg",
         "https://world.openfoodfacts.org/product/5449000000996",
     ),
+    "beers::Άλφα 330ml": (
+        "https://upload.wikimedia.org/wikipedia/commons/0/07/AlfaGreekBeer.jpg",
+        "https://commons.wikimedia.org/wiki/File:AlfaGreekBeer.jpg",
+    ),
+    "beers::Amstel Radler 330ml": (
+        "https://images.openfoodfacts.org/images/products/520/126/101/1148/front_el.16.400.jpg",
+        "https://world.openfoodfacts.org/product/5201261011148",
+    ),
     "beers::Μάμος 330ml": (
         _fp("Mamos Greek beer.jpg"),
         "https://commons.wikimedia.org/wiki/File:Mamos_Greek_beer.jpg",
     ),
+    # OFF 5200334250033 front_en is a landscape wide shot; the fr pick is
+    # the single upright bottle (portrait). Pinned direct.
     "beers::Fix Άνευ 500ml": (
-        _fp("FIX beer original (cropped).jpg"),
-        "https://commons.wikimedia.org/wiki/File:FIX_beer_original_(cropped).jpg",
+        "https://images.openfoodfacts.org/images/products/520/033/425/0033/front_fr.7.400.jpg",
+        "https://world.openfoodfacts.org/product/5200334250033",
+    ),
+    # GROUP D (02-BEERS): isolated single bottle/can on white, 512px catalog.
+    # Carlsberg front_fr is a giant label close-up crop; raw 5/6 uploads
+    # (uploader org-brasseries-kronenbourg) are full single-product whites.
+    # 500ml pins the larger square pick (5), 330ml the taller narrow pick (6).
+    "beers::Carlsberg Draught 500ml": (
+        "https://images.openfoodfacts.org/images/products/308/021/600/8622/5.jpg",
+        "https://world.openfoodfacts.org/product/3080216008622",
+    ),
+    "beers::Carlsberg Draught 330ml": (
+        "https://images.openfoodfacts.org/images/products/308/021/600/8622/6.jpg",
+        "https://world.openfoodfacts.org/product/3080216008622",
+    ),
+    # Marmita RED: page og:image is RedaleBox (bottle + box); Redale.jpg is
+    # the official single-bottle white, same pattern as Apa.jpg reference.
+    "beers::Marmita RED Draught 330ml": (
+        "https://marmitabeer.com/wp-content/uploads/2021/01/Redale.jpg",
+        "https://marmitabeer.com/product/marmita-red-ale-330-ml-pack/",
     ),
     "whiskeys::Teeling": (
         "https://aem.lcbo.com/content/dam/lcbo/products/6/4/4/2/644237.jpg.thumb.1280.1280.jpg",
