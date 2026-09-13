@@ -351,6 +351,35 @@ _OVERRIDES_RAW: dict[str, tuple[str, str]] = {
         "https://aem.lcbo.com/content/dam/lcbo/products/0/4/3/4/043432.jpg.thumb.1280.1280.jpg",
         "https://www.lcbo.com/en/votanikon-greek-botanicals-gin-43432",
     ),
+    # GROUP G1 (06-GIN): SINGLE bottle/tin on pure white STOCK.
+    # Greenall's + Oyster = official brand singles (transparent PNG ->
+    # white-matte). Hendrick's official (hendricksgin.com) is JS-gated
+    # (og:image is a logo); Mombasa has no white single on an official
+    # site; Engine official (engine.land) is a JS app + age-gate.
+    # Those three = TWE 540px SINGLEs (verified single-object, never
+    # pair/box). Replaces: OFF premix can (Greenall's), black-backdrop
+    # bottle (Oyster), bottle+teacup lifestyle (Hendrick's), gift box
+    # (Mombasa), cropped close-up (Engine).
+    "gin::Greenall's": (
+        "https://www.greenallsgin.com/wp-content/uploads/2020/07/2025-grenalls-gin-bottle-1-2.png",
+        "https://www.greenallsgin.com/greenalls-gin-range/",
+    ),
+    "gin::Oyster": (
+        "https://oystergin.com/wp-content/uploads/2025/08/Asset-1@2x-1.png",
+        "https://oystergin.com/",
+    ),
+    "gin::Hendrick's": (
+        "https://img.thewhiskyexchange.com/540/gin_hen1.jpg",
+        "https://www.thewhiskyexchange.com/search?q=hendrick%27s+gin",
+    ),
+    "gin::Mombasa": (
+        "https://img.thewhiskyexchange.com/540/gin_mom1.jpg",
+        "https://www.thewhiskyexchange.com/search?q=mombasa+gin",
+    ),
+    "gin::Engine": (
+        "https://img.thewhiskyexchange.com/540/gin_eng1.jpg",
+        "https://www.thewhiskyexchange.com/search?q=engine+gin",
+    ),
 }
 OVERRIDES: dict[str, tuple[str, str]] = _OVERRIDES_RAW
 
