@@ -98,7 +98,6 @@ TWE_OVERRIDES: dict[str, tuple[str, str]] = {
     "rum::Bayou Spiced": (_twe("rum_bay6"), _twe_src("bayou rum")),
     "whiskeys::Bushmills Black Bush": (_twe("irish_bus44"), _twe_src("bushmills black bush")),
     "whiskeys::The Glenallachie 12yr": (_twe("mini_sm_gle12yo"), _twe_src("glenallachie 12")),
-    "cognac::Metaxa 5*": (_twe("brandy_met5"), _twe_src("metaxa 5")),
 }
 
 
@@ -134,13 +133,28 @@ _OVERRIDES_RAW: dict[str, tuple[str, str]] = {
         "https://four-roses.files.svdcdn.com/production/images/bourbons/Web_Small-batch_2023-06-14-135007_iiyg.png?dm=1757960464",
         "https://www.fourrosesbourbon.com/bourbon/small-batch",
     ),
+    # GROUP C (08-COGNAC): SINGLE bottle on pure white STOCK. Hennessy VS =
+    # Secret Bottle Shop white packshot (official hennessy.com is bot-gated
+    # 503; TWE page Cloudflare-blocked for single verification). Metaxa
+    # 5/7/12 = official metaxa.com Shopify singles (transparent PNG ->
+    # white-matte). Replaces: dark-backdrop bottle (Hennessy), TWE
+    # bottle+box (Metaxa 5), dark-surface amphora (Metaxa 7), wooden-table
+    # lifestyle (Metaxa 12).
+    "cognac::Hennessy": (
+        "https://secretbottleshop.co.uk/cdn/shop/files/aaf69b14-780e-477e-9611-408e0f47abe7.jpg?v=1741278977",
+        "https://secretbottleshop.co.uk/products/hennessy-vs-70cl",
+    ),
+    "cognac::Metaxa 5*": (
+        "https://www.metaxa.com/cdn/shop/files/metaxa-5-stars_936x_afr_c7d45834-1237-489a-9d85-3659e848a5c0.png?v=1759145241",
+        "https://www.metaxa.com/products/metaxa-5-stars",
+    ),
     "cognac::Metaxa 7*": (
-        _fp("Metaxa 7 star amphora.jpg"),
-        "https://commons.wikimedia.org/wiki/File:Metaxa_7_star_amphora.jpg",
+        "https://www.metaxa.com/cdn/shop/files/7-stars_922x_new.png?v=1779099733",
+        "https://www.metaxa.com/products/metaxa-7-stars",
     ),
     "cognac::Metaxa 12*": (
-        _fp("METAXA 12 stars.JPG"),
-        "https://commons.wikimedia.org/wiki/File:METAXA_12_stars.JPG",
+        "https://www.metaxa.com/cdn/shop/files/12-stars_new_517x_4f596b72-36c6-40e1-90ff-6f47f8fe092d.png?v=1787920744",
+        "https://www.metaxa.com/products/metaxa-12-stars",
     ),
     "rum::Havana": (
         _fp("Havana Club 7 anos.jpeg"),

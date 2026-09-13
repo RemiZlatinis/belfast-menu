@@ -51,9 +51,10 @@ Product photos: Open Food Facts (CC BY-SA), Wikimedia Commons
 | `cocktails-134.webp` | https://commons.wikimedia.org/wiki/File%3AZombie_cocktail_gianni_zottola.jpg |
 | `cocktails-135.webp` | https://commons.wikimedia.org/wiki/File%3ABramble_Cocktail.jpg |
 | `cocktails-138.webp` | https://commons.wikimedia.org/wiki/File:Aperol_Spritz_(Aperol_Spritz_Original_Bar)_(42171686322).jpg |
-| `cognac-121.webp` | https://www.thewhiskyexchange.com/search?q=metaxa%205 |
-| `cognac-122.webp` | https://commons.wikimedia.org/wiki/File:Metaxa_7_star_amphora.jpg |
-| `cognac-123.webp` | https://commons.wikimedia.org/wiki/File:METAXA_12_stars.JPG |
+| `cognac-120.webp` | https://secretbottleshop.co.uk/products/hennessy-vs-70cl |
+| `cognac-121.webp` | https://www.metaxa.com/products/metaxa-5-stars |
+| `cognac-122.webp` | https://www.metaxa.com/products/metaxa-7-stars |
+| `cognac-123.webp` | https://www.metaxa.com/products/metaxa-12-stars |
 | `craft-034.webp` | https://marmitabeer.com/product/marmita-red-ale-330-ml-pack/ |
 | `craft-035.webp` | https://greekbeershop.gr/product/marmita-apa/ |
 | `craft-036.webp` | https://greekbeershop.gr/product/marmita-stout/ |
