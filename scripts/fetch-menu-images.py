@@ -380,6 +380,26 @@ _OVERRIDES_RAW: dict[str, tuple[str, str]] = {
         "https://img.thewhiskyexchange.com/540/gin_eng1.jpg",
         "https://www.thewhiskyexchange.com/search?q=engine+gin",
     ),
+    # GROUP V (07-VODKA): SINGLE bottle on pure white STOCK. Crystal Head +
+    # Ketel One = official brand singles (transparent PNG -> white-matte;
+    # Crystal Head single page replaces the 2-glasses bundle PAGE_OVERRIDE).
+    # Belvedere official (belvederevodka.com) product PNGs are only 142px
+    # thumbnails (would need 3.6x upscale to 512); TWE 540px SINGLE used
+    # instead (verified single-object via p/5073 page). Replaces: frosted
+    # glass close-up (Belvedere), black-bg lifestyle with glasses
+    # (Crystal Head), small bottle on beige (Ketel One).
+    "vodka::Belvedere": (
+        "https://img.thewhiskyexchange.com/540/vodka_bel1.jpg",
+        "https://www.thewhiskyexchange.com/p/5073/belvedere-organic-vodka",
+    ),
+    "vodka::Crystal Head": (
+        "https://www.crystalheadvodka.com/wp-content/uploads/2023/08/Hero_image-Original-SKULL-CUT-OUT.png",
+        "https://www.crystalheadvodka.com/crystal-head/original/",
+    ),
+    "vodka::Ketel One": (
+        "https://images.ctfassets.net/nhvvc9v3qesf/1nvLNo8cZB4WOsoLnPIhT2/8c0fcfa515ccaaede153ef2225f5cac1/Ketel_One_Vodka_Product_70cl_.png",
+        "https://www.ketelone.com/en/vodkas/ketel-one-vodka",
+    ),
 }
 OVERRIDES: dict[str, tuple[str, str]] = _OVERRIDES_RAW
 
@@ -409,7 +429,6 @@ PAGE_OVERRIDES: dict[str, str] = {
     "gin::Oyster": "https://oystergin.com/",
     "gin::Canaima": "https://latitudewine.co.uk/products/canaima-small-batch-gin",
     "craft::ΜΠΕΛΑ Pilsner (Sourmena Brew X 608) 330ml": "https://greekbeershop.gr/product/608-brewing-co-x-sourmena-brew-bela-pilsner/",
-    "vodka::Crystal Head": "https://www.crystalheadvodka.com/product/crystal-head-original-vodka-750ml-with-2-10oz-glasses/",
 }
 
 VOL_RE = re.compile(r"\s*\d+\s*ml\s*$", re.IGNORECASE)
