@@ -39,16 +39,16 @@ Product photos: Open Food Facts (CC BY-SA), Wikimedia Commons
 | `beverages-018.webp` | STUDIO-PLACEHOLDER (owner bar-side photo pending, no licensed single-object source in OFF/Commons/official) |
 | `beverages-019.webp` | STUDIO-PLACEHOLDER (owner bar-side photo pending, no licensed single-object source in OFF/Commons/official) |
 | `cocktails-124.webp` | https://commons.wikimedia.org/wiki/File%3AWingko_Babat_Negroni_Cocktail.jpg |
-| `cocktails-125.webp` | https://commons.wikimedia.org/wiki/File%3ATray_with_orange_slice_old_fashioned_cocktail_potted_plant_bitters_bourbon_bottle_%2818686362141%29.jpg |
-| `cocktails-126.webp` | https://commons.wikimedia.org/wiki/File%3AOld_Fashioned_Cocktail_Hilton_London_Syon_Park_%2855775610%29.jpeg |
-| `cocktails-127.webp` | https://commons.wikimedia.org/wiki/File%3ABlended_margarita_cocktail_drink.jpg |
+| `cocktails-125.webp` | https://commons.wikimedia.org/wiki/File:15-09-26-RalfR-WLC-0141.jpg |
+| `cocktails-126.webp` | https://commons.wikimedia.org/wiki/File:Images_of_drinks_with_neutral_Background;_Old_Fashioned_(cocktail),_Whisky.jpg |
+| `cocktails-127.webp` | https://commons.wikimedia.org/wiki/File:15-09-26-RalfR-WLC-0247.jpg |
 | `cocktails-128.webp` | https://commons.wikimedia.org/wiki/File%3APaloma_Cocktail2.jpg |
-| `cocktails-129.webp` | https://commons.wikimedia.org/wiki/File:Bebida_Cuba_Libre.jpg |
+| `cocktails-129.webp` | https://commons.wikimedia.org/wiki/File:15-09-26-RalfR-WLC-0056.jpg |
 | `cocktails-130.webp` | https://commons.wikimedia.org/wiki/File%3APorn_star_martini_cocktail.jpg |
 | `cocktails-131.webp` | https://commons.wikimedia.org/wiki/File%3AClassic_Daiquiri_in_Cocktail_Glass.jpg |
-| `cocktails-132.webp` | https://commons.wikimedia.org/wiki/File:Marina_Beach_Club_-_Mojito.jpg |
+| `cocktails-132.webp` | https://commons.wikimedia.org/wiki/File:15-09-26-RalfR-WLC-0067.jpg |
 | `cocktails-133.webp` | https://commons.wikimedia.org/wiki/File:Mai_Tai_(16304400706).jpg |
-| `cocktails-134.webp` | https://commons.wikimedia.org/wiki/File%3AZombie_cocktail_gianni_zottola.jpg |
+| `cocktails-134.webp` | https://commons.wikimedia.org/wiki/File:Zombie_Cocktail.jpg |
 | `cocktails-135.webp` | https://commons.wikimedia.org/wiki/File%3ABramble_Cocktail.jpg |
 | `cocktails-138.webp` | https://commons.wikimedia.org/wiki/File:Aperol_Spritz_(Aperol_Spritz_Original_Bar)_(42171686322).jpg |
 | `cognac-120.webp` | https://secretbottleshop.co.uk/products/hennessy-vs-70cl |

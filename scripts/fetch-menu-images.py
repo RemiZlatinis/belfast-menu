@@ -345,17 +345,44 @@ _OVERRIDES_RAW: dict[str, tuple[str, str]] = {
         "https://upload.wikimedia.org/wikipedia/commons/2/25/Nikka_Whisky_From_the_Barrel%2C_Japan.jpg",
         "https://commons.wikimedia.org/wiki/File:Nikka_Whisky_From_the_Barrel%2C_Japan.jpg",
     ),
+    # GROUP C1 (09-COCKTAILS): SINGLE-serve studio/neutral-background
+    # Commons singles. WLC Ralf Roletschek studio series (grey neutral bg,
+    # Category:Images of drinks with neutral background): Old Fashioned 0141
+    # (Quality Image), Margarita 0247, Cuba Libre 0056 (Quality Image, SINGLE
+    # highball — replaces two-glass Bebida), Mojito 0067. Rum Old Fashioned =
+    # Qwertzu111111 neutral-background Old Fashioned (dark backdrop, distinct
+    # shoot/glass from 0141). Zombie = augustine-bar studio single (Mangomix,
+    # VRTS; no neutral-category Zombie exists — verified empty incategory
+    # search; proper tall-serve replaces map-menu gimmick). Replaces:
+    # cluttered tray/plant (125), bar shelves (126), salsa bowl (127),
+    # two glasses (129), poolside scene (132), tiny tiki + map (134).
+    "cocktails::Old Fashioned": (
+        "https://upload.wikimedia.org/wikipedia/commons/5/56/15-09-26-RalfR-WLC-0141.jpg",
+        "https://commons.wikimedia.org/wiki/File:15-09-26-RalfR-WLC-0141.jpg",
+    ),
+    "cocktails::Rum Old Fashioned": (
+        "https://upload.wikimedia.org/wikipedia/commons/6/65/Images_of_drinks_with_neutral_Background%3B_Old_Fashioned_%28cocktail%29%2C_Whisky.jpg",
+        "https://commons.wikimedia.org/wiki/File:Images_of_drinks_with_neutral_Background;_Old_Fashioned_(cocktail),_Whisky.jpg",
+    ),
+    "cocktails::Margarita": (
+        "https://upload.wikimedia.org/wikipedia/commons/1/15/15-09-26-RalfR-WLC-0247.jpg",
+        "https://commons.wikimedia.org/wiki/File:15-09-26-RalfR-WLC-0247.jpg",
+    ),
     "cocktails::Mai Tai": (
         _fp("Mai Tai (16304400706).jpg"),
         "https://commons.wikimedia.org/wiki/File:Mai_Tai_(16304400706).jpg",
     ),
     "cocktails::Cuba Libre": (
-        _fp("Bebida Cuba Libre.jpg"),
-        "https://commons.wikimedia.org/wiki/File:Bebida_Cuba_Libre.jpg",
+        "https://upload.wikimedia.org/wikipedia/commons/5/5d/15-09-26-RalfR-WLC-0056.jpg",
+        "https://commons.wikimedia.org/wiki/File:15-09-26-RalfR-WLC-0056.jpg",
     ),
     "cocktails::Mojito (f)": (
-        _fp("Marina Beach Club - Mojito.jpg"),
-        "https://commons.wikimedia.org/wiki/File:Marina_Beach_Club_-_Mojito.jpg",
+        "https://upload.wikimedia.org/wikipedia/commons/8/87/15-09-26-RalfR-WLC-0067.jpg",
+        "https://commons.wikimedia.org/wiki/File:15-09-26-RalfR-WLC-0067.jpg",
+    ),
+    "cocktails::Zombie": (
+        "https://upload.wikimedia.org/wikipedia/commons/f/f4/Zombie_Cocktail.jpg",
+        "https://commons.wikimedia.org/wiki/File:Zombie_Cocktail.jpg",
     ),
     "cocktails::Aperol Spritz": (
         _fp("Aperol Spritz (Aperol Spritz Original Bar) (42171686322).jpg"),
