@@ -87,7 +87,7 @@ Product photos: Open Food Facts (CC BY-SA), Wikimedia Commons
 | `whiskeys-045.webp` | https://world.openfoodfacts.org/product/5011026108019 |
 | `whiskeys-046.webp` | https://world.openfoodfacts.org/product/5011026108019 |
 | `whiskeys-047.webp` | https://www.thewhiskyexchange.com/search?q=jameson |
-| `whiskeys-048.webp` | https://www.thewhiskyexchange.com/search?q=jameson%20black%20barrel |
+| `whiskeys-048.webp` | https://www.lcbo.com/en/jameson-black-barrel-292615 |
 | `whiskeys-049.webp` | https://www.thewhiskyexchange.com/search?q=jameson%20caskmates |
 | `whiskeys-050.webp` | https://world.openfoodfacts.org/product/5055966800022 |
 | `whiskeys-051.webp` | https://www.thewhiskyexchange.com/search?q=bushmills%20black%20bush |
@@ -97,23 +97,26 @@ Product photos: Open Food Facts (CC BY-SA), Wikimedia Commons
 | `whiskeys-055.webp` | https://commons.wikimedia.org/wiki/File:Redbreast12.jpg |
 | `whiskeys-056.webp` | https://world.openfoodfacts.org/product/5010106111956 |
 | `whiskeys-057.webp` | https://world.openfoodfacts.org/product/5010504100057 (background removed) |
-| `whiskeys-058.webp` | https://world.openfoodfacts.org/product/0080432402931 |
-| `whiskeys-059.webp` | https://www.thewhiskyexchange.com/search?q=johnnie%20walker%20black%20label |
+| `whiskeys-058.webp` | https://www.lcbo.com/en/chivas-regal-12-year-old-scotch-whisky-7617 |
+| `whiskeys-059.webp` | https://www.johnniewalker.com/en-us/our-whisky/johnnie-walker-black-label |
 | `whiskeys-060.webp` | https://world.openfoodfacts.org/product/9300624031406 (background removed) |
 | `whiskeys-061.webp` | https://commons.wikimedia.org/wiki/File%3ABottle_Haig_Whiskey.jpg (background removed) |
 | `whiskeys-062.webp` | https://commons.wikimedia.org/wiki/File:Grant%27s_12_year_old_whisky.jpg |
-| `whiskeys-063.webp` | https://commons.wikimedia.org/wiki/File:Evan_Williams_white_label_and_black_label_whiskey_bottles.jpg (background removed) |
+| `whiskeys-063.webp` | https://evanwilliams.com/ew-blacklabel.php |
 | `whiskeys-064.webp` | https://world.openfoodfacts.org/product/5099873089798 |
-| `whiskeys-065.webp` | https://fourrosesbourbon.com/ |
-| `whiskeys-066.webp` | https://commons.wikimedia.org/wiki/File%3AWhisky_Cardhu.jpg (background removed) |
+| `whiskeys-065.webp` | https://www.fourrosesbourbon.com/bourbon/small-batch |
+| `whiskeys-066.webp` | https://www.malts.com/en/products/cardhu-12-year-old-single-malt-scotch-whisky-70cl |
 | `whiskeys-067.webp` | https://commons.wikimedia.org/wiki/File%3ATalisker_Isle_of_Skye_Single_Malt_Whisky_aged_18_years.jpg (background removed) |
 | `whiskeys-068.webp` | https://world.openfoodfacts.org/product/5010327000176 |
 | `whiskeys-069.webp` | https://world.openfoodfacts.org/product/5000281005423 (background removed) |
 | `whiskeys-070.webp` | https://www.thewhiskyexchange.com/search?q=nikka%20from%20the%20barrel |
+| `whiskeys-071.webp` | https://www.thewhiskyexchange.com/p/232/arran-10-year-old |
 | `whiskeys-072.webp` | https://world.openfoodfacts.org/product/4005971387033 |
+| `whiskeys-073.webp` | https://kegnbottle.com/products/lagavulin-8-year-single-malt-scotch-whisky-750-ml |
 | `whiskeys-074.webp` | https://commons.wikimedia.org/wiki/File%3ALagavulin_Single_Islay_Malt_Whisky_16_years_old.jpg |
-| `whiskeys-076.webp` | https://commons.wikimedia.org/wiki/File%3AHighland_Park_Single_Malt_Whisky_12_years_old.jpg |
+| `whiskeys-076.webp` | https://www.thewhiskyexchange.com/b/40/highland-park-single-malt-scotch-whisky |
 | `whiskeys-077.webp` | https://www.thewhiskyexchange.com/search?q=glenallachie%2012 |
+| `whiskeys-079.webp` | https://www.thewhiskyexchange.com/p/7217/dalmore-12-year-old |
 | `whiskeys-080.webp` | https://world.openfoodfacts.org/product/5010494195286 |
 | `whiskeys-081.webp` | https://world.openfoodfacts.org/product/5010327000176 |
 | `whiskeys-082.webp` | https://world.openfoodfacts.org/product/5010314302863 |

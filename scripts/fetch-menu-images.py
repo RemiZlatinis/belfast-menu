@@ -111,9 +111,28 @@ def _fp(name: str) -> str:
 
 
 _OVERRIDES_RAW: dict[str, tuple[str, str]] = {
+    # GROUP W1 (04-WHISKEYS): single-bottle white STOCK. JBB/Chivas via LCBO
+    # white singles (official jamesonwhiskey.com/chivas.com are Cloudflare
+    # age-gated; TWE irish_jam19 is bottle+box, no verified TWE single).
+    "whiskeys::Jameson Black Barrel": (
+        "https://aem.lcbo.com/content/dam/lcbo/products/2/9/2/6/292615.jpg.thumb.1280.1280.jpg",
+        "https://www.lcbo.com/en/jameson-black-barrel-292615",
+    ),
+    "whiskeys::Chivas": (
+        "https://aem.lcbo.com/content/dam/lcbo/products/0/0/7/6/007617.jpg.thumb.1280.1280.jpg",
+        "https://www.lcbo.com/en/chivas-regal-12-year-old-scotch-whisky-7617",
+    ),
+    "whiskeys::Johnnie Black": (
+        "https://images.ctfassets.net/waruwpig3jxu/40mAmIwhfqUmm72FQCCyob/3724a811cf2735f06e46bd508884c6d7/black-750ml_producthero_halffront_desktop.webp",
+        "https://www.johnniewalker.com/en-us/our-whisky/johnnie-walker-black-label",
+    ),
     "whiskeys::Evan Williams": (
-        _fp("Evan Williams white label and black label whiskey bottles.jpg"),
-        "https://commons.wikimedia.org/wiki/File:Evan_Williams_white_label_and_black_label_whiskey_bottles.jpg",
+        "https://evanwilliams.com/images/bottles/ew-black-20.png?ver=2",
+        "https://evanwilliams.com/ew-blacklabel.php",
+    ),
+    "whiskeys::Four Roses": (
+        "https://four-roses.files.svdcdn.com/production/images/bourbons/Web_Small-batch_2023-06-14-135007_iiyg.png?dm=1757960464",
+        "https://www.fourrosesbourbon.com/bourbon/small-batch",
     ),
     "cognac::Metaxa 7*": (
         _fp("Metaxa 7 star amphora.jpg"),
@@ -252,6 +271,30 @@ _OVERRIDES_RAW: dict[str, tuple[str, str]] = {
     "whiskeys::Grants 12yr": (
         "https://upload.wikimedia.org/wikipedia/commons/f/f5/Grant%27s_Whisky_01.jpg",
         "https://commons.wikimedia.org/wiki/File:Grant%27s_Whisky_01.jpg",
+    ),
+    # GROUP W2 (04-WHISKEYS): SINGLE bottle white STOCK. Cardhu = official
+    # Diageo malts.com transparent single; Arran/HP/Dalmore = TWE 540px
+    # SINGLEs (never pair/box); Lagavulin 8 = Keg N Bottle Shopify single
+    # (official malts.com + TWE + LCBO are all bottle+box pairs).
+    "whiskeys::Cardhu": (
+        "https://images.ctfassets.net/glsfy1cpffmh/Szut43yTqebWjxZmrlGmJ/ae0490051d6da4c23281eb12af61ac49/cardhu-12-year-old-single-malt-scotch-whisky-70cl-transparent.png",
+        "https://www.malts.com/en/products/cardhu-12-year-old-single-malt-scotch-whisky-70cl",
+    ),
+    "whiskeys::Arran 10yr": (
+        "https://img.thewhiskyexchange.com/540/arrob.10yov2.jpg",
+        "https://www.thewhiskyexchange.com/p/232/arran-10-year-old",
+    ),
+    "whiskeys::Lagavulin 8yr": (
+        "https://kegnbottle.com/cdn/shop/files/lagavulin-8-year-single-malt-scotch-whisky-750-ml-keg-n-bottle-450930.png?v=1741199730",
+        "https://kegnbottle.com/products/lagavulin-8-year-single-malt-scotch-whisky-750-ml",
+    ),
+    "whiskeys::Highland Park 12yr": (
+        "https://img.thewhiskyexchange.com/540/hlpob.12yov1.jpg",
+        "https://www.thewhiskyexchange.com/b/40/highland-park-single-malt-scotch-whisky",
+    ),
+    "whiskeys::Dalmore 12yr": (
+        "https://img.thewhiskyexchange.com/540/dlmob.12yov1.jpg",
+        "https://www.thewhiskyexchange.com/p/7217/dalmore-12-year-old",
     ),
     "whiskeys::Nikka From The Barrel": (
         "https://upload.wikimedia.org/wikipedia/commons/2/25/Nikka_Whisky_From_the_Barrel%2C_Japan.jpg",
