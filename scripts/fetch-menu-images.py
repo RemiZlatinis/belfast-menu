@@ -146,13 +146,44 @@ _OVERRIDES_RAW: dict[str, tuple[str, str]] = {
         _fp("Havana Club 7 anos.jpeg"),
         "https://commons.wikimedia.org/wiki/File:Havana_Club_7_anos.jpeg",
     ),
+    # GROUP R1 (05-RUM): SINGLE bottle on pure white STOCK. Appleton +
+    # Diplomatico = official brand singles (transparent -> white-matte;
+    # V-X renamed Signature, same line). Chairman's Original/Spiced =
+    # Secret Bottle Shop white packshots (official chairmansreserverum.com
+    # has no white single via text-only fetch; TWE Cloudflare-blocked).
+    # Replaces: Commons bottle+glass (Appleton), rumshopboy beach scenes
+    # (Chairman's x2), sideways bottle (Diplomatico).
     "rum::Appleton": (
-        _fp("Appleton Estate V-X Jamaica Rum-with glass.jpg"),
-        "https://commons.wikimedia.org/wiki/File:Appleton_Estate_V-X_Jamaica_Rum-with_glass.jpg",
+        "https://www.appletonestate.com/app/uploads/2025/02/our-rums-single-product-signature.webp",
+        "https://www.appletonestate.com/rums/signature/",
+    ),
+    "rum::Chairman's Spiced": (
+        "https://secretbottleshop.co.uk/cdn/shop/files/4eb62e81-e00e-439a-805e-cc6b108f531f.jpg?v=1761554949",
+        "https://secretbottleshop.co.uk/products/chairmans-reserve-spiced-rum-70cl-1",
+    ),
+    "rum::Chairman's": (
+        "https://secretbottleshop.co.uk/cdn/shop/files/7db92a55-dc7e-468b-888c-3aad0a441f49.jpg?v=1749055121",
+        "https://secretbottleshop.co.uk/products/chairmans-reserve-original-rum-70cl-1",
+    ),
+    "rum::Diplomatico": (
+        "https://www.rondiplomatico.com/wp-content/uploads/2022/03/ReservaExclusiva_678x1310px.png",
+        "https://www.rondiplomatico.com/product/reserva-exclusiva/",
+    ),
+    # GROUP R2 (05-RUM): SINGLE bottle white STOCK. All official brand
+    # singles (transparent PNG/WebP -> white-matte). Replaces: TWE white
+    # frosted (Flor, wrong look for amber 12yr), Commons bar scene
+    # (Barcelo), OFF dark crop (Zacapa).
+    "rum::Flor De Cana 12yr": (
+        "https://cdn.prod.website-files.com/635173a41d48bd4bbbaefa01/6a2c172dc9cfa129190af1c6_FDC_12years_CIC_WEB_Global-Sombra_IMG_V01_2026.webp",
+        "https://www.flordecana.com/premium-rums",
     ),
     "rum::Barcelo": (
-        _fp("Ron Barcelo rum.jpg"),
-        "https://commons.wikimedia.org/wiki/File:Ron_Barcelo_rum.jpg",
+        "https://ronbarcelo.com/wp-content/uploads/2021/03/BarceloImperial.png",
+        "https://ronbarcelo.com/rum/imperial/",
+    ),
+    "rum::Zacapa": (
+        "https://images.ctfassets.net/llp5a1wx5fd2/10QFflAKdUQpoyfSael1uo/4896a0826482901555d8e7183604c328/bottle.png",
+        "https://zacaparum.com/",
     ),
     "beverages::ΣΠΙΤΙΚΗ ΛΕΜΟΝΑΔΑ": (
         _fp("Glass of lemonade.jpg"),
@@ -338,8 +369,6 @@ PAGE_OVERRIDES: dict[str, str] = {
     "craft::ΚΥΡΙΑ ΤΟΥΛΑ NIPA (Sourmena Brew) 330ml": "https://charitakis.com/product/bira-kyria-toula-sourmena-brew-alc-6-vol-fiali-330ml/",
     "craft::JASMINE IPA (Strange Brew) 330ml": "https://www.untappd.com/b/strange-brew-jasmine-ipa/2092288",
     "whiskeys::Roe & Co": "https://www.vineyardbelfast.co.uk/products/roe-co-signature-40-abv-700ml",
-    "rum::Chairman's Spiced": "https://rumshopboy.com/2020/12/20/chairmans-reserve-original/",
-    "rum::Chairman's": "https://rumshopboy.com/2020/12/20/chairmans-reserve-original/",
     "rum::Kingston": "https://www.jacquesscott.com/ky/appleton-kingston-62-cayman-islands/",
     "rum::Bayou Spiced": "https://www.bayourum.com/",
     "rum::Plantation Dark": "https://rumx.com/en/rums/75/plantation-original-dark/",
