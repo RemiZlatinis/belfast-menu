@@ -101,7 +101,7 @@ export const Menus: CollectionConfig = {
                   hooks: {
                     beforeValidate: [
                       ({ value, siblingData }) => {
-                        if (value && typeof value === 'string' && value.trim()) return value
+                        if (value && typeof value === 'string' && value.trim()) return value.trim()
                         const title = (siblingData as { title?: unknown } | undefined)?.title
                         if (typeof title === 'string' && title.trim()) {
                           const slug = slugify(title)
